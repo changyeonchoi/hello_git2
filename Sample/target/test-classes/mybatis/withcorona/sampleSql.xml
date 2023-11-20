@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sampleDao">
+
+<resultMap type="com.with.corona.controller.SampleVo" id="sampleVo">
+	<result property="totalcount" column="totalcount"/>
+	<result property="seq_id" column="seq_id"/>
+	<result property="sample_title" column="sample_title"/>
+	<result property="sample_description" column="sample_description"/>
+	<result property="regdate" column="regdate"/>
+	<result property="moddate" column="moddate"/>
+	<result property="use" column="use"/>
+	<result property="del_yn" column="del_yn"/>
+	<result property="tmp_type" column="tmp_type"/>
+	<result property="tmp_date" column="tmp_date"/>
+	<result property="Name" column="Name"/>
+	<result property="modifier" column="modifier"/>
+</resultMap>
+
+<select id="sampleDao.selectSampleList" parameterType="map" resultMap="sampleVo">
+	select
+		seq_id
+		, sample_title
+		, sample_description
+		, regdate
+		, moddate
+		, use
+		, del_yn
+		, tmp_type
+		, tmp_date
+		, Name
+		, modifier
+	FROM tmp_sample
+</select>
+
+</mapper>

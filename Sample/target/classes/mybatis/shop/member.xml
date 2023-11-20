@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberDao">
+
+<resultMap type="com.main.vo.MemberVo" id="membervo">
+	<result property="seq_id" column="seq_id"/>
+	<result property="user_id" column="user_id"/>
+	<result property="user_pw" column="user_pw"/>
+	<result property="user_name" column="user_name"/>
+	<result property="user_phone" column="user_phone"/>
+	<result property="user_address" column="user_address" />
+</resultMap>
+	
+	<!-- 회원가입 관련(체크 및 성공) -->
+	<select id="signupCheck" resultMap="membervo" parameterType="String">
+		select
+			user_id
+		from
+			bt_member_table
+		where
+			user_id = #{user_id}
+	</select>
+	
+	<select id="signupSuccess">
+		insert into
+			bt_member_table(
+				seq_id,
+				user_id,
+				user_pw,
+				user_name,
+				user_phone,
+				user_address
+			)
+			values(
+				seq_bt_member.NEXTVAL,
+				#{user_id},
+				#{user_pw},
+				#{user_name},
+				#{user_phone},
+				#{user_address}
+			)
+	</select>
+	
+	<select id="idCheck" resultMap="membervo">
+		select
+			user_name
+		from
+			bt_member_table
+		where
+			user_id = #{user_id}
+	</select>
+	
+	<!-- 로그인 관련(체크 및 성공) -->
+	<select id="loginCheck" resultMap="membervo">
+		select
+			user_id
+		from 
+			bt_member_table
+		where
+			user_id = #{user_id}
+		and
+			user_pw = #{user_pw}
+	</select>
+	
+	<select id="login" resultMap="membervo">
+		select
+			seq_id, user_id, user_pw, user_name, user_Phone
+		from
+			bt_member_table
+		where
+			user_id = #{user_id} and user_pw = #{user_pw}
+	</select>
+	
+<!-- 	<select id="memberDao.selectmemberlist" parameterType="java.util.HashMap" resultMap="membervo"> -->
+<!-- 	<![CDATA[ -->
+<!--     	select -->
+<!--       	  	seq_id, -->
+<!--         	user_id, -->
+<!--         	user_pw, -->
+<!--         	user_name, -->
+<!--         	user_phone, -->
+<!--         	user_auth -->
+<!--     	from member_table -->
+<!--     	where user_id like '%' || #{search, jdbcType=VARCHAR} || '%' -->
+<!--     	order by seq_id desc -->
+<!--     	]]> -->
+<!--     <if test="seq_id != null"> -->
+<!--         LIMIT #{listSize} OFFSET (#{pageNo} - 1) * #{listSize} -->
+<!--     </if> -->
+<!-- 	</select> -->
+
+<!-- <select id="memberDao.selectmemberlist" parameterType="java.util.HashMap" resultMap="membervo"> -->
+<!--     <![CDATA[ -->
+<!--     SELECT * -->
+<!--     FROM ( -->
+<!--         SELECT -->
+<!--             seq_id, -->
+<!--             user_id, -->
+<!--             user_pw, -->
+<!--             user_name, -->
+<!--             user_phone, -->
+<!--             user_auth, -->
+<!--             ROWNUM AS rnum -->
+<!--         FROM ( -->
+<!--             SELECT -->
+<!--                 seq_id, -->
+<!--                 user_id, -->
+<!--                 user_pw, -->
+<!--                 user_name, -->
+<!--                 user_phone, -->
+<!--                 user_auth -->
+<!--             FROM member_table -->
+<!--             WHERE user_id LIKE '%' || #{search, jdbcType=VARCHAR} || '%' -->
+<!--             ORDER BY seq_id DESC -->
+<!--         ) t -->
+<!--         WHERE ROWNUM <= #{endRow, jdbcType=INTEGER} -->
+<!--     ) -->
+<!--     WHERE rnum >= #{startRow, jdbcType=INTEGER} -->
+<!--     ]]> -->
+<!-- </select> -->
+
+<!-- 	<select id="memberDao.selectMemberdetail" resultMap="membervo"> -->
+<!-- 		select -->
+<!-- 			seq_id, -->
+<!-- 			user_id, -->
+<!-- 			user_pw, -->
+<!-- 			user_name, -->
+<!-- 			user_phone, -->
+<!-- 			user_auth -->
+<!-- 		from member_table -->
+<!-- 		where user_id = #{user_id} -->
+<!-- 	</select> -->
+
+<!-- 	<delete id="memberDao.deleteUserId"> -->
+<!-- 		delete member_table -->
+<!-- 		where user_id = #{user_id} -->
+<!-- 	</delete> -->
+	
+<!-- 	<update id="memberDao.updateUser"> -->
+<!-- 		update member_table -->
+<!-- 		set user_pw = #{user_pw}, user_name = #{user_name}, user_phone = #{user_phone}, user_auth = #{user_auth} -->
+<!-- 		where user_id = #{user_id} -->
+<!-- 	</update> -->
+
+    <!-- 전체 회원 수 조회 쿼리 -->
+<!--     <select id="selectTotalCount" parameterType="java.util.HashMap" resultType="int"> -->
+<!--         SELECT COUNT(*) FROM member_table -->
+<!--         WHERE user_id LIKE '%' || #{search, jdbcType=VARCHAR} || '%' -->
+<!--     </select> -->
+	
+</mapper>
