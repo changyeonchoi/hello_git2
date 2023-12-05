@@ -88,8 +88,7 @@
     	                        }
     	                    });
     	                } else {
-                            let popupUrl = "http://localhost:80/signup?user_id=" + encodeURIComponent(user_id);
-                            window.open(popupUrl, "_blank", "width=800, height=600");
+    	                	 alert("회원가입이 필요한 회원입니다.");
     	                }
     	            }
     	        });

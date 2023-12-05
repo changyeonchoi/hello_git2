@@ -204,7 +204,10 @@
     				alert("이름을 입력해주세요.")
     				return;
     			}else if(user_phone == ""){
-    				alert("번호를 입력해주세요.")
+    				alert("연락처를 입력해주세요.")
+    				return;
+    			}else if(user_address == ""){
+    				alert("주소를 입력해주세요.")
     				return;
     			}
     	        if (user_pw !== user_pwdConfirm) {
@@ -227,6 +230,7 @@
                     success: function (data) {
                         if (data) {
                             alert("신청되었습니다.");
+                            window.location.href = "login";
                         } else {
                             alert("회원가입에 실패했습니다.");
                         }
