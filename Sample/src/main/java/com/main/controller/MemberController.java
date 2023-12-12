@@ -25,7 +25,7 @@ import com.main.vo.MemberVo;
 
 
 @Controller
-//@RequestMapping(value = "/BT")
+@RequestMapping(value = "/BT")
 public class MemberController {
 	
 	@Autowired
@@ -33,9 +33,9 @@ public class MemberController {
 	
 	private MemberVo membervo;
 	
-	@RequestMapping("/index")
+	@RequestMapping("/main")
 	public String index() {
-		return "index";
+		return "main";
 	}
 	
 	@RequestMapping("/save")
