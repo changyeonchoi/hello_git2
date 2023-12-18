@@ -52,7 +52,7 @@
     	    $("#btn_login").off("click").on("click", function () {
     	        let user_id = $("#userid").val();
     	        let user_pw = $("#userpw").val();
-//     	        console.log("Test", user_id, user_pw);
+    	        console.log("Test", user_id, user_pw);
 
     	        // 아이디 체크를 위한 AJAX 요청
     	        let idCheckUrl = "http://localhost:80/idCheck";
@@ -61,6 +61,7 @@
     	            type: "post",
     	            data: { user_id: user_id },
     	            success: function (idCheckResult) {
+    	            	console.log("test", idCheckResult);
     	                if (idCheckResult === "exists") {
     	                    // 아이디가 존재하는 경우, 로그인 체크 진행
     	                    let loginCheckUrl = "http://localhost:80/loginCheck";
@@ -77,7 +78,7 @@
     	                                    type: "post",
     	                                    data: { user_id: user_id, user_pw: user_pw },
     	                                    success: function (data) {
-    	                                    		 window.location.href = "index";
+    	                                    		 window.location.href = "main";
     	                                    }
     	                                });
     	                            } else {

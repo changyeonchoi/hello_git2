@@ -69,6 +69,9 @@ header .shop-nav a {
   line-height: normal;
   letter-spacing: -0.02em;
 }
+header .shop-nav a:hover {
+    color: #d1180b; 
+}
 header .shop-nav__info {
   width: 10%;
   margin-left: auto;
@@ -79,6 +82,9 @@ header .shop-nav__info a {
   font-weight: bold;
   line-height: normal;
   letter-spacing: -0.02em;
+}
+header .shop-nav__info a:hover {
+    color: #d1180b; 
 }
 header .shop-nav__info a:first-child {
   margin-right: 15px;
@@ -246,14 +252,14 @@ header .shop-nav__info a:first-child {
         <p>BT</p>
       </div>
       <nav class="shop-nav">
-        <a href="#">Fashion</a>
-        <a href="#">Make Up</a>
-        <a href="#">Accessory</a>
+        <a href="fashionlist">Fashion</a>
+        <a href="makeuplist">Make Up</a>
+        <a href="accessorylist">Accessory</a>
         <a href="#">검색</a>
       </nav>
       <nav class="shop-nav__info">
         <a href="#">MY</a>
-        <a href="#">Login</a>
+        <a href="login">Login</a>
       </nav>
     </header>
     <!-- 메인 -->
@@ -288,25 +294,35 @@ header .shop-nav__info a:first-child {
               <a href="#">더보기</a>
             </div>
             <div class="shop__code--Box">
-              <div class="shop__code--product">
-                <img
-                  src="https://m.gifteabox.com/web/product/big/202209/9ba87936e31b29ebdd3769ff8e9c226f.jpg"
-                  alt="code-image"
-                />
-                <p class="shop__code--content">가을 코디</p>
-              </div>
-              <div class="shop__code--product">
-                <img
-                  src="https://m.youngcode.kr/web/product/big/202109/fae83f9866375e7bc69866a3732ac30b.jpg"
-                  alt="code-image"
-                />
-                <p class="shop__code--content">초 가을 바람 막이</p>
-              </div>
-              <div class="shop__code--product">
-                <div class="shop__code--ready">
-                  <p>상품 준비중</p>
-                </div>
-              </div>
+            <c:forEach var="fashion" items="${fashion}" varStatus="status">
+	            <div class="shop__code--product">
+		            <a href="/fashiondetail?seq_id=${fashion.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
+		                <img src="${fashion.file_img}" alt="test"/>
+		            </a>
+		            <p class="shop__code--content">
+		            	${fashion.banner_title}
+		            </p>
+	        	</div>
+			</c:forEach>
+<!--               <div class="shop__code--product"> -->
+<!--                 <img -->
+<!--                   src="https://m.gifteabox.com/web/product/big/202209/9ba87936e31b29ebdd3769ff8e9c226f.jpg" -->
+<!--                   alt="code-image" -->
+<!--                 /> -->
+<!--                 <p class="shop__code--content">가을 코디</p> -->
+<!--               </div> -->
+<!--               <div class="shop__code--product"> -->
+<!--                 <img -->
+<!--                   src="https://m.youngcode.kr/web/product/big/202109/fae83f9866375e7bc69866a3732ac30b.jpg" -->
+<!--                   alt="code-image" -->
+<!--                 /> -->
+<!--                 <p class="shop__code--content">초가을 바람막이</p> -->
+<!--               </div> -->
+<!--               <div class="shop__code--product"> -->
+<!--                 <div class="shop__code--ready"> -->
+<!--                   <p>상품 준비중</p> -->
+<!--                 </div> -->
+<!--               </div> -->
             </div>
           </div>
           <div class="shop__main--axeBox">
@@ -315,27 +331,37 @@ header .shop-nav__info a:first-child {
               <a href="#">더보기</a>
             </div>
             <div class="shop__code--Box">
-              <div class="shop__code--product">
-                <img
-                  src="https://cdn.imweb.me/thumbnail/20220423/47b73dd721574.jpg"
-                  alt="ring-image"
-                />
-                <p class="shop__code--content">기부 목적 귀걸이</p>
-              </div>
-              <div class="shop__code--product">
-                <img
-                  src="https://cowx2.cafe24.com/web/product/small/shop1_6eb5e9154055e0c37eb1a8bde6a68326.jpg"
-                  alt="ring-image"
-                />
-                <p class="shop__code--content">블링블링 롱 귀걸이</p>
-              </div>
-              <div class="shop__code--product">
-                <img
-                  src="https://webimg.jestina.co.kr/UpData2/item/G2000014656/20211118105325ZM.jpg"
-                  alt="ring-image"
-                />
-                <p class="shop__code--content">이너용 평평 귀걸이</p>
-              </div>
+            <c:forEach var="accessory" items="${accessory}" varStatus="status">
+	            <div class="shop__code--product">
+		            <a href="/makeupdetail?seq_id=${accessory.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
+		                <img src="${accessory.file_img}" alt="test"/>
+		            </a>
+		            <p class="shop__code--content">
+		            	${accessory.banner_title}
+		            </p>
+	        	</div>
+			</c:forEach>
+<!--               <div class="shop__code--product"> -->
+<!--                 <img -->
+<!--                   src="https://cdn.imweb.me/thumbnail/20220423/47b73dd721574.jpg" -->
+<!--                   alt="ring-image" -->
+<!--                 /> -->
+<!--                 <p class="shop__code--content">기부 목적 귀걸이</p> -->
+<!--               </div> -->
+<!--               <div class="shop__code--product"> -->
+<!--                 <img -->
+<!--                   src="https://cowx2.cafe24.com/web/product/small/shop1_6eb5e9154055e0c37eb1a8bde6a68326.jpg" -->
+<!--                   alt="ring-image" -->
+<!--                 /> -->
+<!--                 <p class="shop__code--content">블링블링 롱 귀걸이</p> -->
+<!--               </div> -->
+<!--               <div class="shop__code--product"> -->
+<!--                 <img -->
+<!--                   src="https://webimg.jestina.co.kr/UpData2/item/G2000014656/20211118105325ZM.jpg" -->
+<!--                   alt="ring-image" -->
+<!--                 /> -->
+<!--                 <p class="shop__code--content">이너용 평평 귀걸이</p> -->
+<!--               </div> -->
             </div>
           </div>
         </div>
@@ -349,27 +375,37 @@ header .shop-nav__info a:first-child {
                 <a href="#">더보기</a>
               </div>
               <div class="shop__code--Box">
-                <div class="shop__code--product">
-                  <img
-                    src="https://mblogthumb-phinf.pstatic.net/MjAyMzAzMDZfMzMg/MDAxNjc4MTA1NTIwNDY0.j7RLMuaEUqEmhDfCIIIPcMJF_q5zV7Ec-oNc2PCuI_Ug.90WZktb3DwK73I6Pg2DqBYWDsxq2f3tB6-AL_rhQdvkg.JPEG.queen3757/%EB%B3%B4%EC%9D%B4%EB%93%9C%EB%B0%94%EC%9D%B4%EB%B0%95%EC%B2%A0_%ED%99%94%EB%B3%B4_%ED%99%9C%EB%B3%B4%EA%B2%BD%EC%9D%80_(14).jpg?type=w800"
-                    alt="make-image"
-                  />
-                  <p class="shop__code--content">청순 메이크업</p>
-                </div>
-                <div class="shop__code--product">
-                  <img
-                    src="https://mblogthumb-phinf.pstatic.net/MjAyMzAxMTBfMjcx/MDAxNjczMzUxODQ5MTgx.oRl0kGwM8SjJztTPAT7QHf6JK52DyRz41l9fsj7xxNwg.XrpYHiArqOPx4Aw8TaNsulUPWmTXT8Q2ZahRhLK8_Usg.PNG.juliawed/MIMM2023_(1).png?type=w800"
-                    alt="make-image"
-                  />
-                  <p class="shop__code--content">글리터로 포인트</p>
-                </div>
-                <div class="shop__code--product">
-                  <img
-                    src="https://www.iwedding.co.kr/center/iweddingb/product/800_co_sl_m209_14018_1636683168_12733300_3232256100.jpg"
-                    alt="make-image"
-                  />
-                  <p class="shop__code--content">강렬한 메이크업</p>
-                </div>
+              <c:forEach var="makeup" items="${makeup}" varStatus="status">
+	            <div class="shop__code--product">
+		            <a href="/makeupdetail?seq_id=${makeup.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
+		                <img src="${makeup.file_img}" alt="test"/>
+		            </a>
+		            <p class="shop__code--content">
+		            	${makeup.banner_title}
+		            </p>
+	        	</div>
+			  </c:forEach>
+<!--                 <div class="shop__code--product"> -->
+<!--                   <img -->
+<!--                     src="https://mblogthumb-phinf.pstatic.net/MjAyMzAzMDZfMzMg/MDAxNjc4MTA1NTIwNDY0.j7RLMuaEUqEmhDfCIIIPcMJF_q5zV7Ec-oNc2PCuI_Ug.90WZktb3DwK73I6Pg2DqBYWDsxq2f3tB6-AL_rhQdvkg.JPEG.queen3757/%EB%B3%B4%EC%9D%B4%EB%93%9C%EB%B0%94%EC%9D%B4%EB%B0%95%EC%B2%A0_%ED%99%94%EB%B3%B4_%ED%99%9C%EB%B3%B4%EA%B2%BD%EC%9D%80_(14).jpg?type=w800" -->
+<!--                     alt="make-image" -->
+<!--                   /> -->
+<!--                   <p class="shop__code--content">청순 메이크업</p> -->
+<!--                 </div> -->
+<!--                 <div class="shop__code--product"> -->
+<!--                   <img -->
+<!--                     src="https://mblogthumb-phinf.pstatic.net/MjAyMzAxMTBfMjcx/MDAxNjczMzUxODQ5MTgx.oRl0kGwM8SjJztTPAT7QHf6JK52DyRz41l9fsj7xxNwg.XrpYHiArqOPx4Aw8TaNsulUPWmTXT8Q2ZahRhLK8_Usg.PNG.juliawed/MIMM2023_(1).png?type=w800" -->
+<!--                     alt="make-image" -->
+<!--                   /> -->
+<!--                   <p class="shop__code--content">글리터로 포인트</p> -->
+<!--                 </div> -->
+<!--                 <div class="shop__code--product"> -->
+<!--                   <img -->
+<!--                     src="https://www.iwedding.co.kr/center/iweddingb/product/800_co_sl_m209_14018_1636683168_12733300_3232256100.jpg" -->
+<!--                     alt="make-image" -->
+<!--                   /> -->
+<!--                   <p class="shop__code--content">강렬한 메이크업</p> -->
+<!--                 </div> -->
               </div>
             </div>
             <div class="shop__main--axeBox">

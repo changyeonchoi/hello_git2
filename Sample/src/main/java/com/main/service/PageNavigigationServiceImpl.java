@@ -23,7 +23,6 @@ public class PageNavigigationServiceImpl implements PageNavigigationService{
 		navigation.setTotalCount(totalCount);
 		
 		int totalPageCount = (totalCount-1)/listSize+1;
-		System.out.println("totalPageCount" + totalPageCount);
 		navigation.setTotalPageCount(totalPageCount);
 		navigation.setPageNo(pageNo);
 		boolean firstRange = pageNo <= naviSize;

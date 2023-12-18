@@ -14,7 +14,7 @@
     </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fashion_detail</title>
+    <title>accessory_detail</title>
 
     <link rel="stylesheet" href="resources/css/fashion.css" />
     <link rel="stylesheet" href="resources/css/main.css" />
@@ -26,9 +26,9 @@
         <a href="main" target="_blank">BT</a>
       </div>
       <nav class="shop-nav">
-        <a href="fashionlist" id="selected">Fashion</a>
+        <a href="fashionlist">Fashion</a>
         <a href="makeuplist">Make Up</a>
-        <a href="accessorylist">Accessory</a>
+        <a href="accessorylist" id="selected">Accessory</a>
         <a href="#">검색</a>
       </nav>
       <nav class="shop-nav__info">
@@ -50,21 +50,21 @@
           <div class="fashion__box">
             <div class="fashion__box--img">
            		<img
-                src="${fashion.file_img}"
+                src="${accessory.file_img}"
               	/>
             </div>
             <div class="fashion__box--content">
               <div class="fashion__content">
-                <h1>${fashion.product_name}</h1>
+                <h1>${accessory.product_name}</h1>
 
                 <div class="fashion__box--pay">
-                  <p id="pay">정상가 ${fashion.product_amount}원</p>
+                  <p id="pay">정상가 ${accessory.product_amount}원</p>
                 </div>
                 <div class="fashion__box--drive">
-                  <p>배송비 ${fashion.delivery_fee}원</p>
+                  <p>배송비 ${accessory.delivery_fee}원</p>
                 </div>
                 <div class="fashion__box--sale">
-                  <p>판매업체 ${fashion.company_name}</p>
+                  <p>판매업체 ${accessory.company_name}</p>
                 </div>
               </div>
               <button class="fashion__order--btn">주문하기</button>
@@ -80,12 +80,12 @@
 		        <p onclick="showContent('consultationInfo', this)">상담 하기</p>
 		    </div>
 		    <div class="fashion__img--box" id="detailInfo">
-		        <img src="${fashion.detail_img}" alt="poster">
+		        <img src="${accessory.detail_img}" alt="poster">
 		    </div>
 		    <div class="consultation__content" id="consultationInfo">
 		        <div class="fashion__content">
 		            <p style="color: black;">업체 상담센터</p>
-		            <p><span>${fashion.company_phone}</span> <span style="color: red;">*클릭 시 전화연결 됩니다.</span></p>
+		            <p><span>${accessory.company_phone}</span> <span style="color: red;">*클릭 시 전화연결 됩니다.</span></p>
 		        </div>
 		    </div>
 		</div>

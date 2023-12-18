@@ -1,42 +1,28 @@
 package com.main.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.main.service.MemberService;
-import com.main.service.PageNavigigationService;
 import com.main.vo.MemberVo;
 
 
 
 @Controller
-@RequestMapping(value = "/BT")
 public class MemberController {
 	
 	@Autowired
 	MemberService memberservice;
 	
 	private MemberVo membervo;
-	
-	@RequestMapping("/main")
-	public String index() {
-		return "main";
-	}
 	
 	@RequestMapping("/save")
 	public String save() {
@@ -78,7 +64,7 @@ public class MemberController {
 
 	        // memberservice.signupSuccess() 메서드는 회원가입을 수행하는 메서드로 가정
 	        memberservice.signupSuccess(membervo);
-	        System.out.println("data" + membervo);
+
 	        result = true;
 	    } else {
 	        result = false;
@@ -110,7 +96,6 @@ public class MemberController {
 //				e.printStackTrace();
 //			}
 //			memberservice.signupSuccess(membervo);
-//			System.out.println("data" + membervo);
 //			result = true;
 //		} else {
 //			result = false;
@@ -138,10 +123,9 @@ public class MemberController {
 		
 		MemberVo result = memberservice.login(membervo);
 		
-		System.out.println("result" + result);
-				
 		request.getSession().setAttribute("memberVo", result);
-		login = "redirect:/index";
+		
+		login = "redirect:/main";
 		
 		return "";
 	}
@@ -173,9 +157,11 @@ public class MemberController {
     public ResponseEntity<String> idCheck(@RequestParam String user_id) {
 		
 		MemberVo membervo = new MemberVo();
+		
 		membervo.setUser_id(user_id);
 		
         boolean idExists = memberservice.idCheck(membervo);
+        
         if (idExists) {
             return ResponseEntity.ok("exists");
         } else {
@@ -229,7 +215,6 @@ public class MemberController {
 //    	
 //    	int totalCount = memberservice.selectTotalCount(keyword);
 //    	
-//    	System.out.println("totalCount" +totalCount);
 //    	
 //    	Map<String, Object> map = new HashMap<String, Object>();
 //    	map.put("pageNo", pageNo);
@@ -237,8 +222,6 @@ public class MemberController {
 //    	map.put("listSize", listSize);
 //    	map.put("naviSize", naviSize);
 //    	map.put("search", search);
-//    	System.out.println("search" + search);
-//    	System.out.println("map" + map);
 //
 //    	// 계산된 startRow와 endRow를 Map에 추가
 //        PageNavigation pageNavigation = new PageNavigation(map);
@@ -269,7 +252,6 @@ public class MemberController {
 //    	
 //    	
 //    	List<MemberVo> memberList = memberservice.selectMemberList(map);
-//    	System.out.println("memberList" + memberList);
 //    	
 //        return ResponseEntity.ok(memberList);
 //    }
@@ -293,7 +275,6 @@ public class MemberController {
 //	            responseData.put("member", memberList);
 //	            responseData.put("pagingVO", pagingVo);
 //	            responseData.put("totalMembers", totalMembers);
-//	            System.out.println("responseData" + responseData);
 //	            return ResponseEntity.ok(responseData);
 //	        }
 //	    }
@@ -328,7 +309,6 @@ public class MemberController {
 //    public ResponseEntity<Object> updateUser(@RequestBody MemberVo membervo) {
 //        // 받아온 사용자 정보를 가지고 업데이트 로직을 수행합니다.
 //        // 여기에서는 간단한 예시로 출력만 하겠습니다.
-//        System.out.println("Received user information: " +
 //                membervo.getUser_name() +
 //                ", " + membervo.getUser_phone() +
 //                ", " + membervo.getUser_pw() +

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="productDao">
+
+<resultMap type="com.main.vo.ProductVo" id="productvo">
+	<result property="seq_id" column="seq_id"/>
+	<result property="banner_title" column="banner_title"/>
+	<result property="product_name" column="product_name"/>
+	<result property="file_img" column="file_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	<result property="detail_img" column="detail_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	<result property="product_amount" column="product_amount" />
+	<result property="delivery_fee" column="delivery_fee" />
+	<result property="company_name" column="company_name" />
+	<result property="company_phone" column="company_phone" />
+	<result property="detail_url" column="detail_url" />
+	<result property="company_yn" column="company_yn" />
+	<result property="code" column="code" />
+	<result property="regdate" column="regdate" />
+	<result property="user_id" column="user_id" />
+</resultMap>
+	<!-- 공통 -->
+    <!-- 전체 회원 수 조회 쿼리 -->
+	<select id="selectTotalCount" parameterType="java.util.HashMap" resultType="int">
+	    SELECT COUNT(*) FROM product_table
+	    WHERE
+	        product_name LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+	        AND
+	        code = #{code, jdbcType=VARCHAR}
+	</select>
+    
+    <delete id="productDao.deletefashion">
+	    DELETE FROM product_table
+	    WHERE seq_id = #{seq_id}
+	</delete>
+
+<select id="productDao.selectProductList" parameterType="java.util.HashMap" resultMap="productvo">
+    <![CDATA[
+    SELECT *
+    FROM (
+        SELECT 
+            file_img,
+            seq_id, 
+            banner_title
+        FROM (
+            SELECT
+                file_img,
+                seq_id,
+                banner_title
+            FROM product_table
+            WHERE code = #{code} AND company_yn = '노출'
+            ORDER BY seq_id DESC
+        ) t
+    )
+    ]]>
+</select>
+    
+	<insert id="productDao.insertfashion" parameterType="com.main.vo.ProductVo">
+	    INSERT INTO product_table (
+	    seq_id
+	    , regdate
+	    , file_img
+	    , detail_img
+	    , banner_title
+	    , product_name
+	    , product_amount
+	    , delivery_fee
+	    , company_name
+	    , company_phone
+	    , company_yn
+	    , user_id
+	    , code
+	    , detail_url
+	    ) VALUES (
+	    PRODUCT_SEQ.NEXTVAL
+	    , SYSDATE
+	    , #{file_img, jdbcType=VARCHAR}
+	    , #{detail_img, jdbcType=VARCHAR}
+	    , #{banner_title, jdbcType=VARCHAR}
+	    , #{product_name, jdbcType=VARCHAR}
+	    , #{product_amount, jdbcType=VARCHAR}
+	    , #{delivery_fee, jdbcType=VARCHAR}
+	    , #{company_name, jdbcType=VARCHAR}
+	    , #{company_phone, jdbcType=VARCHAR}
+	    , #{company_yn, jdbcType=VARCHAR}
+	    , #{user_id, jdbcType=VARCHAR}
+	    , #{code, jdbcType=VARCHAR}
+	    , #{detail_url, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="productDao.selectfashiondetail" resultMap="productvo">
+		select
+			seq_id
+			, user_id
+			, banner_title
+			, product_name
+			, file_img
+			, product_amount
+			, delivery_fee
+			, company_name
+			, detail_img
+			, company_phone
+			, company_yn
+			, detail_url
+		from product_table
+		where seq_id = #{seq_id, jdbcType=VARCHAR}
+	</select>
+		
+	<update id="productDao.updateFashion">
+	    UPDATE product_table
+	    SET
+	        banner_title = #{banner_title, jdbcType=VARCHAR},
+	        regdate = CURRENT_TIMESTAMP,
+	        product_name = #{product_name, jdbcType=VARCHAR},
+	        product_amount = #{product_amount, jdbcType=VARCHAR},
+	        delivery_fee = #{delivery_fee, jdbcType=VARCHAR},
+	        company_name = #{company_name, jdbcType=VARCHAR},
+	        company_phone = #{company_phone, jdbcType=VARCHAR},
+	        company_yn = #{company_yn, jdbcType=VARCHAR},
+	        detail_img = COALESCE(#{detail_img, jdbcType=VARCHAR}, detail_img),
+	        file_img = COALESCE(#{file_img, jdbcType=VARCHAR}, file_img)
+	    WHERE seq_id = #{seq_id, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="productDao.updatemakeup">
+	    UPDATE product_table
+	    SET
+	        banner_title = #{banner_title, jdbcType=VARCHAR},
+	        regdate = CURRENT_TIMESTAMP,
+	        product_name = #{product_name, jdbcType=VARCHAR},
+	        company_name = #{company_name, jdbcType=VARCHAR},
+	        company_phone = #{company_phone, jdbcType=VARCHAR},
+	        company_yn = #{company_yn, jdbcType=VARCHAR},
+	        detail_img = COALESCE(#{detail_img, jdbcType=VARCHAR}, detail_img),
+	        file_img = COALESCE(#{file_img, jdbcType=VARCHAR}, file_img)
+	    WHERE seq_id = #{seq_id, jdbcType=VARCHAR}
+	</update>
+
+	<select id="productDao.selectFashionList" parameterType="java.util.HashMap" resultMap="productvo">
+	    <![CDATA[
+	        SELECT
+	            file_img,
+	            seq_id,
+	            banner_title
+	        FROM (
+	            SELECT
+	                file_img,
+	                seq_id,
+	                banner_title
+	            FROM product_table
+	            WHERE code = 'fashion' AND company_yn = '노출'
+	            ORDER BY seq_id DESC
+	        ) t
+	        WHERE ROWNUM <= 3
+	    ]]>
+	</select>
+	
+	<select id="productDao.selectMakeupList" parameterType="java.util.HashMap" resultMap="productvo">
+	    <![CDATA[
+	        SELECT
+	            file_img,
+	            seq_id,
+	            banner_title
+	        FROM (
+	            SELECT
+	                file_img,
+	                seq_id,
+	                banner_title
+	            FROM product_table
+	            WHERE code = 'makeup' AND company_yn = '노출'
+	            ORDER BY seq_id DESC
+	        ) t
+	        WHERE ROWNUM <= 3
+	    ]]>
+	</select>
+	
+	<select id="productDao.selectAccessoryList" parameterType="java.util.HashMap" resultMap="productvo">
+	    <![CDATA[
+	        SELECT
+	            file_img,
+	            seq_id,
+	            banner_title
+	        FROM (
+	            SELECT
+	                file_img,
+	                seq_id,
+	                banner_title
+	            FROM product_table
+	            WHERE code = 'accessory' AND company_yn = '노출'
+	            ORDER BY seq_id DESC
+	        ) t
+	        WHERE ROWNUM <= 3
+	    ]]>
+	</select>
+</mapper>
