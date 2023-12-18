@@ -13,6 +13,14 @@
 <!--     <link rel="stylesheet" href="resources/css/main.css" /> -->
   </head>
   <style>
+    footer {
+    border-top: 1px solid black;
+    padding: 10px;
+  }
+
+  footer span.brand {
+    color: red;
+  }
   body {
   --sb-track-color: #ffffff;
   --sb-thumb-color: #060606;
@@ -257,10 +265,19 @@ header .shop-nav__info a:first-child {
         <a href="accessorylist">Accessory</a>
         <a href="#">검색</a>
       </nav>
+      <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
-        <a href="login">Login</a>
+        <a href="login" id="loginLink">Login</a>
       </nav>
+      </c:if>
+      <c:if test="${memberVo.user_id != null}">
+      <nav class="shop-nav__info">
+        <a href="#">MY</a>
+        <a href="login" id="loginLink">Logout</a>
+      </nav>
+      </c:if>
+      
     </header>
     <!-- 메인 -->
     <div class="wrap">
@@ -291,7 +308,7 @@ header .shop-nav__info a:first-child {
           <div class="shop__main--seasonBox">
             <div class="shop__code--titleBox">
               <p>계절 유행 STYLE</p>
-              <a href="#">더보기</a>
+              <a href="fashionlist">더보기</a>
             </div>
             <div class="shop__code--Box">
             <c:forEach var="fashion" items="${fashion}" varStatus="status">
@@ -328,7 +345,7 @@ header .shop-nav__info a:first-child {
           <div class="shop__main--axeBox">
             <div class="shop__code--titleBox">
               <p>지금 뜨는 액세서리</p>
-              <a href="#">더보기</a>
+              <a href="accessorylist">더보기</a>
             </div>
             <div class="shop__code--Box">
             <c:forEach var="accessory" items="${accessory}" varStatus="status">
@@ -372,7 +389,7 @@ header .shop-nav__info a:first-child {
             <div class="shop__main--seasonBox">
               <div class="shop__code--titleBox">
                 <p>오늘의 메이크업</p>
-                <a href="#">더보기</a>
+                <a href="makeuplist">더보기</a>
               </div>
               <div class="shop__code--Box">
               <c:forEach var="makeup" items="${makeup}" varStatus="status">
@@ -425,6 +442,10 @@ header .shop-nav__info a:first-child {
         </div>
       </div>
     </div>
+<footer>
+  <span class="brand">BT</span> SITE<br>
+  고객센터 : 010-5674-0712
+</footer>
     <script>
       let currentSlide = 0;
       const slides = document.querySelectorAll(".carousel img");
@@ -458,6 +479,7 @@ header .shop-nav__info a:first-child {
       }
 
       updateCounter();
+      
     </script>
   </body>
 </html>

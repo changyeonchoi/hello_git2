@@ -4,13 +4,45 @@
 <html>
   <head>
      <style>
-        /* 추가적인 스타일링은 여기에 작성하세요. */
-        .fashion__img--box {
-            display: none;
-        }
-        .consultation__content {
-            display: none;
-        }
+     
+    .shopping--box {
+      display: inline-block; /* 부모 요소를 인라인 블록으로 설정하여 가로 정렬 */
+    }
+
+    .fashion__order--btn {
+    	font-size: 16px;
+    }
+    .fashion__box--pay {
+    text-align: left;
+    }
+    .fashion__box--drive{
+    text-align: left;
+    }
+    .fashion__box--sale {
+    text-align: left;
+    }
+
+    .fashion__box--pay .price {
+        display: inline-block;
+        text-align: right;
+        margin-left: 50px; /* 여백 조절 */
+    }
+    .fashion__box--drive .price {
+        display: inline-block;
+        text-align: right;
+        margin-left: 53px; /* 여백 조절 */
+    }
+    .fashion__box--sale .price {
+        display: inline-block;
+        text-align: right;
+        margin-left: 50px; /* 여백 조절 */
+    }
+    .fashion__img--box {
+    display: none;
+    }
+    .consultation__content {
+    	display: none;
+    }
     </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,9 +71,7 @@
     <!-- 메인 -->
     <div>
       <div id="box" class="box">
-        <a href="../fashion_detail/fashion.html" target="_blank"
-          >계절 유행 STYLE</a
-        >
+        <a href="../fashion_detail/fashion.html" target="_blank" id="selected">계절 유행 STYLE</a>
         <p>게시판</p>
       </div>
       <!-- 상세 내용 -->
@@ -56,22 +86,21 @@
             <div class="fashion__box--content">
               <div class="fashion__content">
                 <h1>${fashion.product_name}</h1>
-
-                <div class="fashion__box--pay">
-                  <p id="pay">정상가 ${fashion.product_amount}원</p>
+                <div class="fashion__box--pay" >
+  					<p>정상가<span class="price">${fashion.product_amount}원</span></p>
                 </div>
                 <div class="fashion__box--drive">
-                  <p>배송비 ${fashion.delivery_fee}원</p>
+                  	<p>배송비 <span class="price"> ${fashion.delivery_fee}원</span></p>
                 </div>
                 <div class="fashion__box--sale">
-                  <p>판매업체 ${fashion.company_name}</p>
+                  	<p>판매업체<span class="price">${fashion.company_name}</span></p>
                 </div>
               </div>
-              <button class="fashion__order--btn">주문하기</button>
+              <button class="fashion__order--btn" onclick="showAlert()">주문하기</button>
             </div>
           </div>
           <div class="shopping--box">
-            <button class="fashion__order--btn">찜하기 ♡</button>
+  			<button class="fashion__order--btn" onclick="toggleHeart()"><span id="heart">찜하기♡</span></button>
           </div>
         </div>
 		 <div class="fashion__menu--box">
@@ -91,6 +120,10 @@
 		</div>
       </div>
     </div>
+<footer>
+  <span class="brand">BT</span> SITE<br>
+  고객센터 : 010-5674-0712
+</footer>
 <script>
 // 페이지 로딩 시 상세 정보를 기본으로 노출
 showContent('detailInfo', document.querySelector('.fashion__menu--box .fashion__menu--content p:first-child'));
@@ -118,6 +151,13 @@ function showContent(contentId, clickedElement) {
     // 클릭한 p 요소의 텍스트 색상을 변경
     clickedElement.classList.add('active');
 }
+function showAlert() {
+    alert('주문이 완료되었습니다.');
+}
+function toggleHeart() {
+    var heart = document.getElementById('heart');
+    heart.classList.toggle('heart-filled');
+  }
 </script>
   </body>
 </html>

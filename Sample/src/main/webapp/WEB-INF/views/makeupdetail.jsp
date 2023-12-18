@@ -30,9 +30,7 @@
     <!-- 메인 -->
     <div>
       <div id="box" class="box">
-        <a href="makeuplist" target="_blank"
-          >계절 유행 STYLE</a
-        >
+        <a href="makeuplist" target="_blank" id="selected">오늘의 메이크업</a>
         <p>게시판</p>
       </div>
       <!-- 상세 내용 -->
@@ -59,12 +57,12 @@
                   <p>업체명 ${makeup.company_name}</p>
                 </div>
               </div>
-              <button class="fashion__order--btn">사이트보기</button>
+              <button class="fashion__order--btn" onclick="redirectToSite()">사이트보기</button>
             </div>
           </div>
-          <div class="shopping--box">
-            <button class="fashion__order--btn">찜하기 ♡</button>
-          </div>
+			<div class="shopping--box">
+  				<button class="fashion__order--btn" onclick="toggleHeart()"><span id="heart">찜하기♡</span></button>
+			</div>
         </div>
         <div class="fashion__menu--box">
           <div class="fashion__menu--content">
@@ -79,5 +77,32 @@
         </div>
       </div>
     </div>
+<footer>
+  <span class="brand">BT</span> SITE<br>
+  고객센터 : 010-5674-0712
+</footer>
+<script>
+function redirectToSite() {
+    // 정적인 URL로 이동
+    var dynamicUrl = `${makeup.detail_url}`;
+
+    // URL에 프로토콜이 포함되어 있지 않으면 기본적으로 "http://"을 추가
+    if (!dynamicUrl.startsWith('http://') && !dynamicUrl.startsWith('https://')) {
+      dynamicUrl = 'http://' + dynamicUrl;
+    }
+
+    console.log(dynamicUrl);
+
+    // 새 탭에서 열고자 할 경우
+    window.open(dynamicUrl, '_blank');
+
+    // 현재 창에서 열고자 할 경우
+    // window.location.href = dynamicUrl;
+  }
+function toggleHeart() {
+    var heart = document.getElementById('heart');
+    heart.classList.toggle('heart-filled');
+  }
+</script>
   </body>
 </html>

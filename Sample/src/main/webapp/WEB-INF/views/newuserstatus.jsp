@@ -94,7 +94,7 @@
                     </tr>
                     <tr>
                         <td class="custom-cell">상태</td>
-                        <td><input type="text" class="input_text" id="user_auth" value="<%= memberVo.getUser_auth() %>" maxlength="3" readonly></td>
+                        <td><input type="text" class="input_text" id="user_auth" value="<%= memberVo.getUser_auth() %>" maxlength="10" readonly></td>
                     </tr>
                 </table>
             </div>

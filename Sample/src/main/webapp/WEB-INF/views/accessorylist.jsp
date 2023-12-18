@@ -28,15 +28,13 @@
       </nav>
       <nav class="shop-nav__info">
         <a href="#">MY</a>
-        <a href="login">Login</a>
+        <a href="#">Login</a>
       </nav>
     </header>
     <!-- 메인 -->
     <div>
       <div class="box">
-        <a href="../fashion_detail/fashion.html" target="_blank"
-          >계절 유행 STYLE</a
-        >
+        <a href="../fashion_detail/fashion.html" target="_blank">지금 뜨는 액세서리</a>
         <p>게시판</p>
       </div>
       <div class="wrap">
@@ -138,6 +136,10 @@
         </div>
       </div>
     </div>
+<footer>
+  <span class="brand">BT</span> SITE<br>
+  고객센터 : 010-5674-0712
+</footer>
     <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll(".carousel img");
