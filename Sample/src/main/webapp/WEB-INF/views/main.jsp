@@ -274,7 +274,7 @@ header .shop-nav__info a:first-child {
       <c:if test="${memberVo.user_id != null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
-        <a href="login" id="loginLink">Logout</a>
+        <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
       
@@ -282,20 +282,11 @@ header .shop-nav__info a:first-child {
     <!-- 메인 -->
     <div class="wrap">
       <div class="shop__header--photoBox">
-        <div class="carousel">
-          <img
-            src="https://img.etnews.com/news/article/2021/10/02/cms_temp_article_02224619369582.png"
-            alt="Slide 1"
-          />
-          <img
-            src="https://news.samsungdisplay.com/wp-content/uploads/2022/08/3.png"
-            alt="Slide 2"
-          />
-          <img
-            src="https://images.moneycontrol.com/static-mcnews/2022/08/samsung-z-flip-4.jpg?impolicy=website&width=1600&height=900"
-            alt="Slide 3"
-          />
-        </div>
+	 		<div class="carousel">
+		          	<c:forEach var="banner" items="${banner}" varStatus="status">
+				    	<img src="${banner.banner_img}" alt="test"/>
+					</c:forEach>
+	        </div>
         <div class="slide__count-box">
           <div class="arrow prev" onclick="prevSlide()">❮</div>
           <div class="counter">1 / 3</div>
@@ -350,7 +341,7 @@ header .shop-nav__info a:first-child {
             <div class="shop__code--Box">
             <c:forEach var="accessory" items="${accessory}" varStatus="status">
 	            <div class="shop__code--product">
-		            <a href="/makeupdetail?seq_id=${accessory.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
+		            <a href="/accessorydetail?seq_id=${accessory.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
 		                <img src="${accessory.file_img}" alt="test"/>
 		            </a>
 		            <p class="shop__code--content">
@@ -460,7 +451,7 @@ header .shop-nav__info a:first-child {
           currentSlide = index;
         }
         // 여기를 증가하면 됩니다.
-        const transformValue = -currentSlide * 100 + "%";
+        const transformValue = - currentSlide * 100 + "%";
         document.querySelector(".carousel").style.transform =
           "translateX(" + transformValue + ")";
         updateCounter();
@@ -478,6 +469,7 @@ header .shop-nav__info a:first-child {
         counter.textContent = currentSlide + 1 + " / " + slides.length;
       }
 
+      
       updateCounter();
       
     </script>

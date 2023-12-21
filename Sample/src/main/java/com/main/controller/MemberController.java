@@ -1,7 +1,11 @@
 package com.main.controller;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -107,27 +111,68 @@ public class MemberController {
 	public String login() {
 		return "login";
 	}
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		
+		session.invalidate();
+		
+		String referer = request.getHeader("Referer");
+	    if (referer != null) {
+	        return "redirect:" + referer;
+	    } else {
+	        // 만약 Referer가 없는 경우, 기본적으로 메인 페이지로 이동하도록 처리
+	        return "redirect:/main.jsp";
+	    }
+
+	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public @ResponseBody String login(
-			@RequestParam("user_id") String user_id,
-			@RequestParam("user_pw") String user_pw,
-			HttpServletRequest request) {
-		
-		String login;
-		MemberVo membervo = new MemberVo();
-		
-	
-		membervo.setUser_id(user_id);
-		membervo.setUser_pw(user_pw);
-		
-		MemberVo result = memberservice.login(membervo);
-		
-		request.getSession().setAttribute("memberVo", result);
-		
-		login = "redirect:/main";
-		
-		return "";
+	public @ResponseBody Map<String, String> login(
+	        @RequestParam("user_id") String user_id,
+	        @RequestParam("user_pw") String user_pw,
+	        HttpServletRequest request) {
+
+	    Map<String, String> response = new HashMap<>();
+	    String login;
+
+	    MemberVo membervo = new MemberVo();
+
+	    membervo.setUser_id(user_id);
+	    membervo.setUser_pw(user_pw);
+
+	    MemberVo result = memberservice.login(membervo);
+
+	    if (result != null) {
+	        // 로그인 성공 시 세션에 사용자 정보 저장
+	        HttpSession session = request.getSession();
+	        session.setAttribute("memberVo", result);
+
+	        // 이전 페이지 URL 저장
+	        String referer = request.getHeader("Referer");
+	        session.setAttribute("referer", referer);
+
+	        // "returnUrl" 파라미터 추출
+	        int index = referer.indexOf("returnUrl=");
+	        if (index != -1) {
+	            // "returnUrl=" 다음의 문자열을 추출
+	            String returnUrl = referer.substring(index + 10);
+
+	            // 추출한 returnUrl을 기반으로 새로운 URL 생성
+	            if (!returnUrl.isEmpty()) {
+	                response.put("redirect", returnUrl);
+	                return response;
+	            }
+	        }
+
+	        System.out.println("referer: " + referer);
+
+	        // "returnUrl"이 없으면 기본적으로 main으로 이동
+	        response.put("redirect", "/main");
+	    }
+
+	    return response;
 	}
 	
 //	@RequestMapping(value = "/login", method = RequestMethod.POST)

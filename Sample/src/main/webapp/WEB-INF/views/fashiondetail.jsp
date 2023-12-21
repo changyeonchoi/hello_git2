@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -63,10 +66,18 @@
         <a href="accessorylist">Accessory</a>
         <a href="#">검색</a>
       </nav>
+      <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
-        <a href="login">Login</a>
+		<a href="login?returnUrl=fashiondetail?seq_id=${fashion.seq_id}">Login</a>
       </nav>
+      </c:if>
+      <c:if test="${memberVo.user_id != null}">
+      <nav class="shop-nav__info">
+        <a href="#">MY</a>
+        <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
+      </nav>
+      </c:if>
     </header>
     <!-- 메인 -->
     <div>

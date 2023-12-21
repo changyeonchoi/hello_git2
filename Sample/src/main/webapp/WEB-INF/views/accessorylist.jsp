@@ -26,10 +26,18 @@
         <a href="accessorylist" id="selected">Accessory</a>
         <a href="#">검색</a>
       </nav>
+      <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
-        <a href="#">Login</a>
+    	<a href="login?returnUrl=accessorylist">Login</a>
       </nav>
+      </c:if>
+      <c:if test="${memberVo.user_id != null}">
+      <nav class="shop-nav__info">
+        <a href="#">MY</a>
+        <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
+      </nav>
+      </c:if>
     </header>
     <!-- 메인 -->
     <div>
@@ -39,20 +47,11 @@
       </div>
       <div class="wrap">
         <div id="photoBox" class="shop__header--photoBox">
-          <div class="carousel">
-            <img
-              src="https://img.etnews.com/news/article/2021/10/02/cms_temp_article_02224619369582.png"
-              alt="Slide 1"
-            />
-            <img
-              src="https://news.samsungdisplay.com/wp-content/uploads/2022/08/3.png"
-              alt="Slide 2"
-            />
-            <img
-              src="https://images.moneycontrol.com/static-mcnews/2022/08/samsung-z-flip-4.jpg?impolicy=website&width=1600&height=900"
-              alt="Slide 3"
-            />
-          </div>
+	 		<div class="carousel">
+		          	<c:forEach var="banner" items="${banner}" varStatus="status">
+				    	<img src="${banner.banner_img}" alt="test"/>
+					</c:forEach>
+	        </div>
           <div class="slide__count-box">
             <div class="arrow prev" onclick="prevSlide()">❮</div>
             <div class="counter">1 / 3</div>
@@ -170,9 +169,14 @@
 
     function updateCounter() {
       counter.textContent = currentSlide + 1 + " / " + slides.length;
+
+      // 배너 이미지가 없을 때 숨김 처리
+      const slideCountBox = document.querySelector(".slide__count-box");
+      slideCountBox.style.display = slides.length === 0 ? "none" : "block";
     }
 
     updateCounter();
+
 
     </script>
   </body>

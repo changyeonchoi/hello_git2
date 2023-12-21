@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -59,10 +62,18 @@
         <a href="accessorylist" id="selected">Accessory</a>
         <a href="#">검색</a>
       </nav>
+      <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
-        <a href="login">Login</a>
+		<a href="login?returnUrl=accessorydetail?seq_id=${fashion.seq_id}">Login</a>
       </nav>
+      </c:if>
+      <c:if test="${memberVo.user_id != null}">
+      <nav class="shop-nav__info">
+        <a href="#">MY</a>
+        <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
+      </nav>
+      </c:if>
     </header>
     <!-- 메인 -->
     <div>
@@ -156,7 +167,12 @@ function toggleHeart() {
     console.log("heart" + heart);
     heart.classList.toggle('heart-filled');
 }
-
+// JavaScript를 사용하여 로그아웃 버튼 클릭 시 세션 초기화 및 페이지 이동
+document.getElementById('loginLink').addEventListener('click', function() {
+    // 세션 초기화를 위한 요청을 서버로 보낼 수 있습니다.
+    // 아래는 예시로 location.href를 사용하여 페이지를 이동하는 부분입니다.
+    location.href = 'accessorydetail'; // 이동할 페이지의 경로를 설정해주세요.
+});
 </script>
   </body>
 </html>

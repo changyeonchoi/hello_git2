@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="bannerDao">
+
+<resultMap type="com.main.vo.BannerVo" id="bannervo">
+	<result property="seq_id" column="seq_id"/>
+	<result property="banner_name" column="banner_name"/>
+	<result property="banner_img" column="banner_img"/>
+	<result property="banner_area2" column="banner_area2"/>
+	<result property="banner_yn" column="banner_yn"/>
+	<result property="user_id" column="user_id"/>
+	<result property="redate" column="redate"/>
+	<result property="code" column="code"/>
+	<result property="land_url" column="land_url"/>
+</resultMap>
+
+<select id="bannerDao.selectBannerList" parameterType="java.util.HashMap" resultMap="bannervo">
+        SELECT 
+            banner_img,
+            seq_id,
+            banner_area2,
+            land_url
+        FROM (
+            SELECT
+                banner_img,
+                seq_id,
+                banner_area2,
+                land_url
+            FROM banner_table
+        	WHERE banner_area2 = #{banner_area2, jdbcType=VARCHAR} AND banner_yn = '노출'
+            ORDER BY seq_id DESC
+        ) 
+</select>
+</mapper>

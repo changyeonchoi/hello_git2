@@ -16,7 +16,7 @@ public class ProductVo {
 	//상품명
 	private String product_name;
 	//이미지등록
-	 private String  file_img;
+	private String  file_img;
 	//상품가격
 	private String product_amount;
 	//배송비
@@ -37,13 +37,22 @@ public class ProductVo {
 	private String user_id;
 	//등록일
 	private String regdate;
-	
-	private String file_Path;
-	
-	private String detailPath;
-	
+	//배너 이미지
+	private String banner_img;
+
 	
 	
+	
+	public String getBanner_img() {
+		return banner_img;
+	}
+
+
+	public void setBanner_img(String banner_img) {
+		this.banner_img = banner_img;
+	}
+
+
 	public String getFile_img() {
 		return file_img;
 	}
@@ -86,27 +95,6 @@ public class ProductVo {
 //    	}
 //    }
 
-
-
-
-	public String getFile_Path() {
-		return file_Path;
-	}
-	public void setFile_Path(String file_Path) {
-		this.file_Path = file_Path;
-	}
-	public String getDetailPath() {
-		return detailPath;
-	}
-	public void setDetailPath(String detailPath) {
-		this.detailPath = detailPath;
-	}
-	public String getFilePath() {
-		return file_Path;
-	}
-	public void setFilePath(String file_Path) {
-		this.file_Path = file_Path;
-	}
 	public String getSeq_id() {
 		return seq_id;
 	}
@@ -189,11 +177,11 @@ public class ProductVo {
 	
 	@Override
 	public String toString() {
-		return "FashionVo [seq_id=" + seq_id + ", banner_title=" + banner_title + ", product_name=" + product_name
+		return "ProductVo [seq_id=" + seq_id + ", banner_title=" + banner_title + ", product_name=" + product_name
 				+ ", file_img=" + file_img + ", product_amount=" + product_amount + ", delivery_fee=" + delivery_fee
 				+ ", company_name=" + company_name + ", company_phone=" + company_phone + ", detail_img=" + detail_img
 				+ ", detail_url=" + detail_url + ", company_yn=" + company_yn + ", code=" + code + ", user_id="
-				+ user_id + ", regdate=" + regdate + ", file_Path=" + file_Path + ", detailPath=" + detailPath + "]";
+				+ user_id + ", regdate=" + regdate + ", banner_img=" + banner_img + "]";
 	}
 
 }

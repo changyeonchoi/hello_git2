@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.main.service.ProductService;
+import com.main.service.BannerService;
 import com.main.service.PageNavigigationService;
+import com.main.vo.BannerVo;
 import com.main.vo.MemberVo;
 import com.main.vo.ProductVo;
 
@@ -31,6 +37,9 @@ public class ProductController {
 	
 	@Autowired
 	PageNavigigationService pagenavigigationservice;
+	
+	@Autowired
+	BannerService bannerservice;
 	
 	@Resource(name="uploadPath")
 	private String uploadPath;
@@ -44,6 +53,7 @@ public class ProductController {
 			@RequestParam(value = "search", defaultValue = "") String search,
 			@RequestParam(value = "file_img", required=false) MultipartFile file_img,
 	        @RequestParam(value = "detail_img", required=false) MultipartFile detail_img,
+	        @RequestParam(value = "banner_img", required=false) MultipartFile banner_img,
 	        @RequestParam(value = "banner_title", required=false) String banner_title,
 	        @RequestParam(value = "product_name", required=false) String product_name,
 	        @RequestParam(value = "product_amount", required=false) String product_amount,
@@ -54,7 +64,9 @@ public class ProductController {
 	        @RequestParam(value = "seq_id", required=false) String seq_id,
 	        @RequestParam(value = "detail_url", required=false) String detail_url,
 	        @RequestParam(value = "code", required=false) String code,
+	        @RequestParam(value = "banner_area2", required=false) String banner_area2,
 	        ProductVo productvo,
+	        BannerVo bannervo,
 	        @PathVariable(name = "type") String type
 			) throws IOException {
 		
@@ -74,11 +86,21 @@ public class ProductController {
 		    	code = "main";
 		    }
 		    
-			
+		    if (code.equals("fashion")) {
+		    	banner_area2 = "Fashion";
+		    } else if (code.equals("makeup")) {
+		    	banner_area2 = "Make Up";
+		    } else if (code.equals("accessory")) {
+		    	banner_area2 = "Accessory";
+		    } else {
+		    	banner_area2 = "Home";
+		    }
+		    
 		    Map<String, Object> keyword = new HashMap<String, Object>();
 	    	keyword.put("search", search);
 	    	keyword.put("code", code);
-	    	
+	    	keyword.put("banner_area2", banner_area2);
+
 	    	int totalCount = productservice.selectTotalCount(keyword);
 	    	
 	    	
@@ -89,6 +111,7 @@ public class ProductController {
 	    	map.put("naviSize", naviSize);
 	    	map.put("search", search);
 	    	map.put("code", code);
+	    	map.put("banner_area2", banner_area2);
 	    	
 	    	PageNavigation pageNavigation = new PageNavigation(map);
 	    	map.put("startRow", pageNavigation.getStartRow());
@@ -97,6 +120,8 @@ public class ProductController {
 	    	PageNavigation navigation = pagenavigigationservice.makePageNavigation(map);
 			
 	    	List<ProductVo> productList = productservice.selectProductList(map);
+	    	
+	    	List<BannerVo> bannerList = bannerservice.selectBannerList(map);
 	    	
 	    	int numberOfItemsToDisplay = 8;
 			
@@ -134,6 +159,19 @@ public class ProductController {
 	    	    }
 	    	}    
 
+	    	for (int i = 0; i < bannerList.size(); i++) {
+	    	    BannerVo banner = bannerList.get(i);
+
+	    	    if (banner != null) {
+	    	        // file_img 처리
+	    	        String fileImg = banner.getBanner_img();
+	    	        if (fileImg != null) {
+	    	            String uploadPath = fileImg.replaceAll("C:\\\\", "\\\\images\\\\");
+	    	            banner.setBanner_img(uploadPath);
+	    	        }
+	    	    }
+	    	}   
+	    	
 	    if("fashion".equals(code)) {
 			
 			if("fashionlist".equals(type)) {
@@ -141,6 +179,8 @@ public class ProductController {
 		    	model.addAttribute("pageAttribute", map);
 		    	model.addAttribute("fashion", productList);
 		    	model.addAttribute("navigation", navigation);
+		    	model.addAttribute("banner", bannerList);
+		    	
 		    	
 		    	returnUrl = "/fashionlist";
 	
@@ -155,6 +195,7 @@ public class ProductController {
 		    	productvo.setDetail_img(detailPath);
 				
 				model.addAttribute("fashion", productvo);
+				model.addAttribute("banner", bannerList);
 				
 				returnUrl = "/fashiondetail";
 				
@@ -166,6 +207,7 @@ public class ProductController {
 				model.addAttribute("pageAttribute", map);
 				model.addAttribute("makeup", productList);
 				model.addAttribute("navigation", navigation);
+				model.addAttribute("banner", bannerList);
 		    	
 				returnUrl = "/makeuplist";
 				
@@ -177,6 +219,7 @@ public class ProductController {
 		    	productvo.setFile_img(uploadPath);
 				
 				model.addAttribute("makeup", productvo);
+				model.addAttribute("banner", bannerList);
 				
 				returnUrl = "/makeupdetail";
 			}
@@ -187,6 +230,7 @@ public class ProductController {
 				model.addAttribute("pageAttribute", map);
 				model.addAttribute("accessory", productList);
 				model.addAttribute("navigation", navigation);
+				model.addAttribute("banner", bannerList);
 		    	
 				returnUrl = "/accessorylist";
 				
@@ -200,9 +244,8 @@ public class ProductController {
 				String detailPath = productvo.getDetail_img().replaceAll("C:\\\\", "\\\\images\\\\");
 				productvo.setDetail_img(detailPath);
 				
-				System.out.println("productvo" + productvo);
-				
 				model.addAttribute("accessory", productvo);
+				model.addAttribute("banner", bannerList);
 				
 				returnUrl = "/accessorydetail";
 			}
@@ -219,6 +262,8 @@ public class ProductController {
 			model.addAttribute("makeup", makeupList);
 			
 			model.addAttribute("accessory", accessoryList);
+			
+			model.addAttribute("banner", bannerList);
 			
 			int numberOfItemsToDisplaymain = 3;
 			
