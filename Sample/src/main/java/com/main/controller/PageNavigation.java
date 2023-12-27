@@ -22,6 +22,7 @@ public class PageNavigation {
 	private int naviSize;
 	
 	private int startRow;
+	
 	private int endRow;
 	
     public PageNavigation() {

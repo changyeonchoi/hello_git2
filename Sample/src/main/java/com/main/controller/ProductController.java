@@ -1,6 +1,10 @@
 package com.main.controller;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +48,7 @@ public class ProductController {
 	@Resource(name="uploadPath")
 	private String uploadPath;
 	
-
+	//type별 api 지정
 	@RequestMapping(value = "/{type}", method = {RequestMethod.GET, RequestMethod.POST})
 	public String product(Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam(value="pageNo"		, defaultValue="1" , required=true) int pageNo,
@@ -65,17 +69,18 @@ public class ProductController {
 	        @RequestParam(value = "detail_url", required=false) String detail_url,
 	        @RequestParam(value = "code", required=false) String code,
 	        @RequestParam(value = "banner_area2", required=false) String banner_area2,
+	        @RequestParam(value = "love", required=false) String love,
 	        ProductVo productvo,
 	        BannerVo bannervo,
 	        @PathVariable(name = "type") String type
 			) throws IOException {
-		
+			
 		 	String returnUrl = null;
 
+		 	// 로그인 세션 가져오기
 			MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
 			
-//		    productvo.setUser_id(membervo.getUser_id());
-		    
+			// 시작문자열로 인한 code 지정
 		    if (type.startsWith("fashion")) {
 		        code = "fashion";
 		    } else if (type.startsWith("makeup")) {
@@ -86,6 +91,7 @@ public class ProductController {
 		    	code = "main";
 		    }
 		    
+		    // 해당 코드가 같으면 배너변수에 해당 값 지정
 		    if (code.equals("fashion")) {
 		    	banner_area2 = "Fashion";
 		    } else if (code.equals("makeup")) {
@@ -96,11 +102,13 @@ public class ProductController {
 		    	banner_area2 = "Home";
 		    }
 		    
+		    
 		    Map<String, Object> keyword = new HashMap<String, Object>();
 	    	keyword.put("search", search);
 	    	keyword.put("code", code);
 	    	keyword.put("banner_area2", banner_area2);
 
+	    	// 총 갯수
 	    	int totalCount = productservice.selectTotalCount(keyword);
 	    	
 	    	
@@ -113,22 +121,24 @@ public class ProductController {
 	    	map.put("code", code);
 	    	map.put("banner_area2", banner_area2);
 	    	
+	    	// 해당 pageNavigation에서 html code생성
 	    	PageNavigation pageNavigation = new PageNavigation(map);
 	    	map.put("startRow", pageNavigation.getStartRow());
 	    	map.put("endRow", pageNavigation.getEndRow());
 	    	
+	    	// 페이지 네비게이션 객체 생성
 	    	PageNavigation navigation = pagenavigigationservice.makePageNavigation(map);
-			
+			// 각 상품 리스트 
 	    	List<ProductVo> productList = productservice.selectProductList(map);
-	    	
+	    	// 각 배너 리스트
 	    	List<BannerVo> bannerList = bannerservice.selectBannerList(map);
-	    	
+	    	// 리스트 이미지 노출 갯수 최대 8
 	    	int numberOfItemsToDisplay = 8;
 			
+	    	// 리스트 이미지에 값이 8개 미만인 경우 해당 이미지 노출
 			String dummyFilePath = "C:\\temp_file\\상품준비중.jpg";
 			String readyPath = dummyFilePath.replaceAll("C:\\\\", "\\\\images\\\\");
 
-			// 데이터가 3개 미만인 경우 상품 준비중 메시지를 추가
 			if (productList.size() < numberOfItemsToDisplay) {
 			    int itemsToDisplay = productList.size();
 			    for (int i = 0; i < numberOfItemsToDisplay - itemsToDisplay; i++) {
@@ -139,6 +149,7 @@ public class ProductController {
 			    }
 			}
 	    	
+			// 각 상품리스트 데이터 경로 c -> images
 	    	for (int i = 0; i < productList.size(); i++) {
 	    	    ProductVo product = productList.get(i);
 
@@ -158,7 +169,7 @@ public class ProductController {
 //	    	        }
 	    	    }
 	    	}    
-
+	    	// 각 배너리스트 데이터 경로 c -> images
 	    	for (int i = 0; i < bannerList.size(); i++) {
 	    	    BannerVo banner = bannerList.get(i);
 
@@ -268,6 +279,7 @@ public class ProductController {
 			int numberOfItemsToDisplaymain = 3;
 			
 			String mainFilePath = "C:\\temp_file\\상품준비중.jpg";
+			
 			String mainreadyPath = mainFilePath.replaceAll("C:\\\\", "\\\\images\\\\");
 
 			// 데이터가 3개 미만인 경우 상품 준비중 메시지를 추가
@@ -279,6 +291,26 @@ public class ProductController {
 			        dummyFashion.setBanner_title("상품 준비중");
 			        fashionList.add(dummyFashion);
 			    }
+			}
+			// 데이터가 3개 미만인 경우 상품 준비중 메시지를 추가
+			if (makeupList.size() < numberOfItemsToDisplaymain) {
+				int itemsToDisplay = makeupList.size();
+				for (int i = 0; i < numberOfItemsToDisplaymain - itemsToDisplay; i++) {
+					ProductVo dummyFashion = new ProductVo();
+					dummyFashion.setFile_img(mainreadyPath);
+					dummyFashion.setBanner_title("상품 준비중");
+					makeupList.add(dummyFashion);
+				}
+			}
+			// 데이터가 3개 미만인 경우 상품 준비중 메시지를 추가
+			if (accessoryList.size() < numberOfItemsToDisplaymain) {
+				int itemsToDisplay = accessoryList.size();
+				for (int i = 0; i < numberOfItemsToDisplaymain - itemsToDisplay; i++) {
+					ProductVo dummyFashion = new ProductVo();
+					dummyFashion.setFile_img(mainreadyPath);
+					dummyFashion.setBanner_title("상품 준비중");
+					accessoryList.add(dummyFashion);
+				}
 			}
 			
 			for (int i = 0; i < fashionList.size(); i++) {

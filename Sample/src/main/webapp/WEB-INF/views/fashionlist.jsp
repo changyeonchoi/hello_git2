@@ -66,7 +66,7 @@
             <c:forEach var="fashion" items="${fashion}" varStatus="status">
 	            <div class="grid-item">
 		            <a href="/fashiondetail?seq_id=${fashion.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
-		                <img src="${fashion.file_img}" alt="test"/>
+		                <img src="${fashion.file_img}"/>
 		            </a>
 		            <p class="shop__code--content">
 		            	${fashion.banner_title}

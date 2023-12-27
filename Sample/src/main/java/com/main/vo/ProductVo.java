@@ -16,7 +16,7 @@ public class ProductVo {
 	//상품명
 	private String product_name;
 	//이미지등록
-	private String  file_img;
+	private String file_img;
 	//상품가격
 	private String product_amount;
 	//배송비

@@ -66,18 +66,19 @@
         <a href="accessorylist">Accessory</a>
         <a href="#">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
-      <nav class="shop-nav__info">
-        <a href="#">MY</a>
-		<a href="login?returnUrl=fashiondetail?seq_id=${fashion.seq_id}">Login</a>
-      </nav>
-      </c:if>
-      <c:if test="${memberVo.user_id != null}">
-      <nav class="shop-nav__info">
-        <a href="#">MY</a>
-        <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
-      </nav>
-      </c:if>
+		<c:if test="${empty memberVo.user_id}">
+		  <nav class="shop-nav__info">
+		    <a href="#">MY</a>
+		    <a href="login?returnUrl=fashiondetail?seq_id=${fashion.seq_id}">Login</a>
+		  </nav>
+		</c:if>
+		
+		<c:if test="${not empty memberVo.user_id}">
+		  <nav class="shop-nav__info">
+		    <a href="#">MY</a>
+		    <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
+		  </nav>
+		</c:if>
     </header>
     <!-- 메인 -->
     <div>
@@ -111,7 +112,18 @@
             </div>
           </div>
           <div class="shopping--box">
-  			<button class="fashion__order--btn" onclick="toggleHeart()"><span id="heart">찜하기♡</span></button>
+	        <c:if test="${not empty memberVo.user_id}">
+	            <button class="fashion__order--btn" onclick="toggleHeart()"><span id="heart">찜하기♡</span></button>
+	        </c:if>
+	        <!-- 미로그인 상태일 경우 로그인 페이지로 이동하는 JavaScript 코드 추가 -->
+	        <c:if test="${empty memberVo.user_id}">
+	            <script>
+	                function redirectToLoginPage() {
+	                    window.location.href = 'login?returnUrl=fashiondetail?seq_id=${fashion.seq_id}';
+	                }
+	            </script>
+	            <button class="fashion__order--btn" onclick="redirectToLoginPage()"><span id="heart">찜하기♡</span></button>
+	        </c:if>
           </div>
         </div>
 		 <div class="fashion__menu--box">
@@ -165,10 +177,12 @@ function showContent(contentId, clickedElement) {
 function showAlert() {
     alert('주문이 완료되었습니다.');
 }
+
+
 function toggleHeart() {
     var heart = document.getElementById('heart');
     heart.classList.toggle('heart-filled');
-  }
+}
 </script>
   </body>
 </html>
