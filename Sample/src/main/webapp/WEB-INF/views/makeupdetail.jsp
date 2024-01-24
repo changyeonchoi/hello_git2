@@ -28,7 +28,7 @@
       <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
-		<a href="login?returnUrl=makeupdetail?seq_id=${fashion.seq_id}">Login</a>
+		<a href="login?returnUrl=makeupdetail?seq_id=${makeup.seq_id}">Login</a>
       </nav>
       </c:if>
       <c:if test="${memberVo.user_id != null}">

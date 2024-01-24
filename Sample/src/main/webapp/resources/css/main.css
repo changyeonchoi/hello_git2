@@ -210,7 +210,7 @@ header .shop-nav__info a:first-child {
   justify-content: center;
   position: absolute;
   z-index: 99;
-  color: white;
+  color: black;
   width: 7%;
   bottom: 10px;
   left: 10px;
@@ -225,11 +225,24 @@ header .shop-nav__info a:first-child {
 .slide__count-box .counter {
   margin: 0 5px;
 }
-  footer {
-    border-top: 1px solid black;
-    padding: 10px;
-  }
+footer {
+  border-top: 1px solid black;
+  padding: 10px;
+}
 
-  footer span.brand {
-    color: red;
-  }
+footer span.brand {
+  color: red;
+}
+
+.qna__main--box {
+  width: 82%;
+  margin-bottom: 100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+.qna-item {
+  width: 260px;
+  height: 300px;
+  cursor: pointer;
+}

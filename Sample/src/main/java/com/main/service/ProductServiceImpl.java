@@ -42,13 +42,13 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductVo selectfashiondetail(String seq_id) {
+	public ProductVo selectfashiondetail(Integer seq_id) {
 		// TODO Auto-generated method stub
 		return productDao.selectfashiondetail(seq_id);
 	}
 
 	@Override
-	public String deletefashion(String seq_id) {
+	public String deletefashion(Integer seq_id) {
 		// TODO Auto-generated method stub
 		return productDao.deletefashion(seq_id);
 	}

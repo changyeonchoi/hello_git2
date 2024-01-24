@@ -9,4 +9,6 @@ public interface BannerService {
 
 	List<BannerVo> selectBannerList(Map<String, Object> map);
 
+	List<BannerVo> selectCouponList(Map<String, Object> map);
+
 }

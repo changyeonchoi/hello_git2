@@ -159,8 +159,18 @@
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 		</dependency>
+		<!-- commons-fileupload  -->
+    	<dependency>
+    		<groupId>commons-fileupload</groupId>
+    		<artifactId>commons-fileupload</artifactId>
+    		<version>1.2.2</version>
+		</dependency>
 		
-		
+		<dependency>
+    		<groupId>commons-io</groupId>
+    		<artifactId>commons-io</artifactId>
+    		<version>2.0.1</version>
+		</dependency>
 		
 		<!-- ClinicController에서 json사용 하려고 넣음 - 남모세 -->
 		<!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->

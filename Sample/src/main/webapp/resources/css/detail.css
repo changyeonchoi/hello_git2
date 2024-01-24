@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("../../css/reset.css");
 @import url("../../css/style.css");
 header .logo a {
@@ -7,7 +8,13 @@ header .logo a {
 #selected {
   color: #d1180b;
 }
-
+.search-button {
+	width: 24px; /* 돋보기 이미지의 너비로 설정 */
+	height: 24px; /* 돋보기 이미지의 높이로 설정 */
+	background: url('/resources/img/search.png') no-repeat center center;
+	border: none;
+	cursor: pointer;
+}
 .grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -50,18 +57,18 @@ header .logo a {
   transform: translateY(-50%);
   text-align: center;
   padding: 20px;
-  border-right: 4px solid #d1180b;
+  border-right: 2px solid #d1180b;
 }
 .box a {
-  color: #d1180b;
+/*   color: #d1180b; */
   font-weight: bold;
   cursor: pointer;
 }
-.box p {
-  margin-top: 10px;
-  color: #333;
-  font-weight: bold;
-}
+/* .box a:last-child { */
+/*   margin-top: 10px; */
+/*   color: #333; */
+/*   font-weight: bold; */
+/* } */
 
 #photoBox {
   width: 79%;
@@ -69,4 +76,293 @@ header .logo a {
 
 #main-box {
   width: 84%;
-}/*# sourceMappingURL=detail.css.map */
+}
+
+/* 게시판 CSS */
+.container {
+  display: block;
+  margin: 0 auto;
+  width: 70%;
+  height: 75vh;
+  margin-top: 30px;
+}
+.container .search__box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.container .search__box .search__box--cotainer {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+  border-bottom: 1px solid;
+  width: 23%;
+}
+.container .search__box .search__box--cotainer input {
+  width: 100%;
+  border: unset;
+  padding: 5px;
+  outline: unset;
+}
+
+.search--button {
+  border: unset;
+  background: #333;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.table__container table {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+}
+.table__container table thead tr {
+  background: #333;
+  color: white;
+  font-weight: 600;
+}
+.table__container table th {
+  padding: 10px;
+  border-bottom: 1px solid #fff;
+}
+.table__container table th:nth-child(1) {
+  width: 5%;
+  border-right: 1px solid #fff;
+}
+.table__container table th:nth-child(2) {
+  width: 15%;
+  border-right: 1px solid #fff;
+}
+.table__container table th:nth-child(3) {
+  width: 55%;
+  border-right: 1px solid #fff;
+}
+.table__container table th:nth-child(4) {
+  width: 10%;
+  border-right: 1px solid #fff;
+}
+.table__container table th:nth-child(5) {
+  width: 10%;
+}
+.table__container table tbody tr {
+  cursor: pointer;
+}
+.table__container table tbody tr:hover {
+  background-color: #eee;
+}
+.table__container table tbody tr td {
+  padding: 15px 10px 10px 5px;
+  border-bottom: 1px solid #333;
+}
+.table__container table tbody tr td:nth-child(1) {
+  border-right: 1px solid #333;
+}
+.table__container table tbody tr td:nth-child(2) {
+  border-right: 1px solid #333;
+}
+.table__container table tbody tr td:nth-child(3) {
+  text-align: left;
+  border-right: 1px solid #333;
+}
+.table__container table tbody tr td:nth-child(4) {
+  border-right: 1px solid #333;
+}
+
+/* 게시판 상세보기 */
+.notice__detail--box {
+  padding: 0px 30px 30px 30px;
+  margin-left: 57px;
+}
+.notice__detail--box h1 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.notice__detail--box .detail__notice {
+  width: 50%;
+}
+.notice__detail--box .detail__notice .detail__notice--button--box {
+  display: flex;
+  justify-content: flex-end;
+}
+.notice__detail--box .detail__notice .info__box--title {
+  margin-top: 10px;
+}
+.notice__detail--box .detail__notice .info__box--title .title__box {
+  display: flex;
+  align-items: center;
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+}
+.notice__detail--box .detail__notice .info__box--title .title__box p {
+  padding: 15px 5px 15px 5px;
+  background: #333;
+  color: white;
+  font-size: 1em;
+  font-weight: 600;
+  width: 20%;
+  text-align: center;
+  border-bottom: 1px solid white;
+}
+.notice__detail--box .detail__notice .info__box--title .title__box .title__box--user {
+  padding-left: 10px;
+  width: 80%;
+  outline: unset;
+  border: unset;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: not-allowed;
+  background: none;
+}
+.notice__detail--box .detail__notice .info__box--title .title__box:last-child {
+  border-top: unset;
+}
+.notice__detail--box .detail__notice .info__box--title .title__box:last-child p {
+  border-bottom: unset;
+}
+.notice__detail--box .detail__notice .info__box--title .title__box:last-child input {
+  cursor: text;
+}
+
+.title__box textarea {
+  outline: none;
+  resize: none;
+  border: none;
+}
+
+textarea::-moz-placeholder {
+  color: #888;
+  font-weight: 600;
+}
+
+textarea::placeholder {
+  color: #888;
+  font-weight: 600;
+}
+
+#title__box--img p {
+  height: 100%;
+  padding: 80px 0px 80px 5px;
+}
+#title__box--img .title__box--img {
+  width: 150px;
+  height: 150px;
+  margin-left: 13px;
+}
+#title__box--img .title__box--img img {
+  width: 100%;
+  height: 100%;
+}
+
+#title__box--content {
+  border-top: unset;
+}
+#title__box--content p {
+  padding: 80px 0px 80px 5px;
+}
+#title__box--content textarea {
+  outline: none;
+  resize: none;
+  border: none;
+  padding: 10px;
+  width: 70%;
+  height: 16vh;
+  font-size: 1.3em;
+}
+
+.title__box--content_box {
+  width: 79%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 13px 0px 13px;
+}
+
+.title__box--radio_box{
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 13px 0px 13px;
+}
+.cancel__box {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cancel__box button {
+  background: transparent;
+  padding: 10px 20px 10px 20px;
+  cursor: pointer;
+}
+        .filebox {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .filebox .file-label {
+        padding: 0px 10px;
+        background-color: #999999;
+        cursor: pointer;
+        margin-left: 10px;
+        border: 1px solid black;
+        border-radius: 1px;
+    }
+
+    .filebox .upload-name {
+        height: 20px;
+        padding: 0 10px;
+        border: 1px solid #dddddd;
+        color: #999999;
+    }
+
+    .filebox .upload-status {
+        color: red;
+        margin-left: 10px;
+    }
+
+    .filebox input[type="file"] {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        border: 0;
+    }
+    .filebox {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.filebox .file-label {
+    padding: 0px 10px;
+    background-color: #999999;
+    cursor: pointer;
+    margin-left: 10px;
+    border: 1px solid black;
+    border-radius: 1px;
+}
+
+.filebox .upload-name-detail {
+    height: 20px;
+    padding: 0 10px;
+    border: 1px solid #dddddd;
+    color: #999999;
+}
+
+.filebox .upload-status-detail {
+    color: red;
+    margin-left: 10px;
+}
+
+.filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    border: 0;
+}

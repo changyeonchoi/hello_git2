@@ -15,9 +15,9 @@ public interface ProductService {
 
 	int insertfashion(ProductVo fashionvo);
 
-	ProductVo selectfashiondetail(String seq_id);
+	ProductVo selectfashiondetail(Integer seq_id);
 
-	String deletefashion(String seq_id);
+	String deletefashion(Integer seq_id);
 
 	void updatefashion(ProductVo productvo);
 

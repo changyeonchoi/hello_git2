@@ -26,4 +26,15 @@ public class BannerServiceImpl implements BannerService {
 		return bannerList;
 	}
 
+	@Override
+	public List<BannerVo> selectCouponList(Map<String, Object> map) {
+		
+		List<BannerVo> couponList = null;
+		
+		couponList = bannerDao.selectCouponList(map);
+		
+		return couponList;
+	
+	}
+
 }

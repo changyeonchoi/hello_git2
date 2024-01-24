@@ -17,7 +17,7 @@
         .consultation__content {
             display: none;
         }
-         .fashion__box--pay {
+         .f       ashion__box--pay {
 	    text-align: left;
 	    }
 	    .fashion__box--drive{
@@ -65,7 +65,7 @@
       <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
-		<a href="login?returnUrl=accessorydetail?seq_id=${fashion.seq_id}">Login</a>
+		<a href="login?returnUrl=accessorydetail?seq_id=${accessory.seq_id}">Login</a>
       </nav>
       </c:if>
       <c:if test="${memberVo.user_id != null}">
@@ -97,6 +97,11 @@
                 <div class="fashion__box--pay">
   					<p>정상가<span class="price">${accessory.product_amount}원</span></p>
                 </div>
+                <c:if test="${not empty param.sale}">
+					<div class="fashion__box--pay">
+						<p><span style="color: red;">쿠폰적용가</span><span class="price">${param.sale}원</span></p>
+					</div>
+				</c:if>
                 <div class="fashion__box--drive">
                   	<p>배송비 <span class="price"> ${accessory.delivery_fee}원</span></p>
                 </div>

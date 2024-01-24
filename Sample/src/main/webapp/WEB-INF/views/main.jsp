@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -11,8 +12,15 @@
     <title>shop</title>
 <!--     <link rel="stylesheet" href="resources/css/reset.css" /> -->
 <!--     <link rel="stylesheet" href="resources/css/main.css" /> -->
+
   </head>
   <style>
+	.coupon-carousel .carousel {
+	  display: flex;
+	  transition: transform 0.5s ease-in-out;
+	  width: 100%; /* 변경된 부분: 이미지 개수 * 100%로 설정 */
+	}
+	
     footer {
     border-top: 1px solid black;
     padding: 10px;
@@ -204,6 +212,15 @@ header .shop-nav__info a:first-child {
   width: 300px;
   margin: 0 auto;
 }
+.shop__coupon--photoBox {
+  overflow: hidden;
+  width: 150px;
+  margin: 0 auto;
+  position: relative; /* 추가된 부분 */
+  left: -20%; /* 추가된 부분: 부모 요소의 가로 중앙으로 이동 */
+  transform: translateX(-50%); /* 추가된 부분: 가로 중앙 정렬 */
+
+}
 
 .carousel {
   display: flex;
@@ -230,14 +247,31 @@ header .shop-nav__info a:first-child {
 .next {
   right: 5px;
 }
+.slide__coupon-box {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  z-index: 99;
+  color: black;
+  bottom: 10px;
+  right: 10px; /* 변경된 부분: left 대신 right 사용 */
+}
 
+.slide__coupon-box .arrow {
+  font-size: 20px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+.slide__coupon-box .couponcounter {
+  margin: 0 5px;
+}
 .slide__count-box {
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   z-index: 99;
-  color: white;
+  color: black;
   width: 7%;
   bottom: 10px;
   left: 10px;
@@ -281,18 +315,19 @@ header .shop-nav__info a:first-child {
     </header>
     <!-- 메인 -->
     <div class="wrap">
-      <div class="shop__header--photoBox">
-	 		<div class="carousel">
-		          	<c:forEach var="banner" items="${banner}" varStatus="status">
-				    	<img src="${banner.banner_img}" alt="test"/>
-					</c:forEach>
-	        </div>
-        <div class="slide__count-box">
-          <div class="arrow prev" onclick="prevSlide()">❮</div>
-          <div class="counter">1 / 3</div>
-          <div class="arrow next" onclick="nextSlide()">❯</div>
-        </div>
-      </div>
+		<div class="shop__header--photoBox">
+		  <!-- 배너 영역 케러셀 -->
+		  <div class="carousel banner-carousel">
+		    <c:forEach var="banner" items="${banner}" varStatus="status">
+		      <img src="${banner.banner_img}" alt="test"/>
+		    </c:forEach>
+		  </div>
+		  <div class="slide__count-box">
+		    <div class="arrow prev" onclick="prevBannerSlide()">❮</div>
+		    <div class="counter">1 / 3</div>
+		    <div class="arrow next" onclick="nextBannerSlide()">❯</div>
+		  </div>
+		</div>
       <!-- 좌측 -->
       <div class="shop__main--box">
         <div class="shop__main--styleBox">
@@ -393,42 +428,42 @@ header .shop-nav__info a:first-child {
 		            </p>
 	        	</div>
 			  </c:forEach>
-<!--                 <div class="shop__code--product"> -->
-<!--                   <img -->
-<!--                     src="https://mblogthumb-phinf.pstatic.net/MjAyMzAzMDZfMzMg/MDAxNjc4MTA1NTIwNDY0.j7RLMuaEUqEmhDfCIIIPcMJF_q5zV7Ec-oNc2PCuI_Ug.90WZktb3DwK73I6Pg2DqBYWDsxq2f3tB6-AL_rhQdvkg.JPEG.queen3757/%EB%B3%B4%EC%9D%B4%EB%93%9C%EB%B0%94%EC%9D%B4%EB%B0%95%EC%B2%A0_%ED%99%94%EB%B3%B4_%ED%99%9C%EB%B3%B4%EA%B2%BD%EC%9D%80_(14).jpg?type=w800" -->
-<!--                     alt="make-image" -->
-<!--                   /> -->
-<!--                   <p class="shop__code--content">청순 메이크업</p> -->
-<!--                 </div> -->
-<!--                 <div class="shop__code--product"> -->
-<!--                   <img -->
-<!--                     src="https://mblogthumb-phinf.pstatic.net/MjAyMzAxMTBfMjcx/MDAxNjczMzUxODQ5MTgx.oRl0kGwM8SjJztTPAT7QHf6JK52DyRz41l9fsj7xxNwg.XrpYHiArqOPx4Aw8TaNsulUPWmTXT8Q2ZahRhLK8_Usg.PNG.juliawed/MIMM2023_(1).png?type=w800" -->
-<!--                     alt="make-image" -->
-<!--                   /> -->
-<!--                   <p class="shop__code--content">글리터로 포인트</p> -->
-<!--                 </div> -->
-<!--                 <div class="shop__code--product"> -->
-<!--                   <img -->
-<!--                     src="https://www.iwedding.co.kr/center/iweddingb/product/800_co_sl_m209_14018_1636683168_12733300_3232256100.jpg" -->
-<!--                     alt="make-image" -->
-<!--                   /> -->
-<!--                   <p class="shop__code--content">강렬한 메이크업</p> -->
-<!--                 </div> -->
               </div>
             </div>
-            <div class="shop__main--axeBox">
-              <div class="shop__code--titleBox">
-                <p>쿠폰 할인받기!</p>
-              </div>
-              <div class="shop__code--Box">
-                <div class="shop__code--product">
-                  <img
-                    src="https://img.freepik.com/premium-vector/various-types-of-coupon-mockups-and-points-illustration-set-dollar-present-paper-free-sale_632180-28.jpg"
-                    alt="code-image"
-                  />
-                </div>
-              </div>
-            </div>
+			<div class="shop__main--axeBox">
+			  <div class="shop__code--titleBox">
+			    <p>쿠폰 할인받기!</p>
+			  </div>
+			  <!-- 쿠폰 영역 케러셀 -->
+			  <div class="shop__coupon--photoBox">
+			  <div class="carousel coupon-carousel">
+			    <c:forEach var="coupon" items="${coupon}" varStatus="status">
+			        <c:choose>
+			            <c:when test="${coupon.code eq 'fashion'}">
+			                <a href="/fashiondetail?seq_id=${coupon.seq_id}&sale=${coupon.sale}">
+			                    <img src="${coupon.banner_img}" alt="Fashion Coupon Image"/>
+			                </a>
+			            </c:when>
+			            <c:when test="${coupon.code eq 'makeup'}">
+			                <a href="/makeupdetail?seq_id=${coupon.seq_id}&sale=${coupon.sale}">
+			                    <img src="${coupon.banner_img}" alt="Makeup Coupon Image"/>
+			                </a>
+			            </c:when>
+			            <c:when test="${coupon.code eq 'accessory'}">
+			                <a href="/accessorydetail?seq_id=${coupon.seq_id}&sale=${coupon.sale}">
+			                    <img src="${coupon.banner_img}" alt="Accessory Coupon Image"/>
+			                </a>
+			            </c:when>
+			        </c:choose>
+			    </c:forEach>
+			  </div>
+			  <div class="slide__coupon-box">
+			    <div class="arrow prev" onclick="prevCouponSlide()">❮</div>
+			    <div class="couponcounter">1 / 3</div>
+			    <div class="arrow next" onclick="nextCouponSlide()">❯</div>
+			  </div>
+			  </div>
+			</div>
           </div>
         </div>
       </div>
@@ -438,40 +473,71 @@ header .shop-nav__info a:first-child {
   고객센터 : 010-5674-0712
 </footer>
     <script>
-      let currentSlide = 0;
-      const slides = document.querySelectorAll(".carousel img");
-      const counter = document.querySelector(".counter");
+    // 배너 영역 스크립트
+    let currentBannerSlide = 0;
+    const bannerSlides = document.querySelectorAll(".banner-carousel img");
+    const bannerCounter = document.querySelector(".counter");
 
-      function showSlide(index) {
-        if (index < 0) {
-          currentSlide = slides.length - 1;
-        } else if (index >= slides.length) {
-          currentSlide = 0;
-        } else {
-          currentSlide = index;
-        }
-        // 여기를 증가하면 됩니다.
-        const transformValue = - currentSlide * 100 + "%";
-        document.querySelector(".carousel").style.transform =
-          "translateX(" + transformValue + ")";
-        updateCounter();
+    function showBannerSlide(index) {
+      if (index < 0) {
+        currentBannerSlide = bannerSlides.length - 1;
+      } else if (index >= bannerSlides.length) {
+        currentBannerSlide = 0;
+      } else {
+        currentBannerSlide = index;
       }
+      const transformValue = -currentBannerSlide * 100 + "%";
+      document.querySelector(".banner-carousel").style.transform =
+        "translateX(" + transformValue + ")";
+      updateBannerCounter();
+    }
 
-      function prevSlide() {
-        showSlide(currentSlide - 1);
-      }
+    function prevBannerSlide() {
+      showBannerSlide(currentBannerSlide - 1);
+    }
 
-      function nextSlide() {
-        showSlide(currentSlide + 1);
-      }
+    function nextBannerSlide() {
+      showBannerSlide(currentBannerSlide + 1);
+    }
 
-      function updateCounter() {
-        counter.textContent = currentSlide + 1 + " / " + slides.length;
-      }
+    function updateBannerCounter() {
+      bannerCounter.textContent = currentBannerSlide + 1 + " / " + bannerSlides.length;
+    }
 
+    updateBannerCounter();
       
-      updateCounter();
-      
+ 	// 쿠폰 영역 스크립트
+    let currentCouponSlide = 0;
+    const couponSlides = document.querySelectorAll(".coupon-carousel img");
+    const couponCounter = document.querySelector(".couponcounter");
+
+    function showCouponSlide(index) {
+      if (index < 0) {
+        currentCouponSlide = couponSlides.length - 1;
+      } else if (index >= couponSlides.length) {
+        currentCouponSlide = 0;
+      } else {
+        currentCouponSlide = index;
+      }
+      const transformValue = -currentCouponSlide * 100 + "%";
+      document.querySelector(".coupon-carousel").style.transform =
+        "translateX(" + transformValue + ")";
+      updateCouponCounter();
+    }
+
+    function prevCouponSlide() {
+      showCouponSlide(currentCouponSlide - 1);
+    }
+
+    function nextCouponSlide() {
+      showCouponSlide(currentCouponSlide + 1);
+    }
+
+    function updateCouponCounter() {
+      couponCounter.textContent = currentCouponSlide + 1 + " / " + couponSlides.length;
+    }
+
+    updateCouponCounter();
     </script>
   </body>
 </html>

@@ -31,12 +31,12 @@ public class ProductDao {
 		return sqlSession.insert("productDao.insertfashion", fashionvo);
 	}
 
-	public ProductVo selectfashiondetail(String seq_id) {
+	public ProductVo selectfashiondetail(Integer seq_id) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("productDao.selectfashiondetail",seq_id);
 	}
 
-	public String deletefashion(String seq_id) {
+	public String deletefashion(Integer seq_id) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("productDao.deletefashion", seq_id);
 	}

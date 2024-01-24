@@ -10,7 +10,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>fashion_list</title>
-
     <link rel="stylesheet" href="resources/css/detail.css" />
     <link rel="stylesheet" href="resources/css/main.css" />
   </head>
@@ -18,7 +17,7 @@
     <!-- 상단 바 -->
     <header>
       <div class="logo">
-        <a href="main" target="_blank">BT</a>
+        <a href="main">BT</a>
       </div>
       <nav class="shop-nav">
         <a href="fashionlist" id="selected">Fashion</a>
@@ -42,10 +41,8 @@
     <!-- 메인 -->
     <div>
       <div class="box">
-        <a href="../fashion_detail/fashion.html" target="_blank"
-          >계절 유행 STYLE</a
-        >
-        <p>게시판</p>
+        <a href="fashionlist" id="selected">계절 유행 STYLE</a><br /><br />
+  		<a href="javascript:void(0);" id="fashionBoard">게시판</a>
       </div>
       <div class="wrap">
         <div id="photoBox" class="shop__header--photoBox">
@@ -65,7 +62,7 @@
           <div class="grid-container">
             <c:forEach var="fashion" items="${fashion}" varStatus="status">
 	            <div class="grid-item">
-		            <a href="/fashiondetail?seq_id=${fashion.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
+		            <a href="/fashiondetail?seq_id=${fashion.seq_id}">
 		                <img src="${fashion.file_img}"/>
 		            </a>
 		            <p class="shop__code--content">
@@ -73,66 +70,6 @@
 		            </p>
 	        	</div>
 			</c:forEach>
-<!--             <div class="shop__code--product"> -->
-<!--                 <div class="shop__code--ready">	 -->
-<!--                   <p>상품 준비중</p> -->
-<!--                 </div> -->
-<!--              </div> -->
-<!--               <img -->
-<!--                 src="https://m.gifteabox.com/web/product/big/202209/9ba87936e31b29ebdd3769ff8e9c226f.jpg" -->
-<!--                 alt="codeOne" -->
-<!--               /> -->
-<!--               <p>예시 상품</p> -->
-<!--             </div> -->
-<!--             <div class="grid-item"> -->
-<!--               <img -->
-<!--                 src="https://m.youngcode.kr/web/product/big/202109/fae83f9866375e7bc69866a3732ac30b.jpg" -->
-<!--                 alt="codeTwo" -->
-<!--               /> -->
-<!--               <p>예시 상품</p> -->
-<!--             </div> -->
-<!--             <div class="grid-item"> -->
-<!--               <img -->
-<!--                 src="https://dabagirl.co.kr/web/product/big/201607/37861_shop1_195611.jpg" -->
-<!--                 alt="codeThree" -->
-<!--               /> -->
-<!--               <p>예시 상품</p> -->
-<!--             </div> -->
-<!--             <div class="grid-item"> -->
-<!--               <img -->
-<!--                 src="https://media.bunjang.co.kr/product/201794544_1_1686871596_w360.jpg" -->
-<!--                 alt="codeFour" -->
-<!--               /> -->
-<!--               <p>예시 상품</p> -->
-<!--             </div> -->
-<!--             <div class="grid-item"> -->
-<!--               <img -->
-<!--                 src="https://i.pinimg.com/originals/c1/df/fe/c1dffe3a1a0774637b8c5a3e687f2a86.jpg" -->
-<!--                 alt="codeFive" -->
-<!--               /> -->
-<!--               <p>예시 상품</p> -->
-<!--             </div> -->
-<!--             <div class="grid-item"> -->
-<!--               <img -->
-<!--                 src="https://cdn.ownerclan.com/4PKtKkFtS5EGEfZPBR9iRfBopdyd_IFD7uCxZkbp2IY/marketize/auto/as/v1.jpg" -->
-<!--                 alt="codeSix" -->
-<!--               /> -->
-<!--               <p>예시 상품</p> -->
-<!--             </div> -->
-<!--             <div class="grid-item"> -->
-<!--               <img -->
-<!--                 src="https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/5349563372/B.jpg?202000000" -->
-<!--                 alt="codeSeven" -->
-<!--               /> -->
-<!--               <p>예시 상품</p> -->
-<!--             </div> -->
-<!--             <div class="grid-item"> -->
-<!--               <img -->
-<!--                 src="https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/5531561782/B.jpg?524000000" -->
-<!--                 alt="codeEight" -->
-<!--               /> -->
-<!--               <p>예시 상품</p> -->
-<!--             </div> -->
           </div>
         </div>
       </div>
@@ -141,6 +78,7 @@
   <span class="brand">BT</span> SITE<br>
   고객센터 : 010-5674-0712
 </footer>
+  	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll(".carousel img");
@@ -179,6 +117,18 @@
 
     updateCounter();
 
+    $(document).ready(function() {
+        $('#fashionBoard').on('click', function(event) {
+          event.preventDefault();
+
+          // "fashion" 코드 값을 URL에 추가하여 새로운 URL 생성
+//           var newURL = "qnalist?code=fashion";
+          var newURL = "fashionqnalist";
+
+          // 새로운 URL로 이동
+          window.location.href = newURL;
+        });
+      });
     </script>
   </body>
 </html>

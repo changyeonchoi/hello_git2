@@ -5,17 +5,19 @@
 	
 <mapper namespace="bannerDao">
 
-<resultMap type="com.main.vo.BannerVo" id="bannervo">
-	<result property="seq_id" column="seq_id"/>
-	<result property="banner_name" column="banner_name"/>
-	<result property="banner_img" column="banner_img"/>
-	<result property="banner_area2" column="banner_area2"/>
-	<result property="banner_yn" column="banner_yn"/>
-	<result property="user_id" column="user_id"/>
-	<result property="redate" column="redate"/>
-	<result property="code" column="code"/>
-	<result property="land_url" column="land_url"/>
-</resultMap>
+	<resultMap type="com.main.vo.BannerVo" id="bannervo">
+	    <result property="seq_id" column="seq_id"/>
+	    <result property="product_seq_id" column="product_seq_id"/>
+	    <result property="banner_name" column="banner_name"/>
+	    <result property="banner_img" column="banner_img"/>
+	    <result property="banner_area2" column="banner_area2"/>
+	    <result property="banner_yn" column="banner_yn"/>
+	    <result property="user_id" column="user_id"/>
+	    <result property="redate" column="redate"/>
+	    <result property="code" column="code"/>
+	    <result property="land_url" column="land_url"/>
+	    <result property="sale" column="sale"/>
+	</resultMap>
 
 <select id="bannerDao.selectBannerList" parameterType="java.util.HashMap" resultMap="bannervo">
         SELECT 
@@ -30,8 +32,44 @@
                 banner_area2,
                 land_url
             FROM banner_table
-        	WHERE banner_area2 = #{banner_area2, jdbcType=VARCHAR} AND banner_yn = '노출'
+        	WHERE banner_area2 = #{banner_area2, jdbcType=VARCHAR} AND banner_yn = '노출' AND code = 'banner'
             ORDER BY seq_id DESC
         ) 
+</select>
+
+<select id="bannerDao.selectCouponList" parameterType="java.util.HashMap" resultMap="bannervo">
+<!--         SELECT  -->
+<!--             banner_img, -->
+<!--             seq_id, -->
+<!--             banner_area2, -->
+<!--             land_url, -->
+<!--             product_seq_id -->
+<!--         FROM ( -->
+<!--             SELECT -->
+<!--                 banner_img, -->
+<!--                 seq_id, -->
+<!--                 banner_area2, -->
+<!--                 land_url, -->
+<!--                 product_seq_id -->
+<!--             FROM banner_table -->
+<!--         	WHERE banner_yn = '노출' AND code = 'coupon' -->
+<!--             ORDER BY seq_id DESC -->
+<!--         )  -->
+		<![CDATA[
+			SELECT
+			    p.seq_id,
+			    p.code,
+			    p.product_name,
+			    b.banner_img,
+			    b.code,
+			    b.land_url,
+			    b.banner_yn,
+			    b.sale
+			FROM
+			    banner_table b
+			LEFT JOIN product_table p ON b.product_seq_id = p.seq_id
+			WHERE banner_yn = '노출' AND b.code = 'coupon'
+			ORDER BY seq_id DESC
+		]]>
 </select>
 </mapper>

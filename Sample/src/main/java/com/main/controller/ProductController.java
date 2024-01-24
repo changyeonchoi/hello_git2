@@ -1,20 +1,12 @@
 package com.main.controller;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.main.service.ProductService;
+import com.main.service.QnaService;
 import com.main.service.BannerService;
 import com.main.service.PageNavigigationService;
 import com.main.vo.BannerVo;
 import com.main.vo.MemberVo;
 import com.main.vo.ProductVo;
+import com.main.vo.QnaVo;
 
 @Controller
 public class ProductController {
@@ -44,6 +38,9 @@ public class ProductController {
 	
 	@Autowired
 	BannerService bannerservice;
+	
+	@Autowired
+	QnaService qnaservice;
 	
 	@Resource(name="uploadPath")
 	private String uploadPath;
@@ -65,17 +62,19 @@ public class ProductController {
 	        @RequestParam(value = "company_name", required=false) String company_name,
 	        @RequestParam(value = "company_phone", required=false) String company_phone,
 	        @RequestParam(value = "company_yn", required=false) String company_yn,
-	        @RequestParam(value = "seq_id", required=false) String seq_id,
+	        @RequestParam(value = "seq_id", required=false) Integer seq_id,
 	        @RequestParam(value = "detail_url", required=false) String detail_url,
 	        @RequestParam(value = "code", required=false) String code,
 	        @RequestParam(value = "banner_area2", required=false) String banner_area2,
-	        @RequestParam(value = "love", required=false) String love,
+	        @RequestParam(value = "product_seq_id", required=false) Integer product_seq_id,
+	        @RequestParam(value = "sale", required=false) String sale,
 	        ProductVo productvo,
 	        BannerVo bannervo,
 	        @PathVariable(name = "type") String type
 			) throws IOException {
 			
 		 	String returnUrl = null;
+		 	
 
 		 	// 로그인 세션 가져오기
 			MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
@@ -132,6 +131,8 @@ public class ProductController {
 	    	List<ProductVo> productList = productservice.selectProductList(map);
 	    	// 각 배너 리스트
 	    	List<BannerVo> bannerList = bannerservice.selectBannerList(map);
+	    	// 각 쿠폰 리스트
+	    	List<BannerVo> couponList = bannerservice.selectCouponList(map);
 	    	// 리스트 이미지 노출 갯수 최대 8
 	    	int numberOfItemsToDisplay = 8;
 			
@@ -181,8 +182,23 @@ public class ProductController {
 	    	            banner.setBanner_img(uploadPath);
 	    	        }
 	    	    }
+	    	}  
+	    	
+	    	// 각 배너리스트 데이터 경로 c -> images
+	    	for (int i = 0; i < couponList.size(); i++) {
+	    		BannerVo coupon = couponList.get(i);
+	    		
+	    		if (coupon != null) {
+	    			// file_img 처리
+	    			String fileImg = coupon.getBanner_img();
+	    			if (fileImg != null) {
+	    				String uploadPath = fileImg.replaceAll("C:\\\\", "\\\\images\\\\");
+	    				coupon.setBanner_img(uploadPath);
+	    			}
+	    		}
 	    	}   
 	    	
+	    
 	    if("fashion".equals(code)) {
 			
 			if("fashionlist".equals(type)) {
@@ -209,8 +225,28 @@ public class ProductController {
 				model.addAttribute("banner", bannerList);
 				
 				returnUrl = "/fashiondetail";
-				
-			} 
+			}
+//			 else if("fashionqnalist".equals(type)) {
+//				//				model.addAttribute("qnaList", qnaList);
+//				
+//				returnUrl = "/fashionqnalist";
+//				
+//			}	else if("fashionqnaenroll".equals(type)) {
+//				 
+//				qnavo.setUser_id(membervo.getUser_id());
+////				qnavo.setUser_id(user_id);
+//				qnavo.setQna_title(qna_title);
+//				qnavo.setFile_img(file_img, uploadPath, qnavo.getFile_img());
+//				qnavo.setQna_detail(qna_detail);
+//				qnavo.setQna_like_yn(qna_like_yn);
+//				
+//				qnaservice.insertqna(qnavo);
+//				
+//				System.out.println(qnavo);
+//				
+//				returnUrl = "/fashionqnainsert";
+//			} 
+			
 		} else if("makeup".equals(code)) {
 			
 			if("makeuplist".equals(type)) {
@@ -275,6 +311,10 @@ public class ProductController {
 			model.addAttribute("accessory", accessoryList);
 			
 			model.addAttribute("banner", bannerList);
+
+			model.addAttribute("coupon", couponList);
+			
+//			System.out.println("couponList" + couponList);
 			
 			int numberOfItemsToDisplaymain = 3;
 			

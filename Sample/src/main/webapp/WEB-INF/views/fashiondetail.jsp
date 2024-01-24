@@ -101,6 +101,11 @@
                 <div class="fashion__box--pay" >
   					<p>정상가<span class="price">${fashion.product_amount}원</span></p>
                 </div>
+					<c:if test="${not empty param.sale}">
+					  <div class="fashion__box--pay">
+					    <p><span style="color: red;">쿠폰적용가</span><span class="price">${param.sale}원</span></p>
+					  </div>
+					</c:if>
                 <div class="fashion__box--drive">
                   	<p>배송비 <span class="price"> ${fashion.delivery_fee}원</span></p>
                 </div>

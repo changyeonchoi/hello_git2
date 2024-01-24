@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductVo {
 	
 	//pk
-	private String seq_id;
+	private Integer seq_id;
 	//타이틀
 	private String banner_title;
 	//상품명
@@ -39,10 +39,20 @@ public class ProductVo {
 	private String regdate;
 	//배너 이미지
 	private String banner_img;
+	// 세일
+	private String sale;
+	
+	
+	public String getSale() {
+		return sale;
+	}
 
-	
-	
-	
+
+	public void setSale(String sale) {
+		this.sale = sale;
+	}
+
+
 	public String getBanner_img() {
 		return banner_img;
 	}
@@ -95,10 +105,10 @@ public class ProductVo {
 //    	}
 //    }
 
-	public String getSeq_id() {
+	public Integer getSeq_id() {
 		return seq_id;
 	}
-	public void setSeq_id(String seq_id) {
+	public void setSeq_id(Integer seq_id) {
 		this.seq_id = seq_id;
 	}
 	public String getBanner_title() {
@@ -182,6 +192,12 @@ public class ProductVo {
 				+ ", company_name=" + company_name + ", company_phone=" + company_phone + ", detail_img=" + detail_img
 				+ ", detail_url=" + detail_url + ", company_yn=" + company_yn + ", code=" + code + ", user_id="
 				+ user_id + ", regdate=" + regdate + ", banner_img=" + banner_img + "]";
+	}
+
+
+	public void setUrl(String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

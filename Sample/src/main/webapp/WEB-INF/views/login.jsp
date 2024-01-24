@@ -60,7 +60,7 @@
                 type: "post",
                 data: { user_id: user_id },
                 success: function (idCheckResult) {
-                    console.log("test", idCheckResult);
+                	
                     if (idCheckResult === "exists") {
                         // 아이디가 존재하는 경우, 로그인 체크 진행
                         let loginCheckUrl = "http://localhost:80/loginCheck";

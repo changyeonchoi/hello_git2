@@ -42,8 +42,8 @@
     <!-- 메인 -->
     <div>
       <div class="box">
-        <a href="#" target="_blank">오늘의 메이크업</a>
-        <p>게시판</p>
+        <a href="makeuplist" id="selected">오늘의 메이크업</a><br /><br />
+        <a href="makeupqnalist" >게시판</a>
       </div>
       <div class="wrap">
         <div id="photoBox" class="shop__header--photoBox">

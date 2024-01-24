@@ -42,8 +42,8 @@
     <!-- 메인 -->
     <div>
       <div class="box">
-        <a href="../fashion_detail/fashion.html" target="_blank">지금 뜨는 액세서리</a>
-        <p>게시판</p>
+        <a href="accessoryList" id="selected">지금 뜨는 액세서리</a><br /><br />
+        <a href="accessoryqnalist">게시판</a>
       </div>
       <div class="wrap">
         <div id="photoBox" class="shop__header--photoBox">
@@ -176,7 +176,6 @@
     }
 
     updateCounter();
-
 
     </script>
   </body>

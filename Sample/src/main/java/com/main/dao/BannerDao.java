@@ -20,6 +20,11 @@ public class BannerDao {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("bannerDao.selectBannerList", map);
 	}
+
+	public List<BannerVo> selectCouponList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("bannerDao.selectCouponList", map);
+	}
 	
 	
 }

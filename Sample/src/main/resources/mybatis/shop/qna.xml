@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="qnaDao">
+
+	<resultMap type="com.main.vo.QnaVo" id="qnavo">
+	    <result property="seq_id" column="seq_id"/>
+	    <result property="regdate" column="regdate"/>
+	    <result property="qna_title" column="qna_title"/>
+		<result property="file_img" column="file_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	    <result property="qna_detail" column="qna_detail"/>
+	    <result property="qna_like_yn" column="qna_like_yn"/>
+	    <result property="user_id" column="user_id"/> 
+	    <result property="code" column="code"/> 
+	    <result property="qna_pw" column="qna_pw"/> 
+	</resultMap>
+	
+	<select id="qnaDao.QnaTotalCount" parameterType="java.util.HashMap" resultType="int">
+	    SELECT COUNT(*) FROM product_qna_table
+	    WHERE
+	        qna_title LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+	    AND
+	        code = #{code, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="qnaDao.selectQnaFashionList" parameterType="java.util.HashMap" resultMap="qnavo">
+        <![CDATA[
+        SELECT *
+        FROM (
+        	SELECT 
+                	seq_id, 
+                	regdate, 
+                	qna_title,
+                	user_id, 
+                	ROWNUM AS rnum
+        	FROM (
+        		SELECT
+        			seq_id,
+        			regdate,
+        			qna_title,
+        			user_id
+        		FROM product_qna_table
+        		WHERE qna_title LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+        		AND code = #{code, jdbcType=VARCHAR}
+        		ORDER BY REGDATE DESC
+        	) t
+        	WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
+    	)
+     	WHERE rnum >= #{startRow, jdbcType=INTEGER}
+    ]]>
+	</select>
+	
+	<insert id="qnaDao.insertQnaFashion" parameterType="com.main.vo.QnaVo">
+	    INSERT INTO product_qna_table (
+	    seq_id
+	    , regdate
+	    , file_img
+	    , user_id
+	    , code
+	    , qna_title
+	    , qna_detail
+	    , qna_like_yn
+	    ) VALUES (
+	    qna_sequence.NEXTVAL
+	    , SYSDATE
+	    , #{file_img, jdbcType=VARCHAR}
+	    , #{user_id, jdbcType=VARCHAR}
+	    , #{code, jdbcType=VARCHAR}  
+	    , #{qna_title, jdbcType=VARCHAR}  
+	    , #{qna_detail, jdbcType=VARCHAR}  
+	    , #{qna_like_yn, jdbcType=VARCHAR}  
+	    )
+	</insert>
+	
+	<select id="qnaDao.detailQnaFashion" resultMap="qnavo">
+		select
+			seq_id
+			, user_id
+			, qna_title
+			, file_img
+			, qna_detail
+			, qna_like_yn
+		from product_qna_table
+		where seq_id = #{seq_id, jdbcType=VARCHAR}
+	</select>
+	
+	<update id="qnaDao.fashionqnaupdate">
+	    UPDATE product_qna_table
+	    SET 
+			qna_title = #{qna_title, jdbcType=VARCHAR}
+			, file_img = COALESCE(#{file_img, jdbcType=VARCHAR}, file_img)
+			, qna_detail = #{qna_detail, jdbcType=VARCHAR}
+			, qna_like_yn = #{qna_like_yn, jdbcType=VARCHAR}
+	    WHERE seq_id = #{seq_id, jdbcType=VARCHAR}
+	</update>
+	
+		<select id="qnaDao.selectQnaAccessoryList" parameterType="java.util.HashMap" resultMap="qnavo">
+        <![CDATA[
+        SELECT *
+        FROM (
+        	SELECT 
+                	seq_id, 
+                	regdate, 
+                	qna_title,
+                	user_id, 
+                	ROWNUM AS rnum
+        	FROM (
+        		SELECT
+        			seq_id,
+        			regdate,
+        			qna_title,
+        			user_id
+        		FROM product_qna_table
+        		WHERE qna_title LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+        		AND code = #{code, jdbcType=VARCHAR}
+        		ORDER BY REGDATE DESC
+        	) t
+        	WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
+    	)
+     	WHERE rnum >= #{startRow, jdbcType=INTEGER}
+    ]]>
+	</select>
+	
+	<insert id="qnaDao.insertQnaAccessory" parameterType="com.main.vo.QnaVo">
+	    INSERT INTO product_qna_table (
+	    seq_id
+	    , regdate
+	    , file_img
+	    , user_id
+	    , code
+	    , qna_title
+	    , qna_detail
+	    , qna_like_yn
+	    ) VALUES (
+	    qna_sequence.NEXTVAL
+	    , SYSDATE
+	    , #{file_img, jdbcType=VARCHAR}
+	    , #{user_id, jdbcType=VARCHAR}
+	    , #{code, jdbcType=VARCHAR}  
+	    , #{qna_title, jdbcType=VARCHAR}  
+	    , #{qna_detail, jdbcType=VARCHAR}  
+	    , #{qna_like_yn, jdbcType=VARCHAR}  
+	    )
+	</insert>
+	
+	<select id="qnaDao.detailQnaAccessory" resultMap="qnavo">
+		select
+			seq_id
+			, user_id
+			, qna_title
+			, file_img
+			, qna_detail
+			, qna_like_yn
+		from product_qna_table
+		where seq_id = #{seq_id, jdbcType=VARCHAR}
+	</select>
+	
+	<update id="qnaDao.accessoryqnaupdate">
+	    UPDATE product_qna_table
+	    SET 
+			qna_title = #{qna_title, jdbcType=VARCHAR}
+			, file_img = COALESCE(#{file_img, jdbcType=VARCHAR}, file_img)
+			, qna_detail = #{qna_detail, jdbcType=VARCHAR}
+			, qna_like_yn = #{qna_like_yn, jdbcType=VARCHAR}
+	    WHERE seq_id = #{seq_id, jdbcType=VARCHAR}
+	</update>
+	
+	<select id="qnaDao.selectQnaMakeUpList" parameterType="java.util.HashMap" resultMap="qnavo">
+        <![CDATA[
+        SELECT *
+        FROM (
+        	SELECT 
+                	seq_id, 
+                	regdate, 
+                	qna_title,
+                	user_id,
+                	qna_pw,
+                	ROWNUM AS rnum
+        	FROM (
+        		SELECT
+        			seq_id,
+        			regdate,
+        			qna_title,
+        			user_id,
+        			qna_pw
+        		FROM product_qna_table
+        		WHERE qna_title LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+        		AND code = #{code, jdbcType=VARCHAR}
+        		ORDER BY REGDATE DESC
+        	) t
+        	WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
+    	)
+     	WHERE rnum >= #{startRow, jdbcType=INTEGER}
+    ]]>
+	</select>
+	
+	<select id="qnaDao.detailQnaMakeUp" resultMap="qnavo">
+		select
+			seq_id
+			, user_id
+			, qna_title
+			, file_img
+			, qna_detail
+			, qna_like_yn
+		from product_qna_table
+		where seq_id = #{seq_id, jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="qnaDao.insertQnaMakeUp" parameterType="com.main.vo.QnaVo">
+	    INSERT INTO product_qna_table (
+	    seq_id
+	    , regdate
+	    , file_img
+	    , user_id
+	    , code
+	    , qna_title
+	    , qna_detail
+	    , qna_pw
+	    ) VALUES (
+	    qna_sequence.NEXTVAL
+	    , SYSDATE
+	    , #{file_img, jdbcType=VARCHAR}
+	    , #{user_id, jdbcType=VARCHAR}
+	    , #{code, jdbcType=VARCHAR}  
+	    , #{qna_title, jdbcType=VARCHAR}  
+	    , #{qna_detail, jdbcType=VARCHAR}  
+	    , #{qna_pw, jdbcType=VARCHAR}  
+	    )
+	</insert>
+	
+	<update id="qnaDao.makeupqnaupdate">
+	    UPDATE product_qna_table
+	    SET 
+			qna_title = #{qna_title, jdbcType=VARCHAR}
+			, file_img = COALESCE(#{file_img, jdbcType=VARCHAR}, file_img)
+			, qna_detail = #{qna_detail, jdbcType=VARCHAR}
+			, qna_pw = #{qna_pw, jdbcType=VARCHAR}
+	    WHERE seq_id = #{seq_id, jdbcType=VARCHAR}
+	</update>
+</mapper>
