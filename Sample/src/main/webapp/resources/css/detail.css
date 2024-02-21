@@ -1,6 +1,4 @@
 @charset "UTF-8";
-@import url("../../css/reset.css");
-@import url("../../css/style.css");
 header .logo a {
   color: #d1180b;
 }
@@ -213,7 +211,7 @@ header .logo a {
   border: unset;
   font-size: 1em;
   font-weight: 600;
-  cursor: not-allowed;
+/*   cursor: not-allowed; */
   background: none;
 }
 .notice__detail--box .detail__notice .info__box--title .title__box:last-child {

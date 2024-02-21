@@ -111,4 +111,14 @@ public class QnaServiceImpl implements QnaService{
 		qnaDao.makeupqnaupdate(qnavo);
 	}
 
+	@Override
+	public List<QnaVo> selectQnaList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		List<QnaVo> qnaList = null;
+		
+		qnaList = qnaDao.selectQnaList(map);
+		
+		return qnaList;
+	}
+
 }

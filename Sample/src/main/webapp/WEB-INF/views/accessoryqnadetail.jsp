@@ -86,19 +86,33 @@
           <div class="title__box">
             <p>댓글 달기</p>
             <div class="title__box--content_box">
-              <button>댓글 등록하기</button>
-              <span>전체댓글(4)</span>
+              <button onclick="openPopup()">댓글 등록하기</button>
+              <span>전체댓글(${totalCount})</span>
             </div>
           </div>
         </div>
-        <div class="cancel__box">
+		<div class="cancel__box">
           <button onclick="cancel()">취소</button>
+        <c:if test="${memberVo.user_id == qnavo.user_id}">
+          <button onclick="update(${qnavo.seq_id})">수정</button>
+        </c:if>
+        <c:if test="${memberVo.user_id != qnavo.user_id}">
+        </c:if>
         </div>
       </div>
-    </div>
+      </div>
     <script>
+    function update(seq_id) {
+		window.location.href =  'accessoryupdateqna?seq_id=' + seq_id;
+    }
     function cancel() {
     	window.location.href = 'accessoryqnalist';
+    }
+    function openPopup() {
+    	var code = '${qnavo.code}';
+        var seq_id = ${qnavo.seq_id};
+        var url = 'commentpopup?code=' + code + '&seq_id=' + seq_id;
+        window.open(url, '댓글 등록', 'width=500, height=300, left=500, top=200');
     }
     </script>
 

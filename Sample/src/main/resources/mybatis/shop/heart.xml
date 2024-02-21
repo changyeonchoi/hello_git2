@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="heartDao">
+
+<resultMap type="com.main.vo.ProductVo" id="productvo">
+	<result property="seq_id" column="seq_id"/>
+	<result property="banner_title" column="banner_title"/>
+	<result property="product_name" column="product_name"/>
+	<result property="file_img" column="file_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	<result property="detail_img" column="detail_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	<result property="product_amount" column="product_amount" />
+	<result property="delivery_fee" column="delivery_fee" />
+	<result property="company_name" column="company_name" />
+	<result property="company_phone" column="company_phone" />
+	<result property="detail_url" column="detail_url" />
+	<result property="company_yn" column="company_yn" />
+	<result property="code" column="code" />
+	<result property="regdate" column="regdate" />
+	<result property="user_id" column="user_id" />
+</resultMap>
+
+<resultMap type="com.main.vo.HeartVo" id="heartvo">
+    <result property="seq_id" column="seq_id"/>
+    <result property="user_id" column="user_id"/>
+    <result property="heart" column="heart"/>
+    <result property="heart_count" column="heart_count"/>
+    <result property="product_name" column="product_name"/>
+    <result property="product_selection" column="product_selection"/>
+</resultMap>
+
+	<select id="heartDao.selectheartuserCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(*)
+		from heart_table
+		WHERE user_id = #{user_id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="heartDao.selectheartqnaCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(*)
+		from qna_heart_table
+		WHERE user_id = #{user_id, jdbcType=VARCHAR}
+	</select>
+	
+
+	<!-- 기존에 찜한 기록이 있는지 확인하는 쿼리 -->
+	<select id="heartDao.selectheartCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(*)
+		from heart_table
+		WHERE user_id = #{user_id, jdbcType=VARCHAR} AND seq_id = #{seq_id, jdbcType=INTEGER}
+	</select>
+
+	<delete id="heartDao.downHeart">
+	  	delete from heart_table where user_id = #{user_id, jdbcType=VARCHAR} and seq_id = #{seq_id, jdbcType=INTEGER} 
+	</delete>
+	
+    <insert id="heartDao.upHeart">
+        INSERT INTO heart_table (heart_id, user_id, seq_id, heart, code) 
+        VALUES (heart_table_seq.NEXTVAL, #{user_id, jdbcType=VARCHAR}, #{seq_id, jdbcType=INTEGER}, 1, #{code, jdbcType=VARCHAR})
+    </insert>
+    
+    <select id="heartDao.selectqnaheartCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(*)
+		from qna_heart_table
+		WHERE user_id = #{user_id, jdbcType=VARCHAR} AND seq_id = #{seq_id, jdbcType=INTEGER}
+	</select>
+	
+	<delete id="heartDao.qnadownHeart">
+	  	delete from qna_heart_table where user_id = #{user_id, jdbcType=VARCHAR} and seq_id = #{seq_id, jdbcType=INTEGER} 
+	</delete>
+	
+    <insert id="heartDao.qnaupHeart">
+        INSERT INTO qna_heart_table (heart_id, user_id, seq_id, heart, code) 
+        VALUES (qna_heart_table_seq.NEXTVAL, #{user_id, jdbcType=VARCHAR}, #{seq_id, jdbcType=INTEGER}, 1, #{code, jdbcType=VARCHAR})
+    </insert>
+    
+	<select id="heartDao.selectheartProductList" parameterType="java.util.HashMap" resultMap="productvo">
+	    <![CDATA[
+	        SELECT
+	            p.file_img,
+	            p.seq_id,
+	            p.banner_title,
+	            p.user_id,
+	            (
+	                SELECT COUNT(DISTINCT user_id)
+	                FROM heart_table h 
+	                WHERE h.seq_id = p.seq_id
+	            ) AS heartcount
+	        FROM product_table p
+	        INNER JOIN heart_table ht ON p.seq_id = ht.seq_id 
+	        WHERE ht.seq_id IS NOT NULL 
+	        and (#{code, jdbcType=VARCHAR} IS NULL OR p.code = #{code, jdbcType=VARCHAR})
+	        and ht.user_id = #{user_id, jdbcType=VARCHAR}
+	        ORDER BY p.seq_id DESC
+	    ]]>
+	</select>
+	
+</mapper>

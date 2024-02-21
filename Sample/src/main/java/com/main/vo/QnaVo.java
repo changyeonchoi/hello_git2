@@ -32,7 +32,16 @@ public class QnaVo {
 	
 	private String qna_pw;
 	
+	private int heartcount;
 	
+	
+
+	public int getHeartcount() {
+		return heartcount;
+	}
+	public void setHeartcount(int heartcount) {
+		this.heartcount = heartcount;
+	}
 	public String getQna_pw() {
 		return qna_pw;
 	}
@@ -134,8 +143,9 @@ public class QnaVo {
 		return "QnaVo [seq_id=" + seq_id + ", regdate=" + regdate + ", qna_title=" + qna_title + ", file_img="
 				+ file_img + ", qna_detail=" + qna_detail + ", qna_like_yn=" + qna_like_yn + ", user_id=" + user_id
 				+ ", fashion_user_id=" + fashion_user_id + ", rnum=" + rnum + ", code=" + code + ", file_Path="
-				+ file_Path + "]";
+				+ file_Path + ", qna_pw=" + qna_pw + ", heartcount=" + heartcount + "]";
 	}
+
 
 	
 }

@@ -301,13 +301,13 @@ header .shop-nav__info a:first-child {
       </nav>
       <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="login" id="loginLink">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
       <c:if test="${memberVo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="mypage" onclick="getUserId()">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
@@ -538,6 +538,19 @@ header .shop-nav__info a:first-child {
     }
 
     updateCouponCounter();
+    
+    function getUserId() {
+        // membervo.user_id 값을 얻어옴
+        var userId = '${membervo.user_id}';
+       
+        
+        // 이후에 필요한 작업 수행
+        // 예를 들어, 해당 값으로 서버에 요청을 보내거나 다른 동작 수행 가능
+        console.log("User ID:", userId);
+        
+        // 페이지 이동
+        window.location.href = 'mypage?user_id=' + userId;
+    }
     </script>
   </body>
 </html>

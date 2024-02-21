@@ -8,7 +8,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>accessory_qnadetail</title>
+    <title>fashion_qnainsert</title>
     <link rel="stylesheet" href="resources/css/main.css"/>
     <link rel="stylesheet" href="resources/css/detail.css" />
   <style>
@@ -89,9 +89,9 @@
         <a href="main">BT</a>
       </div>
       <nav class="shop-nav">
-        <a href="fashionlist">Fashion</a>
+        <a href="fashionlist" id="selected">Fashion</a>
         <a href="makeuplist">Make Up</a>
-        <a href="accessorylist" id="selected">Accessory</a>
+        <a href="accessorylist">Accessory</a>
         <a href="#">검색</a>
       </nav>
       <c:if test="${memberVo.user_id == null}">
@@ -144,7 +144,7 @@
 				src="${qnavo.file_img}"
               />
 				    <label for="file_img" class="file-label">이미지 찾기</label>
-					<input type="file" id="file_img" value="${qnavo.file_img}" accept=".png, .jpeg, .jpg" data-width="540" data-height="500">
+					<input type="file" id="file_img" value="${qnavo.file_img}" accept=".png, .jpeg, .jpg">
 				    <span class="upload-status"></span>
 				</div>
             </div>
@@ -165,13 +165,21 @@
 			    <label><input type="radio" name="qna_like_yn" id="radioN" value="N">허용안함</label>
             </div>
           </div>
+          <div class="title__box">
+            <p>댓글 달기</p>
+            <div class="title__box--content_box">
+              <button onclick="openPopup()">댓글 등록하기</button>
+              <span>전체댓글(4)</span>
+            </div>
+          </div>
         </div>
         <div class="cancel__box">
-			<button id="updateButton">수정</button>
+			<button id="updateButton">저장</button>
           	<button onclick="cancel()">취소</button>
         </div>
       </div>
     </div>
+    <input type="hidden" id="seq_id_hidden" value="${qnavo.seq_id}" />
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script>
     $(document).ready(function () {
@@ -197,20 +205,19 @@
 	     console.log(formData);
 
 	        $.ajax({
-	            url: '/accessoryqnaupdate',
+	            url: '/fashionqnaupdate',
 	            method: 'POST',
 	            data: formData,
 	            dataType: "text",
-//                 enctype: 'multipart/form-data',
 	            contentType: false,
 	            processData: false,
 	            success: function(response) {
-	                // 등록 성공 시 알림 표시 후 목록 페이지로 이동
+	                
 	                alert('저장되었습니다.');
-	                window.location.href = '/accessoryqnalist'; // 등록 후 이동할 페이지 URL로 변경해주세요
+	                window.location.href = '/fashionqnalist'; 
 	            },
 	            error: function(error) {
-	                // 등록 실패 시 알림 표시
+	                
 	                alert('에러에러');
 	                console.error('Error:', error);
 	            }
@@ -219,7 +226,15 @@
 	 });
         
     function cancel() {
-    	window.location.href = 'accessoryqnalist';
+    	window.location.href = 'fashionqnalist';
+    }
+    
+    function openPopup() {
+        var codeValue = "fashion"; 
+        var seq_id = $("#seq_id_hidden").val();
+        console.log(seq_id);
+        var url = 'commentpopup?code=' + encodeURIComponent(codeValue) + '&seq_id=' + seq_id;
+        window.open(url, '댓글 등록', 'width=500, height=300, left=500, top=200');
     }
     </script>
 

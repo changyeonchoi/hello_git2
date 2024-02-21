@@ -8,7 +8,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>accessory_qnadetail</title>
+    <title>makeup_qnadetail</title>
     <link rel="stylesheet" href="resources/css/main.css"/>
     <link rel="stylesheet" href="resources/css/detail.css" />
   <style>
@@ -90,8 +90,8 @@
       </div>
       <nav class="shop-nav">
         <a href="fashionlist">Fashion</a>
-        <a href="makeuplist">Make Up</a>
-        <a href="accessorylist" id="selected">Accessory</a>
+        <a href="makeuplist" id="selected">Make Up</a>
+        <a href="accessorylist">Accessory</a>
         <a href="#">검색</a>
       </nav>
       <c:if test="${memberVo.user_id == null}">
@@ -151,24 +151,26 @@
           </div>
           <div id="title__box--content" class="title__box">
             <p>내용*</p>
-            <input
-              id="qna_detail"
-              type="text"
-              class="title__box--user"
-              value="${qnavo.qna_detail}"
-            />
+				<input
+				  id="qna_detail"
+	              type="text"
+	              class="title__box--user"
+	              value="${qnavo.qna_pw}"
+	            />
           </div>
           <div class="title__box">
-            <p>찜여부*</p>
-            <div class="title__box--radio_box">
-			    <label><input type="radio" name="qna_like_yn" id="radioY" value="Y" checked>허용</label>
-			    <label><input type="radio" name="qna_like_yn" id="radioN" value="N">허용안함</label>
-            </div>
+            <p>비밀번호</p>
+			<input
+              id="qna_pw"
+              type="text"
+              class="title__box--user"
+              value="${qnavo.qna_pw}"
+            />
           </div>
         </div>
         <div class="cancel__box">
-			<button id="updateButton">수정</button>
           	<button onclick="cancel()">취소</button>
+			<button id="updateButton">저장</button>
         </div>
       </div>
     </div>
@@ -186,6 +188,7 @@
 	     var file_img = $("#file_img")[0].files[0]; // Get the file object
 	     var qna_detail = $("#qna_detail").val();
 	     var qna_like_yn = $("input[name='qna_like_yn']:checked").val();
+	     var qna_pw = $("#qna_pw").val();
 	
 	     var formData = new FormData();
 	     formData.append("qna_title", qna_title);
@@ -193,11 +196,12 @@
 	     formData.append("qna_detail", qna_detail);
 	     formData.append("qna_like_yn", qna_like_yn);
 	     formData.append('seq_id', '${qnavo.seq_id}');
+	     formData.append('qna_pw', qna_pw);
 	     
 	     console.log(formData);
 
 	        $.ajax({
-	            url: '/accessoryqnaupdate',
+	            url: '/makeupqnaupdate',
 	            method: 'POST',
 	            data: formData,
 	            dataType: "text",
@@ -207,7 +211,7 @@
 	            success: function(response) {
 	                // 등록 성공 시 알림 표시 후 목록 페이지로 이동
 	                alert('저장되었습니다.');
-	                window.location.href = '/accessoryqnalist'; // 등록 후 이동할 페이지 URL로 변경해주세요
+	                window.location.href = '/makeupqnalist'; // 등록 후 이동할 페이지 URL로 변경해주세요
 	            },
 	            error: function(error) {
 	                // 등록 실패 시 알림 표시
@@ -219,7 +223,7 @@
 	 });
         
     function cancel() {
-    	window.location.href = 'accessoryqnalist';
+    	window.location.href = 'makeupqnalist';
     }
     </script>
 

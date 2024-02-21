@@ -33,7 +33,7 @@
       </nav>
       <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="login" id="loginLink">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
@@ -43,7 +43,6 @@
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
-      
     </header>
     <!-- 메인 -->
     <div>
@@ -108,11 +107,11 @@
 			                </td>
 			
 			                <td>
-			                    <a href="#" class="detail-link" data-seq-id="${qnaList.seq_id}">
-			                        ${qnaList.qna_title}
-			                    </a>
+							<a href="#" class="detail-link" data-seq-id="${qnaList.seq_id}" data-user-id="${memberVo.user_id}">
+							    ${qnaList.qna_title}
+							</a>
 			                </td>
-			                <td>${qnaList.qna_like_yn}</td>
+			                <td>${qnaList.heartcount}개</td>
 			                <td>${qnaList.user_id}</td>
 			            </tr>
 			        </c:forEach>
@@ -130,13 +129,23 @@
 //         window.location.href = 'login?qnainsert&code=fashion';
 //     }
 
-    // jQuery를 사용하여 클릭 이벤트 처리
-    $(document).ready(function() {
+ $(document).ready(function() {
         // 클래스가 detail-link인 요소를 클릭했을 때의 동작 정의
         $('.detail-link').click(function() {
             // data-seq-id 속성을 통해 seq_id 값을 가져옴
             var seqId = $(this).data('seq-id');
+            console.log(seqId);
+            console.log(this);
+            // data-user-id 속성을 통해 user_id 값을 가져옴
+            var userId = $(this).data('user-id');
             
+            // user_id가 없으면 로그인 페이지로 이동
+            if (!userId) {
+                alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
+                window.location.href = '/login';
+                return; // 중단하여 뒤의 코드를 실행하지 않도록 함
+            }
+
             // seq_id 값을 사용하여 detail 페이지로 이동
             window.location.href = '/fashionqnadetail?seq_id=' + seqId;
         });

@@ -113,7 +113,20 @@
             </div>
           </div>
           <div class="shopping--box">
-  			<button class="fashion__order--btn" onclick="toggleHeart()"><span id="heart">찜하기♡</span></button>
+	        <c:if test="${not empty memberVo.user_id}">
+				<button class="fashion__order--btn" id="toggleHeart">
+				<span id="heart">${heartCount eq 1 ? '찜하기❤️' : '찜하기♡'}</span>
+				</button>
+	        </c:if>
+	        <!-- 미로그인 상태일 경우 로그인 페이지로 이동하는 JavaScript 코드 추가 -->
+	        <c:if test="${empty memberVo.user_id}">
+	            <script>
+	                function redirectToLoginPage() {
+	                    window.location.href = 'login?returnUrl=accessorydetail?seq_id=${accessory.seq_id}';
+	                }
+	            </script>
+	            <button class="fashion__order--btn" onclick="redirectToLoginPage()"><span id="heart">찜하기♡</span></button>
+	        </c:if>
           </div>
         </div>
 		 <div class="fashion__menu--box">
@@ -137,6 +150,7 @@
   <span class="brand">BT</span> SITE<br>
   고객센터 : 010-5674-0712
 </footer>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
 // 페이지 로딩 시 상세 정보를 기본으로 노출
 showContent('detailInfo', document.querySelector('.fashion__menu--box .fashion__menu--content p:first-child'));
@@ -167,11 +181,45 @@ function showContent(contentId, clickedElement) {
 function showAlert() {
     alert('주문이 완료되었습니다.');
 }
-function toggleHeart() {
-    var heart = document.getElementById('heart');
-    console.log("heart" + heart);
-    heart.classList.toggle('heart-filled');
-}
+$(document).ready(function() {
+    $('#toggleHeart').click(function() {
+        var heartElement = $('#heart');
+        var heart = ${heartCount};
+        var user_id = '${memberVo.user_id}';
+        var seq_id = ${accessory.seq_id};
+        var code = 'accessory';
+        
+        $.ajax({
+            type: 'post',
+            url: 'upHeart',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                user_id: user_id,
+                seq_id: seq_id,
+                heart: heart,
+                code: code
+            }),
+            success: function(data) {
+                console.log(data);
+                if (data && data.action) {
+                    var action = data.action;
+                    console.log("Action: " + action);
+                    
+                    if (action === '삭제') {
+                        // 삭제 동작 수행
+                        heartElement.text('찜하기♡');
+                    } else if (action === '등록') {
+                        // 등록 동작 수행
+                        heartElement.text('찜하기❤️');
+                    }
+                } else {
+                    console.error("Invalid response format");
+                }
+            }
+        });
+    });
+});
 // JavaScript를 사용하여 로그아웃 버튼 클릭 시 세션 초기화 및 페이지 이동
 document.getElementById('loginLink').addEventListener('click', function() {
     // 세션 초기화를 위한 요청을 서버로 보낼 수 있습니다.

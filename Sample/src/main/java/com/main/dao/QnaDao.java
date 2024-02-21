@@ -80,4 +80,9 @@ public class QnaDao {
 		sqlSession.update("qnaDao.makeupqnaupdate", qnavo);
 	}
 
+	public List<QnaVo> selectQnaList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("qnaDao.selectQnaList", map);
+	}
+
 }

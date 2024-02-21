@@ -119,10 +119,7 @@
 
     $(document).ready(function() {
         $('#fashionBoard').on('click', function(event) {
-          event.preventDefault();
 
-          // "fashion" 코드 값을 URL에 추가하여 새로운 URL 생성
-//           var newURL = "qnalist?code=fashion";
           var newURL = "fashionqnalist";
 
           // 새로운 URL로 이동

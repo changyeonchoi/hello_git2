@@ -15,6 +15,7 @@
 	    <result property="user_id" column="user_id"/> 
 	    <result property="code" column="code"/> 
 	    <result property="qna_pw" column="qna_pw"/> 
+	    <result property="heartcount" column="heartcount"/> 
 	</resultMap>
 	
 	<select id="qnaDao.QnaTotalCount" parameterType="java.util.HashMap" resultType="int">
@@ -25,32 +26,33 @@
 	        code = #{code, jdbcType=VARCHAR}
 	</select>
 	
-	<select id="qnaDao.selectQnaFashionList" parameterType="java.util.HashMap" resultMap="qnavo">
-        <![CDATA[
-        SELECT *
+<select id="qnaDao.selectQnaFashionList" parameterType="java.util.HashMap" resultMap="qnavo">
+    <![CDATA[
+    SELECT *
+    FROM (
+        SELECT 
+            q.seq_id, 
+            q.regdate, 
+            q.qna_title,
+            q.user_id, 
+            (SELECT COUNT(*) FROM qna_heart_table h WHERE h.seq_id = q.seq_id) AS heartcount,
+            ROWNUM AS rnum
         FROM (
-        	SELECT 
-                	seq_id, 
-                	regdate, 
-                	qna_title,
-                	user_id, 
-                	ROWNUM AS rnum
-        	FROM (
-        		SELECT
-        			seq_id,
-        			regdate,
-        			qna_title,
-        			user_id
-        		FROM product_qna_table
-        		WHERE qna_title LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
-        		AND code = #{code, jdbcType=VARCHAR}
-        		ORDER BY REGDATE DESC
-        	) t
-        	WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
-    	)
-     	WHERE rnum >= #{startRow, jdbcType=INTEGER}
+            SELECT
+                seq_id,
+                regdate,
+                qna_title,
+                user_id
+            FROM product_qna_table
+            WHERE qna_title LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+            AND code = #{code, jdbcType=VARCHAR}
+            ORDER BY REGDATE DESC
+        ) q
+        WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
+    )
+    WHERE rnum >= #{startRow, jdbcType=INTEGER}
     ]]>
-	</select>
+</select>
 	
 	<insert id="qnaDao.insertQnaFashion" parameterType="com.main.vo.QnaVo">
 	    INSERT INTO product_qna_table (
@@ -82,6 +84,8 @@
 			, file_img
 			, qna_detail
 			, qna_like_yn
+			, code
+			, qna_pw
 		from product_qna_table
 		where seq_id = #{seq_id, jdbcType=VARCHAR}
 	</select>
@@ -97,30 +101,31 @@
 	</update>
 	
 		<select id="qnaDao.selectQnaAccessoryList" parameterType="java.util.HashMap" resultMap="qnavo">
-        <![CDATA[
-        SELECT *
-        FROM (
-        	SELECT 
-                	seq_id, 
-                	regdate, 
-                	qna_title,
-                	user_id, 
-                	ROWNUM AS rnum
-        	FROM (
-        		SELECT
-        			seq_id,
-        			regdate,
-        			qna_title,
-        			user_id
-        		FROM product_qna_table
-        		WHERE qna_title LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
-        		AND code = #{code, jdbcType=VARCHAR}
-        		ORDER BY REGDATE DESC
-        	) t
-        	WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
-    	)
-     	WHERE rnum >= #{startRow, jdbcType=INTEGER}
-    ]]>
+		    <![CDATA[
+		    SELECT *
+		    FROM (
+		        SELECT 
+		            q.seq_id, 
+		            q.regdate, 
+		            q.qna_title,
+		            q.user_id, 
+		            (SELECT COUNT(*) FROM qna_heart_table h WHERE h.seq_id = q.seq_id) AS heartcount,
+		            ROWNUM AS rnum
+		        FROM (
+		            SELECT
+		                seq_id,
+		                regdate,
+		                qna_title,
+		                user_id
+		            FROM product_qna_table
+		            WHERE qna_title LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+		            AND code = #{code, jdbcType=VARCHAR}
+		            ORDER BY REGDATE DESC
+		        ) q
+		        WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
+		    )
+		    WHERE rnum >= #{startRow, jdbcType=INTEGER}
+		    ]]>
 	</select>
 	
 	<insert id="qnaDao.insertQnaAccessory" parameterType="com.main.vo.QnaVo">
@@ -153,6 +158,7 @@
 			, file_img
 			, qna_detail
 			, qna_like_yn
+			, code
 		from product_qna_table
 		where seq_id = #{seq_id, jdbcType=VARCHAR}
 	</select>
@@ -204,6 +210,7 @@
 			, file_img
 			, qna_detail
 			, qna_like_yn
+			, code
 		from product_qna_table
 		where seq_id = #{seq_id, jdbcType=VARCHAR}
 	</select>
@@ -239,4 +246,38 @@
 			, qna_pw = #{qna_pw, jdbcType=VARCHAR}
 	    WHERE seq_id = #{seq_id, jdbcType=VARCHAR}
 	</update>
+	
+<select id="qnaDao.selectQnaList" parameterType="java.util.HashMap" resultMap="qnavo">
+    <![CDATA[
+    SELECT
+        q.seq_id,
+        q.regdate,
+        q.qna_title,
+        q.user_id,
+        q.code,
+        h.heartcount,
+        ROWNUM AS rnum
+    FROM (
+        SELECT
+            t.seq_id,
+            t.regdate,
+            t.qna_title,
+            t.user_id,
+            t.code
+        FROM product_qna_table t
+        WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
+        ORDER BY t.regdate DESC
+    ) q
+    LEFT JOIN (
+        SELECT qna.seq_id, COUNT(DISTINCT heart.user_id) AS heartcount, heart.user_id, qna.code
+        FROM qna_heart_table heart
+        RIGHT JOIN product_qna_table qna ON heart.seq_id = qna.seq_id
+        GROUP BY qna.seq_id, heart.user_id, qna.code
+    ) h ON q.seq_id = h.seq_id
+    WHERE h.heartcount = 1 
+        AND h.user_id = #{user_id, jdbcType=VARCHAR} 
+        AND (#{code, jdbcType=VARCHAR} IS NULL OR q.code = #{code, jdbcType=VARCHAR})
+        AND ROWNUM >= #{startRow, jdbcType=INTEGER}
+    ]]>
+</select>
 </mapper>

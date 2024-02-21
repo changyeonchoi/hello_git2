@@ -197,9 +197,6 @@ header .shop-nav__info a:first-child {
 .prev {
   left: 5px;
 }
-    .heart-filled {
-    	color: red; /* 빨간색으로 설정 */
-    }
 .next {
   right: 5px;
 }

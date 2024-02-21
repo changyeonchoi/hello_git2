@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="commentDao">
+
+	<resultMap type="com.main.vo.CommentVo" id="commentvo">
+	    <result property="comment_id" column="comment_id"/>
+	    <result property="seq_id" column="seq_id"/>
+	    <result property="comment_content" column="comment_content"/>
+	    <result property="comment_regdate" column="comment_regdate"/>
+	    <result property="user_id" column="user_id"/>
+	    <result property="code" column="code"/> 
+	</resultMap>
+	
+	<select id="CmtTotalCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT COUNT(*) FROM comment_table
+		WHERE code = #{code} AND seq_id = #{seq_id}
+	</select>
+	
+	<!-- 댓글 조회 쿼리문 -->
+	<select id="commentDao.selectComment" parameterType="java.util.HashMap" resultMap="commentvo">
+ 		SELECT 
+	        p.user_id,
+            p.seq_id,
+            c.seq_id,
+	        c.comment_content, 
+	        c.comment_regdate,
+	        c.user_id,
+            c.code,
+	        ROWNUM AS rnum
+	    FROM comment_table c
+	    LEFT JOIN product_qna_table p ON p.seq_id = c.seq_id
+        where p.seq_id = #{seq_id} and c.code = #{code}
+	    ORDER BY c.comment_regdate DESC
+	</select>
+	
+	<insert id="commentDao.insertComment" parameterType="com.main.vo.CommentVo">
+	    INSERT INTO comment_table (
+	    comment_id
+	    , seq_id
+	    , comment_regdate
+	    , comment_content
+	    , user_id
+	    , code
+	    ) VALUES (
+	    comment_id_seq.NEXTVAL
+	 	, #{seq_id, jdbcType=INTEGER}
+	    , SYSDATE
+	    , #{comment_content, jdbcType=VARCHAR}
+	    , #{user_id, jdbcType=VARCHAR}
+	    , #{code, jdbcType=VARCHAR}  
+	    )
+	</insert>
+</mapper>

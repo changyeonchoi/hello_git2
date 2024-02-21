@@ -151,8 +151,8 @@
             reader.onload = function (e) {
                 var img = new Image();
                 img.onload = function () {
-                    var maxWidth = parseInt($("#file_img").data('width'));
-                    var maxHeight = parseInt($("#file_img").data('height'));
+                    var maxWidth = 540;
+                    var maxHeight = 500;
 
                     // Check image dimensions
                     if (img.width > maxWidth || img.height > maxHeight) {

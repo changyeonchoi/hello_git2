@@ -21,11 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.main.service.ProductService;
 import com.main.service.QnaService;
 import com.main.service.BannerService;
+import com.main.service.HeartService;
 import com.main.service.PageNavigigationService;
 import com.main.vo.BannerVo;
 import com.main.vo.MemberVo;
 import com.main.vo.ProductVo;
-import com.main.vo.QnaVo;
 
 @Controller
 public class ProductController {
@@ -39,6 +39,9 @@ public class ProductController {
 	@Autowired
 	BannerService bannerservice;
 	
+	@Autowired
+	HeartService heartservice;
+
 	@Autowired
 	QnaService qnaservice;
 	
@@ -68,6 +71,7 @@ public class ProductController {
 	        @RequestParam(value = "banner_area2", required=false) String banner_area2,
 	        @RequestParam(value = "product_seq_id", required=false) Integer product_seq_id,
 	        @RequestParam(value = "sale", required=false) String sale,
+	        @RequestParam(value = "heart", required = false) Integer heart,
 	        ProductVo productvo,
 	        BannerVo bannervo,
 	        @PathVariable(name = "type") String type
@@ -78,6 +82,17 @@ public class ProductController {
 
 		 	// 로그인 세션 가져오기
 			MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
+			
+			if (membervo != null) {
+	            String user_id = membervo.getUser_id();
+	            
+		    	Map<String, Object> heartcnt = new HashMap<String, Object>();
+		    	heartcnt.put("seq_id", seq_id);
+		    	heartcnt.put("user_id", user_id);
+		    	
+		    	// 찜하기 갯수
+		    	int heartCount = heartservice.selectheartCount(heartcnt);
+	        }
 			
 			// 시작문자열로 인한 code 지정
 		    if (type.startsWith("fashion")) {
@@ -110,6 +125,8 @@ public class ProductController {
 	    	// 총 갯수
 	    	int totalCount = productservice.selectTotalCount(keyword);
 	    	
+
+	    	
 	    	
 	    	Map<String, Object> map = new HashMap<String, Object>();
 	    	map.put("pageNo", pageNo);
@@ -133,6 +150,7 @@ public class ProductController {
 	    	List<BannerVo> bannerList = bannerservice.selectBannerList(map);
 	    	// 각 쿠폰 리스트
 	    	List<BannerVo> couponList = bannerservice.selectCouponList(map);
+	    	
 	    	// 리스트 이미지 노출 갯수 최대 8
 	    	int numberOfItemsToDisplay = 8;
 			
@@ -220,33 +238,25 @@ public class ProductController {
 		    	
 		    	String detailPath = productvo.getDetail_img().replaceAll("C:\\\\", "\\\\images\\\\");
 		    	productvo.setDetail_img(detailPath);
+		    	
+		    	Map<String, Object> heartcnt = new HashMap<String, Object>();
+		    	heartcnt.put("seq_id", seq_id);
+		    	heartcnt.put("user_id", productvo.getUser_id());
+		    	
+		    	System.out.println(heartcnt);
+		    	
+		    	// 찜하기 갯수
+		    	int heartCount = heartservice.selectheartCount(heartcnt);
+		    	
 				
 				model.addAttribute("fashion", productvo);
+		    	model.addAttribute("heartCount" , heartCount);
+
+				System.out.println("heartCount"+heartCount);
 				model.addAttribute("banner", bannerList);
 				
 				returnUrl = "/fashiondetail";
 			}
-//			 else if("fashionqnalist".equals(type)) {
-//				//				model.addAttribute("qnaList", qnaList);
-//				
-//				returnUrl = "/fashionqnalist";
-//				
-//			}	else if("fashionqnaenroll".equals(type)) {
-//				 
-//				qnavo.setUser_id(membervo.getUser_id());
-////				qnavo.setUser_id(user_id);
-//				qnavo.setQna_title(qna_title);
-//				qnavo.setFile_img(file_img, uploadPath, qnavo.getFile_img());
-//				qnavo.setQna_detail(qna_detail);
-//				qnavo.setQna_like_yn(qna_like_yn);
-//				
-//				qnaservice.insertqna(qnavo);
-//				
-//				System.out.println(qnavo);
-//				
-//				returnUrl = "/fashionqnainsert";
-//			} 
-			
 		} else if("makeup".equals(code)) {
 			
 			if("makeuplist".equals(type)) {
@@ -264,6 +274,17 @@ public class ProductController {
 				
 		    	String uploadPath = productvo.getFile_img().replaceAll("C:\\\\", "\\\\images\\\\");
 		    	productvo.setFile_img(uploadPath);
+		    	
+		    	Map<String, Object> heartcnt = new HashMap<String, Object>();
+		    	heartcnt.put("seq_id", seq_id);
+		    	heartcnt.put("user_id", productvo.getUser_id());
+		    	
+		    	System.out.println(heartcnt);
+		    	
+		    	// 찜하기 갯수
+		    	int heartCount = heartservice.selectheartCount(heartcnt);
+				
+		    	model.addAttribute("heartCount" , heartCount);
 				
 				model.addAttribute("makeup", productvo);
 				model.addAttribute("banner", bannerList);
@@ -291,6 +312,16 @@ public class ProductController {
 				String detailPath = productvo.getDetail_img().replaceAll("C:\\\\", "\\\\images\\\\");
 				productvo.setDetail_img(detailPath);
 				
+		    	Map<String, Object> heartcnt = new HashMap<String, Object>();
+		    	heartcnt.put("seq_id", seq_id);
+		    	heartcnt.put("user_id", productvo.getUser_id());
+		    	
+		    	System.out.println(heartcnt);
+		    	
+		    	// 찜하기 갯수
+		    	int heartCount = heartservice.selectheartCount(heartcnt);
+				
+		    	model.addAttribute("heartCount" , heartCount);
 				model.addAttribute("accessory", productvo);
 				model.addAttribute("banner", bannerList);
 				
@@ -313,8 +344,6 @@ public class ProductController {
 			model.addAttribute("banner", bannerList);
 
 			model.addAttribute("coupon", couponList);
-			
-//			System.out.println("couponList" + couponList);
 			
 			int numberOfItemsToDisplaymain = 3;
 			

@@ -33,5 +33,6 @@ public interface QnaService {
 
 	void makeupqnaupdate(QnaVo qnavo);
 
+	List<QnaVo> selectQnaList(Map<String, Object> map);
 
 }

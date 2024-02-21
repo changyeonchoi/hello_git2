@@ -108,7 +108,7 @@
 			                </td>
 			
 			                <td>
-			                    <a href="#" class="detail-link" data-seq-id="${qnaList.seq_id},${qnaList.qna_pw}">
+			                    <a href="#" class="detail-link" data-seq-id="${qnaList.seq_id},${qnaList.qna_pw}" data-user-id="${memberVo.user_id}">
 			                        ${qnaList.qna_title}
 			                    </a>
 			                </td>
@@ -139,29 +139,37 @@
 //         window.location.href = 'login?qnainsert&code=fashion';
 //     }
 
-	$(document).ready(function() {
-	    // 클래스가 detail-link인 요소를 클릭했을 때의 동작 정의
-	    $('.detail-link').click(function() {
-	        // data-seq-id 속성을 통해 seq_id와 qna_pw 값을 가져옴
-	        var dataSeqId = $(this).data('seq-id');
-	        var seqId = dataSeqId.split(',')[0];
-	        var password = dataSeqId.split(',')[1];
-	        
-	        // 사용자에게 비밀번호를 입력받음
-	        var inputPassword = prompt("비밀번호를 입력하세요:");
-	
-	        // 비밀번호를 확인하고 일치하면 페이지 이동
-	        if (inputPassword === password) {
-	            window.location.href = '/makeupqnadetail?seq_id=' + seqId;
-	        } else {
-	            alert("비밀번호가 일치하지 않습니다.");
-	        }
-	    });
-	});
+$(document).ready(function() {
+    // 클래스가 detail-link인 요소를 클릭했을 때의 동작 정의
+    $('.detail-link').click(function() {
+        // data-seq-id 속성을 통해 seq_id, user_id, qna_pw 값을 가져옴
+        var dataSeqId = $(this).data('seq-id');
+        var seqId = dataSeqId.split(',')[0];
+        var userId = $(this).data('user-id');
+        var password = dataSeqId.split(',')[1];
+        
+        // user_id가 없으면 로그인 페이지로 이동
+        if (!userId) {
+            alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
+            window.location.href = '/login';
+            return; // 중단하여 뒤의 코드를 실행하지 않도록 함
+        }
+
+        // user_id가 있으면 사용자에게 비밀번호를 입력받음
+        var inputPassword = prompt("비밀번호를 입력하세요:");
+
+        // 비밀번호를 확인하고 일치하면 페이지 이동
+        if (inputPassword === password) {
+            window.location.href = '/makeupqnadetail?seq_id=' + seqId;
+        } else {
+            alert("비밀번호가 일치하지 않습니다.");
+        }
+    });
+});
     
     function goSearch(){
     	let search = $("#searchInput").val();
-    	let code = "fashion"; // code 값
+    	let code = "makeup"; // code 값
 
     	// 현재 URL에 search와 code 파라미터를 추가하여 새로운 URL 생성
     	let newUrl = "<c:url value='/makeupqnalist'/>?code=" + code + "&search=" + search;

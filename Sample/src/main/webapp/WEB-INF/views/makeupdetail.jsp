@@ -71,9 +71,23 @@
               <button class="fashion__order--btn" onclick="redirectToSite()">사이트보기</button>
             </div>
           </div>
-			<div class="shopping--box">
-  				<button class="fashion__order--btn" onclick="toggleHeart()"><span id="heart">찜하기♡</span></button>
-			</div>
+          <div class="shopping--box">
+          
+	        <c:if test="${not empty memberVo.user_id}">
+				<button class="fashion__order--btn" id="toggleHeart">
+				<span id="heart">${heartCount eq 1 ? '찜하기❤️' : '찜하기♡'}</span>
+				</button>
+	        </c:if>
+	        <!-- 미로그인 상태일 경우 로그인 페이지로 이동하는 JavaScript 코드 추가 -->
+	        <c:if test="${empty memberVo.user_id}">
+	            <script>
+	                function redirectToLoginPage() {
+	                    window.location.href = 'login?returnUrl=makeupdetail?seq_id=${makeup.seq_id}';
+	                }
+	            </script>
+	            <button class="fashion__order--btn" onclick="redirectToLoginPage()"><span id="heart">찜하기♡</span></button>
+	        </c:if>
+          </div>
         </div>
         <div class="fashion__menu--box">
           <div class="fashion__menu--content">
@@ -92,6 +106,7 @@
   <span class="brand">BT</span> SITE<br>
   고객센터 : 010-5674-0712
 </footer>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
 function redirectToSite() {
     // 정적인 URL로 이동
@@ -110,10 +125,45 @@ function redirectToSite() {
     // 현재 창에서 열고자 할 경우
     // window.location.href = dynamicUrl;
   }
-function toggleHeart() {
-    var heart = document.getElementById('heart');
-    heart.classList.toggle('heart-filled');
-  }
+$(document).ready(function() {
+    $('#toggleHeart').click(function() {
+        var heartElement = $('#heart');
+        var heart = ${heartCount};
+        var user_id = '${memberVo.user_id}';
+        var seq_id = ${makeup.seq_id};
+        var code = 'makeup';
+        
+        $.ajax({
+            type: 'post',
+            url: 'upHeart',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                user_id: user_id,
+                seq_id: seq_id,
+                heart: heart,
+                code: code
+            }),
+            success: function(data) {
+                console.log(data);
+                if (data && data.action) {
+                    var action = data.action;
+                    console.log("Action: " + action);
+                    
+                    if (action === '삭제') {
+                        // 삭제 동작 수행
+                        heartElement.text('찜하기♡');
+                    } else if (action === '등록') {
+                        // 등록 동작 수행
+                        heartElement.text('찜하기❤️');
+                    }
+                } else {
+                    console.error("Invalid response format");
+                }
+            }
+        });
+    });
+});
 </script>
   </body>
 </html>

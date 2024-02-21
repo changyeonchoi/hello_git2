@@ -152,9 +152,9 @@
             reader.onload = function (e) {
                 var img = new Image();
                 img.onload = function () {
-                    var maxWidth = parseInt($("#file_img").data('width'));
-                    var maxHeight = parseInt($("#file_img").data('height'));
-
+                    var maxWidth = 540;
+                    var maxHeight = 500;
+                    
                     // Check image dimensions
                     if (img.width > maxWidth || img.height > maxHeight) {
                         alert('이미지 크기가 허용된 최대 크기를 초과합니다. 가로 최대 ' + maxWidth + 'px, 세로 최대 ' + maxHeight + 'px로 선택해주세요.');

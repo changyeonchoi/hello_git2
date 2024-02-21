@@ -11,6 +11,8 @@
     <title>fashion_qnainsert</title>
     <link rel="stylesheet" href="resources/css/main.css"/>
     <link rel="stylesheet" href="resources/css/detail.css" />
+  <style>
+  </style>
   </head>
   <body>
     <!-- 상단 바 -->
@@ -26,13 +28,13 @@
       </nav>
       <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="login" id="loginLink">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
       <c:if test="${memberVo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="mypage">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
@@ -42,7 +44,9 @@
       <h1>게시글 보기</h1>
       <div class="detail__notice">
         <div class="detail__notice--button--box">
-          <button class="search--button">찜하기 ♡</button>
+	        <button class="search--button" id="toggleHeart">
+				<span id="heart">${heartCount eq 1 ? '찜하기❤️' : '찜하기♡'}</span>
+			</button>
         </div>
         <div class="info__box--title">
           <div class="title__box">
@@ -86,20 +90,74 @@
           <div class="title__box">
             <p>댓글 달기</p>
             <div class="title__box--content_box">
-              <button>댓글 등록하기</button>
-              <span>전체댓글(4)</span>
+              <button onclick="openPopup()">댓글 등록하기</button>
+              <span>전체댓글(${totalCount})</span>
             </div>
           </div>
         </div>
         <div class="cancel__box">
           <button onclick="cancel()">취소</button>
+        <c:if test="${memberVo.user_id == qnavo.user_id}">
+          <button onclick="update(${qnavo.seq_id})">수정</button>
+        </c:if>
+        <c:if test="${memberVo.user_id != qnavo.user_id}">
+        </c:if>
         </div>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
+    function update(seq_id) {
+		window.location.href =  'fashionupdateqna?seq_id=' + seq_id;
+    }
     function cancel() {
     	window.location.href = 'fashionqnalist';
     }
+    function openPopup() {
+        var code = '${qnavo.code}';
+        var seq_id = ${qnavo.seq_id};
+        var url = 'commentpopup?code=' + code + '&seq_id=' + seq_id;
+        window.open(url, '댓글 등록', 'width=500, height=300, left=500, top=200');
+    }
+    $(document).ready(function() {
+        $('#toggleHeart').click(function() {
+            var heartElement = $('#heart');
+            var heart = ${heartCount};
+            var user_id = '${memberVo.user_id}';
+            var seq_id = ${qnavo.seq_id};
+            var code = 'fashion';
+            
+            $.ajax({
+                type: 'post',
+                url: 'qnaupHeart',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    user_id: user_id,
+                    seq_id: seq_id,
+                    heart: heart,
+                    code: code
+                }),
+                success: function(data) {
+                    console.log(data);
+                    if (data && data.action) {
+                        var action = data.action;
+                        console.log("Action: " + action);
+                        
+                        if (action === '삭제') {
+                            // 삭제 동작 수행
+                            heartElement.text('찜하기♡');
+                        } else if (action === '등록') {
+                            // 등록 동작 수행
+                            heartElement.text('찜하기❤️');
+                        }
+                    } else {
+                        console.error("Invalid response format");
+                    }
+                }
+            });
+        });
+    });
     </script>
 
   </body>
