@@ -44,7 +44,7 @@
         <a href="fashionlist">Fashion</a>
         <a href="makeuplist">Make Up</a>
         <a href="accessorylist">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
  	<c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">
@@ -63,14 +63,12 @@
     <div>
       <div class="box">
         <a
-          id="noice__board--non"
-          href="../fashion_detail/fashion.html"
-          target="_blank"
+          href="mypage"
           >찜</a
         >
         <br />
         <br />
-        <a id="noice__board">주문현황</a>
+        <a href="mypageproduct" id="noice__board">주문현황</a>
       </div>
 
       <!-- 초기에 보이는 fashion -->

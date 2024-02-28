@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="searchDao">
+
+<resultMap id="maxCodeResultMap" type="java.util.Map">
+    <result property="maxCode" column="max_code"/>
+</resultMap>
+<resultMap type="com.main.vo.ProductVo" id="productvo">
+	<result property="seq_id" column="seq_id"/>
+	<result property="banner_title" column="banner_title"/>
+	<result property="product_name" column="product_name"/>
+	<result property="file_img" column="file_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	<result property="detail_img" column="detail_img" javaType="java.lang.String" jdbcType="VARCHAR"/>
+	<result property="product_amount" column="product_amount" />
+	<result property="delivery_fee" column="delivery_fee" />
+	<result property="company_name" column="company_name" />
+	<result property="company_phone" column="company_phone" />
+	<result property="detail_url" column="detail_url" />
+	<result property="company_yn" column="company_yn" />
+	<result property="code" column="code" />
+	<result property="regdate" column="regdate" />
+	<result property="user_id" column="user_id" />
+</resultMap>
+
+<resultMap type="com.main.vo.BannerVo" id="bannervo">
+    <result property="seq_id" column="seq_id"/>
+    <result property="product_seq_id" column="product_seq_id"/>
+    <result property="banner_name" column="banner_name"/>
+    <result property="banner_img" column="banner_img"/>
+    <result property="banner_area2" column="banner_area2"/>
+    <result property="banner_yn" column="banner_yn"/>
+    <result property="user_id" column="user_id"/>
+    <result property="redate" column="redate"/>
+    <result property="code" column="code"/>
+    <result property="land_url" column="land_url"/>
+    <result property="sale" column="sale"/>
+</resultMap>
+
+<resultMap type="com.main.vo.SearchVo" id="searchvo">
+	<result property="keyword" column="keyword"/>
+	<result property="cnt" column="cnt"/>
+</resultMap>
+
+	<select id="selectSearchCount" parameterType="java.util.HashMap" resultType="int">
+	    SELECT COUNT(*) FROM product_table
+	    WHERE
+	        product_name LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+	</select>
+	
+	<select id="searchDao.selectSearchProductList" parameterType="java.util.HashMap" resultMap="productvo">
+	    <![CDATA[
+	    SELECT *
+	    FROM (
+	        SELECT 
+	            file_img,
+	            seq_id, 
+	            product_name,
+	            code
+	        FROM (
+	            SELECT
+	                file_img,
+	                seq_id,
+	                product_name,
+	                code
+	            FROM product_table
+	            WHERE product_name LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+	            ORDER BY regdate DESC
+	        ) t
+	    )
+	    ]]>
+	</select>
+	
+<!-- 	<select id="selectCodeCount" parameterType="java.util.List" resultType="java.lang.String"> -->
+<!-- 	    SELECT code AS maxCode -->
+<!-- 	    FROM ( -->
+<!-- 	        SELECT code, COUNT(code) AS codeCount -->
+<!-- 	        FROM product_table -->
+<!-- 	        WHERE code IN -->
+<!-- 	        <foreach item="item" collection="list" open="(" separator="," close=")"> -->
+<!-- 	            #{item.code} -->
+<!-- 	        </foreach> -->
+<!-- 	        GROUP BY code -->
+<!-- 	        ORDER BY codeCount DESC -->
+<!-- 	    ) -->
+<!-- 	    WHERE ROWNUM = 1 -->
+<!-- 	</select> -->
+	<select id="selectSearchBannerList" parameterType="java.util.Map" resultMap="bannervo">
+	    SELECT 
+	        banner_img,
+	        seq_id,
+	        banner_area2,
+	        land_url
+	    FROM banner_table
+	    WHERE banner_area2 IN
+	    <foreach collection="productList" item="item" open="(" separator="," close=")">
+	        #{item.code}
+	    </foreach>
+	    AND #{productList[0].code} IS NOT NULL
+	    ORDER BY redate DESC
+	</select>
+	
+<!-- 	<insert id="searchDao.insertKeyword" parameterType="java.util.HashMap"> -->
+<!--     MERGE INTO ranking_table rt -->
+<!--     USING (SELECT 1 FROM dual) d -->
+<!--     ON (rt.keyword = #{search, jdbcType=VARCHAR}) -->
+<!--     WHEN MATCHED THEN -->
+<!--         UPDATE SET rt.cnt = rt.cnt + 1 -->
+<!--     WHEN NOT MATCHED THEN -->
+<!--         INSERT (keyword, cnt) VALUES (#{search, jdbcType=VARCHAR}, 1); -->
+<!-- 	</insert> -->
+    <insert id="searchDao.insertKeyword">
+    	INSERT INTO ranking_table (
+    		keyword,
+    		cnt
+    		) values (
+    			#{search, jdbcType=VARCHAR},
+    			1
+    		)
+    </insert>
+    
+    <update id="searchDao.updateKeyword">
+	    UPDATE ranking_table
+	    SET cnt = cnt + 1
+	    WHERE keyword = #{search, jdbcType=VARCHAR}
+	</update>
+	
+	<select id="selectKeywordCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(*)
+		from ranking_table
+		WHERE keyword = #{search, jdbcType=VARCHAR}
+	</select>
+	
+<select id="selectRankingList" resultMap="searchvo">
+    <![CDATA[
+    SELECT *
+    FROM (
+        SELECT t.*, ROWNUM rnum
+        FROM (
+            SELECT *
+            FROM ranking_table
+            ORDER BY cnt DESC
+        ) t
+    )
+    WHERE rnum <= 5
+    ]]>
+</select>
+</mapper>

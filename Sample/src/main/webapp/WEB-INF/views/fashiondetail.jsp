@@ -97,7 +97,7 @@
             </div>
             <div class="fashion__box--content">
               <div class="fashion__content">
-                <h1>${fashion.product_name}</h1>
+                <h1 id="product_name">${fashion.product_name}</h1>
                 <div class="fashion__box--pay" >
   					<p>정상가<span class="price">${fashion.product_amount}원</span></p>
                 </div>
@@ -113,7 +113,7 @@
                   	<p>판매업체<span class="price">${fashion.company_name}</span></p>
                 </div>
               </div>
-              <button class="fashion__order--btn" onclick="showAlert()">주문하기</button>
+              <button class="fashion__order--btn" id="order">주문하기</button>
             </div>
           </div>
           <div class="shopping--box">
@@ -157,7 +157,6 @@
 </footer>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-
 // 페이지 로딩 시 상세 정보를 기본으로 노출
 showContent('detailInfo', document.querySelector('.fashion__menu--box .fashion__menu--content p:first-child'));
 
@@ -186,9 +185,7 @@ function showContent(contentId, clickedElement) {
     clickedElement.classList.add('active');
     
 }
-function showAlert() {
-    alert('주문이 완료되었습니다.');
-}
+
 
 $(document).ready(function() {
     $('#toggleHeart').click(function() {
@@ -225,6 +222,29 @@ $(document).ready(function() {
                 } else {
                     console.error("Invalid response format");
                 }
+            }
+        });
+    });
+    $('#order').click(function() {
+    	
+    	var product_name = $("#product_name").text();
+    	var user_id = '${memberVo.user_id}';
+    	
+    	$.ajax({
+            url: "mypageqnainsert", 
+            dataType: 'json',
+            contentType: 'application/json',
+            method: "POST",
+            data: JSON.stringify({
+                product_name: product_name,
+                user_id: user_id
+            }),
+            success: function(response) {
+    			alert("주문이 완료되었습니다.");
+            },
+            error: function(xhr, status, error) {
+                // 오류를 처리합니다.
+                console.error("오류:", status, error);
             }
         });
     });

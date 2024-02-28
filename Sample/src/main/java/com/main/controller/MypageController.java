@@ -10,15 +10,20 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.main.service.HeartService;
 import com.main.service.PageNavigigationService;
+import com.main.service.ProductService;
 import com.main.service.QnaService;
+import com.main.vo.CommentVo;
 import com.main.vo.MemberVo;
+import com.main.vo.OrderVo;
 import com.main.vo.ProductVo;
 import com.main.vo.QnaVo;
 
@@ -35,6 +40,9 @@ public class MypageController {
 	//페이징
 	@Autowired
 	PageNavigigationService pagenavigigationservice;
+	//상품
+	@Autowired
+	ProductService productservice;
 	
 	@RequestMapping(value = "mypage", method = {RequestMethod.GET, RequestMethod.POST})
 	public String mypage(Model model, HttpSession session, HttpServletRequest request
@@ -158,9 +166,67 @@ public class MypageController {
 		}
 		return "mypageqna";
 	}
-	@RequestMapping(value = "mypageproduct", method = {RequestMethod.GET, RequestMethod.POST})
-	public String mypageproduct(Model model, HttpSession session, HttpServletRequest request) {
+	
+	
+	@RequestMapping(value = "mypageqnainsert", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json")
+	@ResponseBody
+	public OrderVo mypageinsert(Model model, HttpSession session, HttpServletRequest request,
+			@RequestBody Map<String, String> data) {
 		
+		String user_id = data.get("user_id");
+		String product_name = data.get("product_name");
+		
+		    OrderVo ordervo = new OrderVo();
+		    ordervo.setUser_id(user_id);
+		    ordervo.setProduct_name(product_name);
+		    
+		    productservice.insertOrder(ordervo);
+		    
+		    return ordervo;
+	}
+	
+	
+	@RequestMapping(value = "mypageproduct", method = {RequestMethod.GET, RequestMethod.POST})
+	public String mypageproduct(Model model, HttpSession session, HttpServletRequest request
+			, @RequestParam(value="pageNo"		, defaultValue="1" , required=true) int pageNo
+			, @RequestParam(name = "listSize", defaultValue = "4") int listSize
+    		, @RequestParam(name = "naviSize", defaultValue = "4") int naviSize
+			, @RequestParam(value = "search", defaultValue = "") String search) {
+		
+		MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
+		
+		Map<String, Object> keyword = new HashMap<String, Object>();
+    	keyword.put("search", search);
+    	keyword.put("user_id", membervo.getUser_id());
+    	
+    	// 총 갯수
+    	int totalCount = productservice.ordercount(keyword);
+    	
+    	model.addAttribute("totalCount", totalCount);
+
+    	
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("pageNo", pageNo);
+    	map.put("totalCount", totalCount);
+    	map.put("listSize", listSize);
+    	map.put("naviSize", naviSize);
+    	map.put("search", search);
+    	
+    	// 해당 pageNavigation에서 html code생성
+    	PageNavigation pageNavigation = new PageNavigation(map);
+    	map.put("startRow", pageNavigation.getStartRow());
+    	map.put("endRow", pageNavigation.getEndRow());
+    	
+    	// 페이지 네비게이션 객체 생성
+    	PageNavigation navigation = pagenavigigationservice.makePageNavigation(map);
+    	
+    	List<OrderVo> orderList = productservice.OrderList(map);
+    	
+       	model.addAttribute("pageAttribute", map);
+    	model.addAttribute("navigation", navigation);
+    	model.addAttribute("OrderList", orderList);
+    	
 		return "mypageproduct";
 	}
+
 }

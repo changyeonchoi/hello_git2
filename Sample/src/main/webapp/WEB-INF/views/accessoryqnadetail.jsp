@@ -42,7 +42,9 @@
       <h1>게시글 보기</h1>
       <div class="detail__notice">
         <div class="detail__notice--button--box">
-          <button class="search--button">찜하기 ♡</button>
+	        <button class="search--button" id="toggleHeart">
+				<span id="heart">${heartCount eq 1 ? '찜하기❤️' : '찜하기♡'}</span>
+			</button>
         </div>
         <div class="info__box--title">
           <div class="title__box">
@@ -114,6 +116,44 @@
         var url = 'commentpopup?code=' + code + '&seq_id=' + seq_id;
         window.open(url, '댓글 등록', 'width=500, height=300, left=500, top=200');
     }
+    $(document).ready(function() {
+        $('#toggleHeart').click(function() {
+            var heartElement = $('#heart');
+            var heart = ${heartCount};
+            var user_id = '${memberVo.user_id}';
+            var seq_id = ${qnavo.seq_id};
+            var code = 'fashion';
+            
+            $.ajax({
+                type: 'post',
+                url: 'qnaupHeart',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    user_id: user_id,
+                    seq_id: seq_id,
+                    heart: heart,
+                    code: code
+                }),
+                success: function(data) {
+                    console.log(data);
+                    if (data && data.action) {
+                        var action = data.action;
+                        
+                        if (action === '삭제') {
+                            // 삭제 동작 수행
+                            heartElement.text('찜하기♡');
+                        } else if (action === '등록') {
+                            // 등록 동작 수행
+                            heartElement.text('찜하기❤️');
+                        }
+                    } else {
+                        console.error("Invalid response format");
+                    }
+                }
+            });
+        });
+    });
     </script>
 
   </body>

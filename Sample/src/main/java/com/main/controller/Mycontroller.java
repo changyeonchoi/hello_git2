@@ -1,8 +1,12 @@
 package com.main.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 public class Mycontroller {
 	
@@ -16,10 +20,12 @@ public class Mycontroller {
 		
 		return "mypageproduct";
 	}
-	@RequestMapping(value="/mypageqna" , method = {RequestMethod.GET, RequestMethod.POST})
-	public String mypageqna (Model model) {
-		
-		return "mypageqna";
-	}
+//	@RequestMapping(value="/mypageqnainsert" , method = {RequestMethod.GET, RequestMethod.POST})
+//	@ResponseBody
+//	public String mypageqna (Model model,
+//			 @RequestParam(value = "code", required = false) String code, HttpServletRequest request) {
+//		
+//		return "mypageqna";
+//	}
 
 }

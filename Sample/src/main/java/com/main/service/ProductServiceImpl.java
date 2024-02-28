@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.main.dao.ProductDao;
+import com.main.vo.OrderVo;
 import com.main.vo.ProductVo;
 
 
@@ -90,6 +91,28 @@ public class ProductServiceImpl implements ProductService {
 		accessoryList = productDao.selectAccessoryList(map);
 		
 		return accessoryList;
+	}
+
+	@Override
+	public int insertOrder(OrderVo ordervo) {
+		// TODO Auto-generated method stub
+		System.out.println("service" + ordervo);
+		return productDao.insertOrder(ordervo);
+	}
+
+	@Override
+	public int ordercount(Map<String, Object> keyword) {
+		// TODO Auto-generated method stub
+		return productDao.ordercount(keyword);
+	}
+
+	@Override
+	public List<OrderVo> OrderList(Map<String, Object> map) {
+		List<OrderVo> OrderList = null;
+		
+		OrderList = productDao.OrderList(map);
+		
+		return OrderList;
 	}
 	
 	

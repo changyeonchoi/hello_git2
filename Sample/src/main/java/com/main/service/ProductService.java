@@ -3,6 +3,7 @@ package com.main.service;
 import java.util.List;
 import java.util.Map;
 
+import com.main.vo.OrderVo;
 import com.main.vo.ProductVo;
 
 public interface ProductService {
@@ -31,4 +32,10 @@ public interface ProductService {
 	List<ProductVo> selectMakeupList(Map<String, Object> map);
 
 	List<ProductVo> selectAccessoryList(Map<String, Object> map);
+
+	int insertOrder(OrderVo ordervo);
+
+	int ordercount(Map<String, Object> keyword);
+
+	List<OrderVo> OrderList(Map<String, Object> map);
 }

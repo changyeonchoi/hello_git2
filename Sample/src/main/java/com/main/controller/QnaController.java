@@ -100,8 +100,6 @@ public class QnaController {
 		// 각 상품 리스트 
     	List<QnaVo> qnaList = qnaservice.selectQnaFashionList(map);
     	
-    	System.out.println("qnaList" + qnaList);
-    	
     	model.addAttribute("pageAttribute", map);
     	model.addAttribute("qnaList", qnaList);
     	model.addAttribute("navigation", navigation);
@@ -326,23 +324,33 @@ public class QnaController {
 	    Cmt.put("code", code);
 	    Cmt.put("seq_id", seq_id);
     	
-	    
-	    System.out.println("codecode" + code);
     	// 총 갯수
     	int totalCount = commentservice.CmtTotalCount(Cmt);
     	
-    	model.addAttribute("totalCount", totalCount);
-	    
+    	model.addAttribute("totalCount",totalCount);
+
 	    qnavo = qnaservice.detailQnaAccessory(seq_id);
 	    
-	    model.addAttribute("qnavo", qnavo);
 	    
-	    System.out.println(qnavo);
+	    model.addAttribute("qnavo", qnavo);
 	    
 	    MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
 	    
 	    String uploadUrl = qnavo.getFile_img().replaceAll("C:\\\\", "\\\\images\\\\");
 	    qnavo.setFile_img(uploadUrl);
+	    
+	    Map<String, Object> heartqnacnt = new HashMap<String, Object>();
+	    heartqnacnt.put("seq_id", seq_id);
+	    heartqnacnt.put("user_id", membervo.getUser_id());
+    	
+    	// 찜하기 갯수
+    	int heartCount = heartservice.selectqnaheartCount(heartqnacnt);
+    	
+      	model.addAttribute("heartCount" , heartCount);
+      	
+	    String userId = qnavo.getUser_id();
+
+	    String MuserId = membervo.getUser_id();
 
 	    return "accessoryqnadetail";
 	    
@@ -468,8 +476,6 @@ public class QnaController {
 		    
 		    model.addAttribute("qnavo", qnavo);
 		    
-		    System.out.println(qnavo);
-		    
 		    MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
 		    
 		    String uploadUrl = qnavo.getFile_img().replaceAll("C:\\\\", "\\\\images\\\\");
@@ -487,8 +493,6 @@ public class QnaController {
 		qnavo = qnaservice.detailQnaFashion(seq_id);
 		
 		model.addAttribute("qnavo", qnavo);
-		
-		System.out.println(qnavo);
 		
 		MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
 		
@@ -525,8 +529,6 @@ public class QnaController {
 		qnavo.setQna_pw(qna_pw);
 		qnavo.setCode(code);
 		
-		System.out.println(qna_pw);
-		
 		qnaservice.insertQnaMakeUp(qnavo);
 		
 		return returnUrl;
@@ -553,8 +555,6 @@ public class QnaController {
 		
 		qnaservice.makeupqnaupdate(qnavo);
 		
-		System.out.println("수정" + qnavo);
-		
 		return "/makeupqnalist";
 	}
 	
@@ -577,8 +577,6 @@ public class QnaController {
 		List<CommentVo> commentvo = commentservice.selectComment(map);
 		 
 		model.addAttribute("commentvo", commentvo);
-		
-		System.out.println(commentvo);
 		
 		return "/commentpopup";
 	}
@@ -613,4 +611,5 @@ public class QnaController {
 
 	    return commentvo;
 	}
+
 }

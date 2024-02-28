@@ -297,7 +297,7 @@ header .shop-nav__info a:first-child {
         <a href="fashionlist">Fashion</a>
         <a href="makeuplist">Make Up</a>
         <a href="accessorylist">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
       <c:if test="${memberVo.user_id == null}">
       <nav class="shop-nav__info">

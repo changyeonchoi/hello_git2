@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-
 <html>
   <head>
     <meta charset="utf-8">
@@ -23,7 +22,7 @@
         <a href="fashionlist" id="selected">Fashion</a>
         <a href="makeuplist">Make Up</a>
         <a href="accessorylist">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
 	      <c:if test="${memberVo.user_id == null}">
 	      <nav class="shop-nav__info">

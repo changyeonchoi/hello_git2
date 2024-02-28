@@ -107,11 +107,11 @@ public class ProductController {
 		    
 		    // 해당 코드가 같으면 배너변수에 해당 값 지정
 		    if (code.equals("fashion")) {
-		    	banner_area2 = "Fashion";
+		    	banner_area2 = "fashion";
 		    } else if (code.equals("makeup")) {
-		    	banner_area2 = "Make Up";
+		    	banner_area2 = "make Up";
 		    } else if (code.equals("accessory")) {
-		    	banner_area2 = "Accessory";
+		    	banner_area2 = "accessory";
 		    } else {
 		    	banner_area2 = "Home";
 		    }
@@ -243,16 +243,12 @@ public class ProductController {
 		    	heartcnt.put("seq_id", seq_id);
 		    	heartcnt.put("user_id", productvo.getUser_id());
 		    	
-		    	System.out.println(heartcnt);
-		    	
 		    	// 찜하기 갯수
 		    	int heartCount = heartservice.selectheartCount(heartcnt);
 		    	
 				
 				model.addAttribute("fashion", productvo);
 		    	model.addAttribute("heartCount" , heartCount);
-
-				System.out.println("heartCount"+heartCount);
 				model.addAttribute("banner", bannerList);
 				
 				returnUrl = "/fashiondetail";

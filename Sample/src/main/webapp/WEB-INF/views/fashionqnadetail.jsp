@@ -142,7 +142,6 @@
                     console.log(data);
                     if (data && data.action) {
                         var action = data.action;
-                        console.log("Action: " + action);
                         
                         if (action === '삭제') {
                             // 삭제 동작 수행

@@ -1,0 +1,58 @@
+#selected {
+  color: #d1180b;
+}
+
+.search__box--cotainer {
+  margin: 50px 0px;
+}
+
+.search__box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid;
+  margin: 0 auto;
+  width: 37%;
+}
+.search__box input {
+  border: unset;
+  outline: unset;
+  width: 90%;
+  font-size: 2em;
+  text-align: center;
+}
+.search__box p {
+  font-size: 2em;
+}
+
+#shop__header--photoBox {
+  width: 74%;
+  height: 200px;
+}
+
+#shop__main--box {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop__main--styleBox {
+  width: 69%;
+}
+
+.box {
+  position: absolute;
+  border-right: 2px solid red;
+  width: 2%;
+  height: 32vh;
+  padding: 50px;
+  top: 162px;
+  left: 30px;
+}
+.box a {
+  color: #d1180b;
+  font-weight: bold;
+  cursor: pointer;
+}

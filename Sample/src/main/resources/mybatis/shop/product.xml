@@ -20,6 +20,13 @@
 	<result property="regdate" column="regdate" />
 	<result property="user_id" column="user_id" />
 </resultMap>
+
+<resultMap type="com.main.vo.OrderVo" id="ordervo">
+	<result property="seq_id" column="seq_id"/>
+	<result property="product_name" column="product_name"/>
+	<result property="regdate" column="regdate" />
+	<result property="user_id" column="user_id" />
+</resultMap>
 	<!-- 공통 -->
     <!-- 전체 회원 수 조회 쿼리 -->
 	<select id="selectTotalCount" parameterType="java.util.HashMap" resultType="int">
@@ -35,26 +42,26 @@
 	    WHERE seq_id = #{seq_id}
 	</delete>
 
-<select id="productDao.selectProductList" parameterType="java.util.HashMap" resultMap="productvo">
-    <![CDATA[
-    SELECT *
-    FROM (
-        SELECT 
-            file_img,
-            seq_id, 
-            banner_title
-        FROM (
-            SELECT
-                file_img,
-                seq_id,
-                banner_title
-            FROM product_table
-            WHERE code = #{code} AND company_yn = '노출'
-            ORDER BY seq_id DESC
-        ) t
-    )
-    ]]>
-</select>
+	<select id="productDao.selectProductList" parameterType="java.util.HashMap" resultMap="productvo">
+	    <![CDATA[
+	    SELECT *
+	    FROM (
+	        SELECT 
+	            file_img,
+	            seq_id, 
+	            banner_title
+	        FROM (
+	            SELECT
+	                file_img,
+	                seq_id,
+	                banner_title
+	            FROM product_table
+	            WHERE code = #{code} AND company_yn = '노출'
+	            ORDER BY seq_id DESC
+	        ) t
+	    )
+	    ]]>
+	</select>
     
 	<insert id="productDao.insertfashion" parameterType="com.main.vo.ProductVo">
 	    INSERT INTO product_table (
@@ -192,5 +199,52 @@
 	        ) t
 	        WHERE ROWNUM <= 3
 	    ]]>
+	</select>
+	
+	<insert id="productDao.insertOrder" parameterType="com.main.vo.OrderVo">
+		INSERT INTO order_table (
+		seq_id
+		, regdate
+		, product_name
+		, user_id
+		) VALUES (
+		ORDER_TABLE_SEQ.NEXTVAL
+	    , SYSDATE
+	    , #{product_name, jdbcType=VARCHAR}
+	    , #{user_id, jdbcType=VARCHAR}
+	    )
+	</insert>
+	
+	<select id="ordercount" parameterType="java.util.HashMap" resultType="int">
+	    SELECT COUNT(*) FROM order_table
+	    WHERE
+	        product_name LIKE '%' || #{search, jdbcType=VARCHAR} || '%'
+	        AND
+	        user_id = #{user_id, jdbcType=VARCHAR}
+	</select>
+	
+		<select id="productDao.OrderList" parameterType="java.util.HashMap" resultMap="ordervo">
+        <![CDATA[
+        SELECT *
+        FROM (
+        	SELECT 
+                	seq_id, 
+                	regdate, 
+                	product_name, 
+                	user_id,
+                	ROWNUM AS rnum
+        	FROM (
+        		SELECT
+        			seq_id,
+        			regdate,
+        			product_name,
+        			user_id
+        		FROM order_table
+        		ORDER BY REGDATE DESC
+        	) t
+        	WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
+    	)
+     	WHERE rnum >= #{startRow, jdbcType=INTEGER}
+    ]]>
 	</select>
 </mapper>

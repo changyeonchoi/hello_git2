@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.main.vo.OrderVo;
 import com.main.vo.ProductVo;
 
 
@@ -69,6 +70,19 @@ public class ProductDao {
 	public List<ProductVo> selectAccessoryList(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("productDao.selectAccessoryList", map);
+	}
+	public int insertOrder(OrderVo ordervo) {
+		// TODO Auto-generated method stub
+		System.out.println("dao" + ordervo);
+		return sqlSession.insert("productDao.insertOrder", ordervo);
+	}
+	public int ordercount(Map<String, Object> keyword) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("productDao.ordercount", keyword);
+	}
+	public List<OrderVo> OrderList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("productDao.OrderList", map);
 	}
 
 }
