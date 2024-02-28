@@ -92,7 +92,7 @@
             </div>
             <div class="fashion__box--content">
               <div class="fashion__content">
-                <h1>${accessory.product_name}</h1>
+                <h1 id="product_name">${accessory.product_name}</h1>
 
                 <div class="fashion__box--pay">
   					<p>정상가<span class="price">${accessory.product_amount}원</span></p>
@@ -109,7 +109,7 @@
                   	<p>판매업체<span class="price">${accessory.company_name}</span></p>
                 </div>
               </div>
-              <button class="fashion__order--btn" onclick="showAlert()">주문하기</button>
+              <button class="fashion__order--btn" id="order">주문하기</button>
             </div>
           </div>
           <div class="shopping--box">
@@ -216,6 +216,29 @@ $(document).ready(function() {
                 } else {
                     console.error("Invalid response format");
                 }
+            }
+        });
+    });
+    $('#order').click(function() {
+    	
+    	var product_name = $("#product_name").text();
+    	var user_id = '${memberVo.user_id}';
+    	
+    	$.ajax({
+            url: "mypageqnainsert", 
+            dataType: 'json',
+            contentType: 'application/json',
+            method: "POST",
+            data: JSON.stringify({
+                product_name: product_name,
+                user_id: user_id
+            }),
+            success: function(response) {
+    			alert("주문이 완료되었습니다.");
+            },
+            error: function(xhr, status, error) {
+                // 오류를 처리합니다.
+                console.error("오류:", status, error);
             }
         });
     });
