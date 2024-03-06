@@ -166,14 +166,19 @@
             productHtml += '<div class="grid-container">';
 
             // 제품 리스트에 대한 반복문 추가
-            for (var i = 0; i < productList.length; i++) {
-              var product = productList[i];
-              var decodedFileImg = decodeURIComponent(decodeURIComponent(product.file_img));
-              productHtml += '<div class="grid-item">';
-              productHtml += '<img src="' + decodedFileImg.replace(/\\/g, '/') + '" alt="' + product.product_name + '" />';
-              productHtml += '<p class="shop__code--content">' + product.product_name + '</p>';
-              productHtml += '</div>';
-            }
+			for (var i = 0; i < productList.length; i++) {
+			    var product = productList[i];
+			    var decodedFileImg = decodeURIComponent(decodeURIComponent(product.file_img));
+			    productHtml += '<div class="grid-item">';
+			    // 추가된 부분: <a> 태그 시작
+    			productHtml += '<a href="/' + product.code + 'detail?seq_id=' + product.seq_id + '">';
+			    productHtml += '<img src="' + decodedFileImg.replace(/\\/g, '/') + '" alt="' + product.product_name + '" />';
+			    productHtml += '<p class="shop__code--content">' + product.product_name + '</p>';
+			    // 추가된 부분: <a> 태그 종료
+			    productHtml += '</a>';
+			    productHtml += '</div>';
+			}
+
             productHtml += '</div>';
             productHtml += '</div>';
             productHtml += '</div>';

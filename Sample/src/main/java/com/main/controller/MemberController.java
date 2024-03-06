@@ -78,13 +78,13 @@ public class MemberController {
 		session.invalidate();
 
 		// 해당 페이지에서 로그아웃을 할 시 http hearder를 통해 해당페이지로 이동
-		String referer = request.getHeader("Referer");
-		if (referer != null) {
-			return "redirect:" + referer;
-		} else {
+//		String referer = request.getHeader("Referer");
+//		if (referer != null) {
+//			return "redirect:" + referer;
+//		} else {
 			// 만약 Referer가 없는 경우, 기본적으로 메인 페이지로 이동하도록 처리
-			return "redirect:/main.jsp";
-		}
+			return "redirect:/main";
+//		}
 
 	}
 

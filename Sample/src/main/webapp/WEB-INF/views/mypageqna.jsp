@@ -202,7 +202,6 @@
     });
     function goSearch(){
     	let search = $("#searchInput").val();
-    	console.log("search" + search);
     	$(location).attr('href',"<c:url value='/mypageqna?search="+search+"'/>");
     }
     </script>

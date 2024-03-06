@@ -43,7 +43,7 @@
       <div class="box">
         <a
           href="mypage"
-          >찜</a
+          id="selected" >찜</a
         >
         <br />
         <br />

@@ -109,9 +109,6 @@
     function updateCounter() {
       counter.textContent = currentSlide + 1 + " / " + slides.length;
 
-      // 배너 이미지가 없을 때 숨김 처리
-//       const slideCountBox = document.querySelector(".slide__count-box");
-//       slideCountBox.style.display = slides.length === 0 ? "none" : "block";
     }
 
     updateCounter();

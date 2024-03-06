@@ -156,8 +156,12 @@
 		    </div>
 		</div>
       </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-    
+    function goPage(pageNo){
+    	let searchInputValue = $("#searchInput").val();
+    	$(location).attr('href',"<c:url value='/mypageproduct?pageNo="+pageNo+"'/>");
+    }
     </script>
   </body>
 </html>

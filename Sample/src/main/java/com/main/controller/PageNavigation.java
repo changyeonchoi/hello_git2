@@ -22,7 +22,6 @@ public class PageNavigation {
 	private int naviSize;
 	
 	private int startRow;
-	
 	private int endRow;
 	
     public PageNavigation() {
@@ -49,12 +48,20 @@ public class PageNavigation {
 	public void setEndRow(int endRow) {
 		this.endRow = endRow;
 	}
-	public PageNavigation(Map<String, Object> map) {
-	        int pageNo = (Integer) map.get("pageNo");
-	        int listSize = (Integer) map.get("listSize");
-	        this.startRow = (pageNo - 1) * listSize + 1;
-	        this.endRow = pageNo * listSize;
-	}
+    public PageNavigation(Map<String, Object> map) {
+        this.pageNo = (int) map.get("pageNo");
+        this.listSize = (int) map.get("listSize");
+        this.naviSize = (int) map.get("naviSize");
+
+        // Check if naviSize is 0, if so, set a default value (e.g., 1)
+        if (naviSize == 0) {
+            this.naviSize = 1;
+        }
+
+        // Calculate startRow and endRow
+        this.startRow = (pageNo - 1) * listSize + 1;
+        this.endRow = pageNo * listSize;
+    }
 	public int getNewCount() {
 		return newCount;
 	}
@@ -116,7 +123,8 @@ public class PageNavigation {
 	    }
 
 	    if (!this.isFirstRange()) {
-	        sbHtml.append("<a class='pagination' id='prePage' href='' onclick='goPage(" + (startPageNo - 1) + "); return false;'>&lt;</a>");
+	    	sbHtml.append("<a class='pagination' id='prePage' href='' onclick='goPage(1); return false;'>&#8249; 처음</a>");
+	        sbHtml.append("<a class='page-number' id='prePage' href='' onclick='goPage(" + (startPageNo - 1) + "); return false;'>&lt;</a>");
 	    }
 
 	    sbHtml.append("<span class='pagination'>");
@@ -126,9 +134,12 @@ public class PageNavigation {
 	    sbHtml.append("</span>");
 
 	    if (!this.isLastRange()) {
-	        sbHtml.append("<a class='pagination' id='nextPage' href='' onclick='goPage(" + (endPageNo + 1) + "); return false;'>&gt;</a>");
+	        sbHtml.append("<a class='page-number' id='nextPage' href='' onclick='goPage(" + (endPageNo + 1) + "); return false;'>&gt;</a>");
+	        sbHtml.append("<a class='pagination' id='nextPage' href='' onclick='goPage(" + totalPageCount + "); return false;'>&끝;</a>");
 	    }
 
+	    System.out.println("sbHtml" + sbHtml);
+	    
 	    return sbHtml.toString();
 	}
 	

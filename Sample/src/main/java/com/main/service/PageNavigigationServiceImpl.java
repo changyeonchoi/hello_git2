@@ -32,5 +32,4 @@ public class PageNavigigationServiceImpl implements PageNavigigationService{
 		return navigation;
 
 	}
-
 }

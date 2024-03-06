@@ -210,10 +210,14 @@ public class MypageController {
     	map.put("naviSize", naviSize);
     	map.put("search", search);
     	
+    	System.out.println("map" + map);
+    	
     	// 해당 pageNavigation에서 html code생성
     	PageNavigation pageNavigation = new PageNavigation(map);
     	map.put("startRow", pageNavigation.getStartRow());
     	map.put("endRow", pageNavigation.getEndRow());
+    	
+    	System.out.println("pageNavigation" + pageNavigation);
     	
     	// 페이지 네비게이션 객체 생성
     	PageNavigation navigation = pagenavigigationservice.makePageNavigation(map);
