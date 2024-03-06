@@ -66,10 +66,10 @@ public class MypageController {
 	    	int heartCount = heartservice.selectheartuserCount(heartcnt);
 	    	
 	    	Map<String, Object> map = new HashMap<String, Object>();
-	    	map.put("user_id", membervo.getUser_id());
+	    	map.put("user_id", user_id);
 	    	map.put("heartCount", heartCount);
 	    	map.put("code", code);
-	    	
+
 	    	List<ProductVo> productList = heartservice.selectheartProductList(map);
 	    	
 	    	int numberOfItemsToDisplay = 8;
@@ -103,6 +103,7 @@ public class MypageController {
 	    	}
 	    	
 	    	model.addAttribute("productList", productList);
+	    	
         }
 		
 		return "mypage";
@@ -120,7 +121,7 @@ public class MypageController {
 		
 		MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
 		
-		System.out.println(membervo);
+		System.out.println("membervo" + membervo);
 		
 		if (membervo != null) {
             String user_id = membervo.getUser_id();
@@ -131,9 +132,6 @@ public class MypageController {
 	    	
 	    	// 찜하기 갯수
 	    	int totalCount = heartservice.selectheartqnaCount(heartcnt);
-	    	
-	    	System.out.println(totalCount);
-	    	
 	    	
 		    Map<String, Object> keyword = new HashMap<String, Object>();
 	    	keyword.put("search", search);

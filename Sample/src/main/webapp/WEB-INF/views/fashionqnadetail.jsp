@@ -16,25 +16,25 @@
   </head>
   <body>
     <!-- 상단 바 -->
-	<header>
+    <header>
       <div class="logo">
-        <a href="main">BT</a>
+        <p>BT</p>
       </div>
       <nav class="shop-nav">
-        <a href="fashionlist" id="selected">Fashion</a>
+        <a href="fashionlist">Fashion</a>
         <a href="makeuplist">Make Up</a>
         <a href="accessorylist">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="login" id="loginLink">MY</a>
+        <a href="login?returnUrl=mypage" id="loginLink">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="mypage">MY</a>
+        <a href="mypage" onclick="getUserId()">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
@@ -43,11 +43,13 @@
     <div class="notice__detail--box">
       <h1>게시글 보기</h1>
       <div class="detail__notice">
-        <div class="detail__notice--button--box">
-	        <button class="search--button" id="toggleHeart">
-				<span id="heart">${heartCount eq 1 ? '찜하기❤️' : '찜하기♡'}</span>
-			</button>
-        </div>
+		<c:if test="${qnavo.qna_like_yn eq 'Y'}">
+		    <div class="detail__notice--button--box">
+		        <button class="search--button" id="toggleHeart">
+		            <span id="heart">${heartCount eq 1 ? '찜하기❤️' : '찜하기♡'}</span>
+		        </button>
+		    </div>
+		</c:if>
         <div class="info__box--title">
           <div class="title__box">
             <p>등록자</p>
@@ -97,10 +99,10 @@
         </div>
         <div class="cancel__box">
           <button onclick="cancel()">취소</button>
-        <c:if test="${memberVo.user_id == qnavo.user_id}">
+        <c:if test="${membervo.user_id == qnavo.user_id}">
           <button onclick="update(${qnavo.seq_id})">수정</button>
         </c:if>
-        <c:if test="${memberVo.user_id != qnavo.user_id}">
+        <c:if test="${membervo.user_id != qnavo.user_id}">
         </c:if>
         </div>
       </div>
@@ -116,14 +118,15 @@
     function openPopup() {
         var code = '${qnavo.code}';
         var seq_id = ${qnavo.seq_id};
-        var url = 'commentpopup?code=' + code + '&seq_id=' + seq_id;
+        var user_id = '${membervo.user_id}';
+        var url = 'commentpopup?code=' + code + '&seq_id=' + seq_id + '&user_id=' + user_id;
         window.open(url, '댓글 등록', 'width=500, height=300, left=500, top=200');
     }
     $(document).ready(function() {
         $('#toggleHeart').click(function() {
             var heartElement = $('#heart');
             var heart = ${heartCount};
-            var user_id = '${memberVo.user_id}';
+            var user_id = '${membervo.user_id}';
             var seq_id = ${qnavo.seq_id};
             var code = 'fashion';
             
@@ -157,6 +160,11 @@
             });
         });
     });
+    function getUserId() {
+        var userId = '${membervo.user_id}';
+        
+        window.location.href = 'mypage?user_id=' + userId;
+    }
     </script>
 
   </body>

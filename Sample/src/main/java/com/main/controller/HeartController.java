@@ -36,6 +36,7 @@ public class HeartController {
             if (currentHeartCount > 0) {
                 // 이미 등록되어 있으면 삭제
                 heartservice.downHeart(map);
+                System.out.println("삭제");
                 response.put("action", "삭제");
             } else {
                 // 등록
@@ -43,6 +44,7 @@ public class HeartController {
                 map.put("code", code);
                 map.put("type", type);
                 heartservice.upHeart(map);
+                System.out.println("등록");
                 response.put("action", "등록");
             }
         

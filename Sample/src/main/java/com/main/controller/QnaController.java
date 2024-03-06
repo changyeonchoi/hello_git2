@@ -119,13 +119,15 @@ public class QnaController {
 		
 		String returnUrl = "/fashionqnainsert";
 		
+		
+		
 		// 로그인 세션 가져오기
 		MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
 		QnaVo qnavo = new QnaVo();
 		qnavo.setUser_id(membervo.getUser_id());
 		qnavo.setQna_title(qna_title);
 		qnavo.setFile_img(file_img, uploadPath, qnavo.getFile_img());
-		qnavo.setQna_detail(qna_detail);
+		qnavo.setQna_detail(qna_detail); 
 		qnavo.setQna_like_yn(qna_like_yn);
 		qnavo.setCode(code);
 		
@@ -139,7 +141,9 @@ public class QnaController {
 	        @RequestParam(value = "seq_id", required = false) Integer seq_id,
 	        @RequestParam(value = "file_img", required = false) MultipartFile file_img,
 	        @RequestParam(value = "code", defaultValue="fashion") String code,
-	        @RequestParam(value = "user_id", required = false) MultipartFile user_id) throws IOException {
+	        @RequestParam(value = "user_id", required = false) String user_id) throws IOException {
+		
+		String returnUrl = "/fashionqnadetail";
 		
 	    Map<String, Object> Cmt = new HashMap<String, Object>();
 	    Cmt.put("code", code);
@@ -162,19 +166,14 @@ public class QnaController {
 	    
 	    Map<String, Object> heartqnacnt = new HashMap<String, Object>();
 	    heartqnacnt.put("seq_id", seq_id);
-	    heartqnacnt.put("user_id", membervo.getUser_id());
+	    heartqnacnt.put("user_id", qnavo.getUser_id());
     	
     	// 찜하기 갯수
     	int heartCount = heartservice.selectqnaheartCount(heartqnacnt);
     	
       	model.addAttribute("heartCount" , heartCount);
     	
-	    String userId = qnavo.getUser_id();
-
-	    String MuserId = membervo.getUser_id();
-
-
-	    return "fashionqnadetail";
+	    return returnUrl;
 
 	}
 	
@@ -184,20 +183,16 @@ public class QnaController {
 			@RequestParam(value = "file_img", required = false) MultipartFile file_img,
 			@RequestParam(value = "user_id", required = false) MultipartFile user_id) throws IOException {
 		
+		String returnUrl = "/fashionupdateqna";
+		
 		qnavo = qnaservice.detailQnaFashion(seq_id);
 		
 		model.addAttribute("qnavo", qnavo);
 		
-		MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
-		
 		String uploadUrl = qnavo.getFile_img().replaceAll("C:\\\\", "\\\\images\\\\");
 		qnavo.setFile_img(uploadUrl);
-		String userId = qnavo.getUser_id();
 		
-		String MuserId = membervo.getUser_id();
-		
-		
-		return "fashionupdateqna";
+		return returnUrl;
 		
 	}
 	
@@ -320,6 +315,8 @@ public class QnaController {
 	        @RequestParam(value = "code", defaultValue="accessory") String code,
 	        @RequestParam(value = "user_id", required = false) MultipartFile user_id) throws IOException {
 		
+		String returnUrl = "/accessoryqnadetail";
+		
 	    Map<String, Object> Cmt = new HashMap<String, Object>();
 	    Cmt.put("code", code);
 	    Cmt.put("seq_id", seq_id);
@@ -352,7 +349,7 @@ public class QnaController {
 
 	    String MuserId = membervo.getUser_id();
 
-	    return "accessoryqnadetail";
+	    return returnUrl;
 	    
 	}
 	
@@ -362,20 +359,16 @@ public class QnaController {
 			@RequestParam(value = "file_img", required = false) MultipartFile file_img,
 			@RequestParam(value = "user_id", required = false) MultipartFile user_id) throws IOException {
 		
+		String returnUrl = "/accessoryupdateqna";
+		
 		qnavo = qnaservice.detailQnaFashion(seq_id);
 		
 		model.addAttribute("qnavo", qnavo);
 		
-		MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
-		
 		String uploadUrl = qnavo.getFile_img().replaceAll("C:\\\\", "\\\\images\\\\");
 		qnavo.setFile_img(uploadUrl);
-		String userId = qnavo.getUser_id();
 		
-		String MuserId = membervo.getUser_id();
-		
-		
-		return "accessoryupdateqna";
+		return returnUrl;
 		
 	}
 	
@@ -461,7 +454,9 @@ public class QnaController {
 	        @RequestParam(value = "code", defaultValue="makeup") String code,
 	        @RequestParam(value = "user_id", required = false) String user_id) throws IOException {
 
-		 Map<String, Object> Cmt = new HashMap<String, Object>();
+			String returnUrl = "/makeupqnadetail";
+		
+		 	Map<String, Object> Cmt = new HashMap<String, Object>();
 		    Cmt.put("code", code);
 		    Cmt.put("seq_id", seq_id);
 	    	
@@ -481,7 +476,7 @@ public class QnaController {
 		    String uploadUrl = qnavo.getFile_img().replaceAll("C:\\\\", "\\\\images\\\\");
 		    qnavo.setFile_img(uploadUrl);
 
-		    return "makeupqnadetail";
+		    return returnUrl;
 	}
 	
 	@RequestMapping(value="/makeupupdateqna", method = {RequestMethod.GET, RequestMethod.POST})
@@ -490,20 +485,16 @@ public class QnaController {
 			@RequestParam(value = "file_img", required = false) MultipartFile file_img,
 			@RequestParam(value = "user_id", required = false) MultipartFile user_id) throws IOException {
 		
+		String returnUrl = "/makeupupdateqna";
+		
 		qnavo = qnaservice.detailQnaFashion(seq_id);
 		
 		model.addAttribute("qnavo", qnavo);
 		
-		MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
-		
 		String uploadUrl = qnavo.getFile_img().replaceAll("C:\\\\", "\\\\images\\\\");
 		qnavo.setFile_img(uploadUrl);
-		String userId = qnavo.getUser_id();
 		
-		String MuserId = membervo.getUser_id();
-		
-		
-		return "makeupupdateqna";
+		return returnUrl;
 		
 	}
 	
@@ -588,9 +579,7 @@ public class QnaController {
 	        @RequestParam(value = "seq_id", required = false) String seq_idStr,
 	        @RequestParam(value = "comment_content", required = false) String comment_content,
 	        @RequestParam(value = "code", required = false) String code,
-	        Model model, HttpServletRequest request) {
-
-	    MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
+	        Model model, HttpServletRequest request,QnaVo qnavo) {
 
 	    Integer seq_id = null;
 	    try {
@@ -601,15 +590,57 @@ public class QnaController {
 	    }
 
 	    CommentVo commentvo = new CommentVo();
-	    commentvo.setUser_id(membervo.getUser_id());
+	    commentvo.setUser_id(user_id);
 	    commentvo.setSeq_id(seq_id);
 	    commentvo.setComment_content(comment_content);
 	    commentvo.setCode(code);
 	    
 
-	    commentservice.insertComment(commentvo);
+	    int generatedRnum = commentservice.insertComment(commentvo);
+	    
+	    commentvo.setRnum(generatedRnum);
 
 	    return commentvo;
 	}
+	
+	@RequestMapping(value="/qnadetail", method = {RequestMethod.GET, RequestMethod.POST})
+	public String qnadetail(QnaVo qnavo, Model model, HttpServletRequest request,
+	        @RequestParam(value = "seq_id", required = false) Integer seq_id,
+	        @RequestParam(value = "file_img", required = false) MultipartFile file_img,
+	        @RequestParam(value = "code", defaultValue="fashion") String code,
+	        @RequestParam(value = "user_id", required = false) String user_id) throws IOException {
+		
+		String returnUrl = "/qnadetail";
+		
+	    Map<String, Object> Cmt = new HashMap<String, Object>();
+	    Cmt.put("code", code);
+	    Cmt.put("seq_id", seq_id);
+    	
+    	// 총 갯수
+    	int totalCount = commentservice.CmtTotalCount(Cmt);
+    	
+    	model.addAttribute("totalCount",totalCount);
 
+	    qnavo = qnaservice.detailQnaFashion(seq_id);
+	    
+	    
+	    model.addAttribute("qnavo", qnavo);
+	    
+	    MemberVo membervo = (MemberVo) request.getSession().getAttribute("membervo");
+	    
+	    String uploadUrl = qnavo.getFile_img().replaceAll("C:\\\\", "\\\\images\\\\");
+	    qnavo.setFile_img(uploadUrl);
+	    
+	    Map<String, Object> heartqnacnt = new HashMap<String, Object>();
+	    heartqnacnt.put("seq_id", seq_id);
+	    heartqnacnt.put("user_id", qnavo.getUser_id());
+    	
+    	// 찜하기 갯수
+    	int heartCount = heartservice.selectqnaheartCount(heartqnacnt);
+    	
+      	model.addAttribute("heartCount" , heartCount);
+    	
+	    return returnUrl;
+
+	}
 }

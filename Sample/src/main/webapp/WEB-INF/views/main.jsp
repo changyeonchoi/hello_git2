@@ -17,6 +17,7 @@
   <style>
 	.coupon-carousel .carousel {
 	  display: flex;
+	  overflow: hidden;
 	  transition: transform 0.5s ease-in-out;
 	  width: 100%; /* 변경된 부분: 이미지 개수 * 100%로 설정 */
 	}
@@ -225,6 +226,7 @@ header .shop-nav__info a:first-child {
 .carousel {
   display: flex;
   transition: transform 0.5s ease-in-out;
+  width: 100%;
 }
 
 .carousel img {
@@ -285,7 +287,11 @@ header .shop-nav__info a:first-child {
 }
 .slide__count-box .counter {
   margin: 0 5px;
-}/*# sourceMappingURL=style.css.map */
+}
+.shop__code--Box.coupon-carousel {
+  overflow: hidden; /* 추가된 부분: 넘치는 부분을 감춤 */
+  width: 100%; /* 추가된 부분: 이미지가 하나씩만 나타나도록 설정 */
+}
   </style>
   <body>
     <!-- 상단 바 -->
@@ -299,29 +305,28 @@ header .shop-nav__info a:first-child {
         <a href="accessorylist">Accessory</a>
         <a href="search">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="login" id="loginLink">MY</a>
+        <a href="login?returnUrl=mypage" id="loginLink">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="mypage" onclick="getUserId()">MY</a>
+        <a onclick="getUserId()">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
-      
     </header>
     <!-- 메인 -->
     <div class="wrap">
 		<div class="shop__header--photoBox">
-		  <!-- 배너 영역 케러셀 -->
-		  <div class="carousel banner-carousel">
-		    <c:forEach var="banner" items="${banner}" varStatus="status">
-		      <img src="${banner.banner_img}" alt="test"/>
-		    </c:forEach>
-		  </div>
+		  	<!-- 배너 영역 케러셀 -->
+			<div class="carousel banner-carousel">
+			  <c:forEach var="banner" items="${banner}" varStatus="status">
+			      <img src="${banner.banner_img}" data-land-url="${banner.land_url}" alt="Banner Image"/>
+			  </c:forEach>
+			</div>
 		  <div class="slide__count-box">
 		    <div class="arrow prev" onclick="prevBannerSlide()">❮</div>
 		    <div class="counter">1 / 3</div>
@@ -339,7 +344,7 @@ header .shop-nav__info a:first-child {
             <div class="shop__code--Box">
             <c:forEach var="fashion" items="${fashion}" varStatus="status">
 	            <div class="shop__code--product">
-		            <a href="/fashiondetail?seq_id=${fashion.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
+		            <a href="/fashiondetail?seq_id=${fashion.seq_id}">
 		                <img src="${fashion.file_img}" alt="test"/>
 		            </a>
 		            <p class="shop__code--content">
@@ -347,25 +352,6 @@ header .shop-nav__info a:first-child {
 		            </p>
 	        	</div>
 			</c:forEach>
-<!--               <div class="shop__code--product"> -->
-<!--                 <img -->
-<!--                   src="https://m.gifteabox.com/web/product/big/202209/9ba87936e31b29ebdd3769ff8e9c226f.jpg" -->
-<!--                   alt="code-image" -->
-<!--                 /> -->
-<!--                 <p class="shop__code--content">가을 코디</p> -->
-<!--               </div> -->
-<!--               <div class="shop__code--product"> -->
-<!--                 <img -->
-<!--                   src="https://m.youngcode.kr/web/product/big/202109/fae83f9866375e7bc69866a3732ac30b.jpg" -->
-<!--                   alt="code-image" -->
-<!--                 /> -->
-<!--                 <p class="shop__code--content">초가을 바람막이</p> -->
-<!--               </div> -->
-<!--               <div class="shop__code--product"> -->
-<!--                 <div class="shop__code--ready"> -->
-<!--                   <p>상품 준비중</p> -->
-<!--                 </div> -->
-<!--               </div> -->
             </div>
           </div>
           <div class="shop__main--axeBox">
@@ -376,7 +362,7 @@ header .shop-nav__info a:first-child {
             <div class="shop__code--Box">
             <c:forEach var="accessory" items="${accessory}" varStatus="status">
 	            <div class="shop__code--product">
-		            <a href="/accessorydetail?seq_id=${accessory.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
+		            <a href="/accessorydetail?seq_id=${accessory.seq_id}">
 		                <img src="${accessory.file_img}" alt="test"/>
 		            </a>
 		            <p class="shop__code--content">
@@ -384,27 +370,6 @@ header .shop-nav__info a:first-child {
 		            </p>
 	        	</div>
 			</c:forEach>
-<!--               <div class="shop__code--product"> -->
-<!--                 <img -->
-<!--                   src="https://cdn.imweb.me/thumbnail/20220423/47b73dd721574.jpg" -->
-<!--                   alt="ring-image" -->
-<!--                 /> -->
-<!--                 <p class="shop__code--content">기부 목적 귀걸이</p> -->
-<!--               </div> -->
-<!--               <div class="shop__code--product"> -->
-<!--                 <img -->
-<!--                   src="https://cowx2.cafe24.com/web/product/small/shop1_6eb5e9154055e0c37eb1a8bde6a68326.jpg" -->
-<!--                   alt="ring-image" -->
-<!--                 /> -->
-<!--                 <p class="shop__code--content">블링블링 롱 귀걸이</p> -->
-<!--               </div> -->
-<!--               <div class="shop__code--product"> -->
-<!--                 <img -->
-<!--                   src="https://webimg.jestina.co.kr/UpData2/item/G2000014656/20211118105325ZM.jpg" -->
-<!--                   alt="ring-image" -->
-<!--                 /> -->
-<!--                 <p class="shop__code--content">이너용 평평 귀걸이</p> -->
-<!--               </div> -->
             </div>
           </div>
         </div>
@@ -420,7 +385,7 @@ header .shop-nav__info a:first-child {
               <div class="shop__code--Box">
               <c:forEach var="makeup" items="${makeup}" varStatus="status">
 	            <div class="shop__code--product">
-		            <a href="/makeupdetail?seq_id=${makeup.seq_id}"> <!-- 여기에 해당 상품의 상세 페이지 URL을 지정 -->
+		            <a href="/makeupdetail?seq_id=${makeup.seq_id}">
 		                <img src="${makeup.file_img}" alt="test"/>
 		            </a>
 		            <p class="shop__code--content">
@@ -430,39 +395,47 @@ header .shop-nav__info a:first-child {
 			  </c:forEach>
               </div>
             </div>
+            <input type="hidden" id="userIdInput" value="${membervo.user_id}">
 			<div class="shop__main--axeBox">
 			  <div class="shop__code--titleBox">
 			    <p>쿠폰 할인받기!</p>
 			  </div>
-			  <!-- 쿠폰 영역 케러셀 -->
-			  <div class="shop__coupon--photoBox">
-			  <div class="carousel coupon-carousel">
-			    <c:forEach var="coupon" items="${coupon}" varStatus="status">
-			        <c:choose>
-			            <c:when test="${coupon.code eq 'fashion'}">
-			                <a href="/fashiondetail?seq_id=${coupon.seq_id}&sale=${coupon.sale}">
-			                    <img src="${coupon.banner_img}" alt="Fashion Coupon Image"/>
-			                </a>
-			            </c:when>
-			            <c:when test="${coupon.code eq 'makeup'}">
-			                <a href="/makeupdetail?seq_id=${coupon.seq_id}&sale=${coupon.sale}">
-			                    <img src="${coupon.banner_img}" alt="Makeup Coupon Image"/>
-			                </a>
-			            </c:when>
-			            <c:when test="${coupon.code eq 'accessory'}">
-			                <a href="/accessorydetail?seq_id=${coupon.seq_id}&sale=${coupon.sale}">
-			                    <img src="${coupon.banner_img}" alt="Accessory Coupon Image"/>
-			                </a>
-			            </c:when>
-			        </c:choose>
-			    </c:forEach>
-			  </div>
-			  <div class="slide__coupon-box">
-			    <div class="arrow prev" onclick="prevCouponSlide()">❮</div>
-			    <div class="couponcounter">1 / 3</div>
-			    <div class="arrow next" onclick="nextCouponSlide()">❯</div>
-			  </div>
-			  </div>
+				<!-- 쿠폰 영역 케러셀 -->
+				<div class="shop__code--Box coupon-carousel">
+				<div class="carousel">
+				  <c:forEach var="currentCoupon" items="${coupon}" varStatus="status">
+				    <c:choose>
+				      <c:when test="${currentCoupon.code eq 'fashion'}">
+				        <div class="shop__code--product">
+				          <a href="/fashiondetail?seq_id=${currentCoupon.seq_id}&sale=${currentCoupon.sale}">
+				            <img src="${currentCoupon.banner_img}" alt="Fashion Coupon Image"/>
+				          </a>
+				        </div>
+				      </c:when>
+				      <c:when test="${currentCoupon.code eq 'makeup'}">
+				        <div class="shop__code--product">
+				          <a href="/makeupdetail?seq_id=${currentCoupon.seq_id}&sale=${currentCoupon.sale}">
+				            <img src="${currentCoupon.banner_img}" alt="Makeup Coupon Image"/>
+				          </a>
+				        </div>
+				      </c:when>
+				      <c:when test="${currentCoupon.code eq 'accessory'}">
+				        <div class="shop__code--product">
+				          <a href="/accessorydetail?seq_id=${currentCoupon.seq_id}&sale=${currentCoupon.sale}">
+				            <img src="${currentCoupon.banner_img}" alt="Accessory Coupon Image"/>
+				          </a>
+				        </div>
+				      </c:when>
+				    </c:choose>
+				  </c:forEach>
+				</div>
+				<div class="slide__coupon-box">
+				  <div class="arrow prev" onclick="prevCouponSlide()">❮</div>
+				  <div class="couponcounter">1 / 3</div>
+				  <!-- 이 부분 추가: 쿠폰이 1개인 경우에는 next 화살표를 숨김 -->
+				  <div class="arrow next" onclick="nextCouponSlide()" style="display: ${couponSlides.length > 1 ? 'block' : 'none'}">❯</div>
+				</div>
+				</div>
 			</div>
           </div>
         </div>
@@ -473,42 +446,53 @@ header .shop-nav__info a:first-child {
   고객센터 : 010-5674-0712
 </footer>
     <script>
-    // 배너 영역 스크립트
-    let currentBannerSlide = 0;
-    const bannerSlides = document.querySelectorAll(".banner-carousel img");
-    const bannerCounter = document.querySelector(".counter");
+  // 배너 영역 스크립트
+  let currentBannerSlide = 0;
+  const bannerSlides = document.querySelectorAll(".banner-carousel img");
 
-    function showBannerSlide(index) {
-      if (index < 0) {
-        currentBannerSlide = bannerSlides.length - 1;
-      } else if (index >= bannerSlides.length) {
-        currentBannerSlide = 0;
-      } else {
-        currentBannerSlide = index;
-      }
-      const transformValue = -currentBannerSlide * 100 + "%";
-      document.querySelector(".banner-carousel").style.transform =
-        "translateX(" + transformValue + ")";
-      updateBannerCounter();
+  function showBannerSlide(index) {
+    if (index < 0) {
+      currentBannerSlide = bannerSlides.length - 1;
+    } else if (index >= bannerSlides.length) {
+      currentBannerSlide = 0;
+    } else {
+      currentBannerSlide = index;
     }
-
-    function prevBannerSlide() {
-      showBannerSlide(currentBannerSlide - 1);
-    }
-
-    function nextBannerSlide() {
-      showBannerSlide(currentBannerSlide + 1);
-    }
-
-    function updateBannerCounter() {
-      bannerCounter.textContent = currentBannerSlide + 1 + " / " + bannerSlides.length;
-    }
-
+    const transformValue = -currentBannerSlide * 100 + "%";
+    document.querySelector(".banner-carousel").style.transform =
+      "translateX(" + transformValue + ")";
     updateBannerCounter();
+  }
+
+  function prevBannerSlide() {
+    showBannerSlide(currentBannerSlide - 1);
+  }
+
+  function nextBannerSlide() {
+    showBannerSlide(currentBannerSlide + 1);
+  }
+
+  function updateBannerCounter() {
+    document.querySelector(".counter").textContent =
+      currentBannerSlide + 1 + " / " + bannerSlides.length;
+  }
+
+//이미지 클릭 시 새 창에서 land_url 열기
+  bannerSlides.forEach((banner, index) => {
+    banner.addEventListener("click", () => {
+      const landUrl = banner.getAttribute("data-land-url");
+      console.log('landUrl ' + landUrl);
+      if (landUrl) {
+//         console.log('newUrl ' + newUrl);
+//         window.location.href = newUrl;
+      }
+    });
+  });
+
+  updateBannerCounter();
       
- 	// 쿠폰 영역 스크립트
     let currentCouponSlide = 0;
-    const couponSlides = document.querySelectorAll(".coupon-carousel img");
+    const couponSlides = document.querySelectorAll(".coupon-carousel .shop__code--product");
     const couponCounter = document.querySelector(".couponcounter");
 
     function showCouponSlide(index) {
@@ -520,7 +504,7 @@ header .shop-nav__info a:first-child {
         currentCouponSlide = index;
       }
       const transformValue = -currentCouponSlide * 100 + "%";
-      document.querySelector(".coupon-carousel").style.transform =
+      document.querySelector(".coupon-carousel .carousel").style.transform =
         "translateX(" + transformValue + ")";
       updateCouponCounter();
     }
@@ -530,14 +514,16 @@ header .shop-nav__info a:first-child {
     }
 
     function nextCouponSlide() {
-      showCouponSlide(currentCouponSlide + 1);
+      // 이 부분에서 현재 쿠폰이미지 개수가 1개라면 더이상 이동하지 않도록 처리
+      if (couponSlides.length > 1) {
+        showCouponSlide(currentCouponSlide + 1);
+      }
     }
 
     function updateCouponCounter() {
       couponCounter.textContent = currentCouponSlide + 1 + " / " + couponSlides.length;
     }
 
-    updateCouponCounter();
     
     function getUserId() {
         // membervo.user_id 값을 얻어옴
@@ -546,7 +532,8 @@ header .shop-nav__info a:first-child {
         
         // 이후에 필요한 작업 수행
         // 예를 들어, 해당 값으로 서버에 요청을 보내거나 다른 동작 수행 가능
-        console.log("User ID:", userId);
+//         alert("User ID:", userId);
+        console.log('mypage?user_id=' + userId);
         
         // 페이지 이동
         window.location.href = 'mypage?user_id=' + userId;

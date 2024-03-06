@@ -266,6 +266,7 @@
             t.code
         FROM product_qna_table t
         WHERE ROWNUM <= #{endRow, jdbcType=INTEGER}
+            AND (t.qna_title LIKE '%' || #{search, jdbcType=VARCHAR} || '%')  -- 여기에 검색 조건 추가
         ORDER BY t.regdate DESC
     ) q
     LEFT JOIN (
@@ -280,4 +281,5 @@
         AND ROWNUM >= #{startRow, jdbcType=INTEGER}
     ]]>
 </select>
+
 </mapper>

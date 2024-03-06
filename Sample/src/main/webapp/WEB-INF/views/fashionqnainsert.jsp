@@ -13,27 +13,27 @@
     <link rel="stylesheet" href="resources/css/detail.css" />
   </head>
   <body>
+  
     <!-- 상단 바 -->
-	<header>
-	<c:set var="user_id" value="${sessionScope.membervo.user_id}" />
+    <header>
       <div class="logo">
-        <a href="main">BT</a>
+        <p>BT</p>
       </div>
       <nav class="shop-nav">
-        <a href="fashionlist" id="selected">Fashion</a>
+        <a href="fashionlist">Fashion</a>
         <a href="makeuplist">Make Up</a>
         <a href="accessorylist">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="login?returnUrl=mypage" id="loginLink">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="mypage" onclick="getUserId()">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
@@ -44,7 +44,7 @@
         <div class="info__box--title">
           <div class="title__box">
             <p>등록자</p>
-            <input type="text" class="title__box--user" value="${user_id}" id="user_id" disabled />
+              <input type="text" class="title__box--user" value="${param.user_id}" id="user_id" disabled />
           </div>
           <div class="title__box">
             <p>제목*</p>
@@ -65,7 +65,7 @@
           <div id="title__box--content" class="title__box">
           	<p>내용*</p>
 			  <textarea id="qna_detail"
-	          placeholder="헤드셋 : 맥스 &#13;&#10;바람막이 : 무신사 &#13;&#10;평가좀요!!"
+	          placeholder="내용을 입력해주세요."
 	          oninput="checkMaxLength(this);"
 	          maxlength="200"></textarea>
           </div>
@@ -186,6 +186,12 @@
         if (currentLength > maxLength) {
             textarea.value = textarea.value.slice(0, maxLength);
         }
+    }
+    
+    function getUserId() {
+        var userId = '${membervo.user_id}';
+        
+        window.location.href = 'mypage?user_id=' + userId;
     }
     </script>
 

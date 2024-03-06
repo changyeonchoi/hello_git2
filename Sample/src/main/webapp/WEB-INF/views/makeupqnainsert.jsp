@@ -23,17 +23,17 @@
         <a href="fashionlist">Fashion</a>
         <a href="makeuplist" id="selected">Make Up</a>
         <a href="accessorylist">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="login?returnUrl=mypage" id="loginLink">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="mypage" onclick="getUserId()">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
@@ -65,7 +65,7 @@
           <div id="title__box--content" class="title__box">
             <p>내용*</p>
 			  <textarea id="qna_detail"
-	          placeholder="헤드셋 : 맥스 &#13;&#10;바람막이 : 무신사 &#13;&#10;평가좀요!!"
+	          placeholder="내용을 입력해주세요."
 	          oninput="checkMaxLength(this);"
 	          maxlength="200"></textarea>
           </div>
@@ -96,7 +96,7 @@
             var qna_pw = $("#qna_pw").val();
             
             // 필수 입력 필드 체크
-            if (!qna_title || !file_img || !qna_detail || !qna_pw) {
+            if (!qna_title || !file_img || !qna_detail) {
                 alert("모든 항목을 입력해주세요.");
                 return; // 필수 입력 필드 중 하나라도 빈 값이면 함수 종료
             }
@@ -188,9 +188,14 @@
     }
     function removeSpaces(element) {
         var inputValue = element.value;
-        var newValue = inputValue.replace(/\s/g, ''); // 띄어쓰기를 모두 제거
+        var newValue = inputValue.replace(/[^a-zA-Z0-9]/g, ''); // Allow only alphanumeric characters
 
         element.value = newValue;
+    }
+    function getUserId() {
+        var userId = '${membervo.user_id}';
+        
+        window.location.href = 'mypage?user_id=' + userId;
     }
     </script>
 

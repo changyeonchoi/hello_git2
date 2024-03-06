@@ -9,27 +9,35 @@
      <style>
      
     .shopping--box {
-      display: inline-block; /* 부모 요소를 인라인 블록으로 설정하여 가로 정렬 */
+      display: inline-block; 
     }
-
-/*     .fashion__order--btn { */
-/*     	font-size: 16px; */
-/*     } */
+	p span {
+	    margin-right: 27px; 
+	}
     .fashion__box--pay {
     text-align: left;
     }
     .fashion__box--drive{
     text-align: left;
     }
-    .fashion__box--sale {
-    text-align: left;
-    }
-
+	.fashion__box--pay--sale {
+	    display: inline-block;
+	    text-align: left; /* 쿠폰 적용가의 텍스트 정렬 변경 */
+	    margin-right: 10px; /* 간격 조절 */
+	}
     .fashion__box--pay .price {
         display: inline-block;
         text-align: right;
         margin-left: 50px; /* 여백 조절 */
     }
+    .fashion__box--pay .slae{
+    	display: inline-block;
+        text-align: right;
+        margin-left: 50px; /* 여백 조절 */
+    }
+	.fashion__box--pay--sale {
+  		text-align: left;
+	}
     .fashion__box--drive .price {
         display: inline-block;
         text-align: right;
@@ -64,18 +72,18 @@
         <a href="fashionlist" id="selected">Fashion</a>
         <a href="makeuplist">Make Up</a>
         <a href="accessorylist">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
-		<c:if test="${empty memberVo.user_id}">
+		<c:if test="${empty membervo.user_id}">
 		  <nav class="shop-nav__info">
-		    <a href="#">MY</a>
+        	<a href="login?returnUrl=mypage" id="loginLink">MY</a>
 		    <a href="login?returnUrl=fashiondetail?seq_id=${fashion.seq_id}">Login</a>
 		  </nav>
 		</c:if>
 		
-		<c:if test="${not empty memberVo.user_id}">
+		<c:if test="${not empty membervo.user_id}">
 		  <nav class="shop-nav__info">
-		    <a href="#">MY</a>
+        	<a href="mypage" onclick="getUserId()">MY</a>
 		    <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
 		  </nav>
 		</c:if>
@@ -83,7 +91,7 @@
     <!-- 메인 -->
     <div>
       <div id="box" class="box">
-        <a href="../fashion_detail/fashion.html" target="_blank" id="selected">계절 유행 STYLE</a>
+        <a href="" target="_blank" id="selected">계절 유행 STYLE</a>
         <p>게시판</p>
       </div>
       <!-- 상세 내용 -->
@@ -103,7 +111,7 @@
                 </div>
 					<c:if test="${not empty param.sale}">
 					  <div class="fashion__box--pay">
-					    <p><span style="color: red;">쿠폰적용가</span><span class="price">${param.sale}원</span></p>
+					    <p><span style="color: red;">쿠폰적용가</span><span class="sale">${param.sale}원</span></p>
 					  </div>
 					</c:if>
                 <div class="fashion__box--drive">
@@ -117,14 +125,13 @@
             </div>
           </div>
           <div class="shopping--box">
-          
-	        <c:if test="${not empty memberVo.user_id}">
+	        <c:if test="${not empty membervo.user_id}">
 				<button class="fashion__order--btn" id="toggleHeart">
 				<span id="heart">${heartCount eq 1 ? '찜하기❤️' : '찜하기♡'}</span>
 				</button>
 	        </c:if>
 	        <!-- 미로그인 상태일 경우 로그인 페이지로 이동하는 JavaScript 코드 추가 -->
-	        <c:if test="${empty memberVo.user_id}">
+	        <c:if test="${empty membervo.user_id}">
 	            <script>
 	                function redirectToLoginPage() {
 	                    window.location.href = 'login?returnUrl=fashiondetail?seq_id=${fashion.seq_id}';
@@ -186,12 +193,17 @@ function showContent(contentId, clickedElement) {
     
 }
 
+function getUserId() {
+    var userId = '${membervo.user_id}';
+    
+    window.location.href = 'mypage?user_id=' + userId;
+}
 
 $(document).ready(function() {
     $('#toggleHeart').click(function() {
         var heartElement = $('#heart');
         var heart = ${heartCount};
-        var user_id = '${memberVo.user_id}';
+        var user_id = '${membervo.user_id}';
         var seq_id = ${fashion.seq_id};
         var code = 'fashion';
         
@@ -228,7 +240,7 @@ $(document).ready(function() {
     $('#order').click(function() {
     	
     	var product_name = $("#product_name").text();
-    	var user_id = '${memberVo.user_id}';
+    	var user_id = '${membervo.user_id}';
     	
     	$.ajax({
             url: "mypageqnainsert", 

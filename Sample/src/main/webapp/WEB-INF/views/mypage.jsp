@@ -25,13 +25,13 @@
         <a href="accessorylist">Accessory</a>
         <a href="search">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
         <a href="#" id="selected">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
@@ -39,7 +39,7 @@
       </c:if>
     </header>
     <!-- 메인 -->
-    <div>
+	<div>
       <div class="box">
         <a
           href="mypage"
@@ -52,54 +52,84 @@
 
       <!-- 초기에 보이는 fashion -->
       <div class="wrap">
-        <!-- 상품 게시판 전체 패션 메이크업 등... -->
-        <div class="top-box">
-          <div class="top-box__total">
-            <p id="selected">상품</p>
-            <a href="mypageqna" onclick="getUserId()">게시판</a>
-          </div>
-          <div class="top-box__total">
-            <p>전체</p>
-            <p>Fashion</p>
-            <p>MakeUp</p>
-            <p>Accessory</p>
-          </div>
+	        <!-- 상품 게시판 전체 패션 메이크업 등... -->
+	        <div class="top-box">
+	          <div class="top-box__total">
+	            <p id="selected">상품</p>
+	            <a href="mypageqna" onclick="getUserId()">게시판</a>
+	          </div>
+				<div class="top-box__total">
+				    <p id="all">전체</p>
+				    <p>Fashion</p>
+				    <p>MakeUp</p>
+				    <p>Accessory</p>
+				</div>
+	        </div>
+	        <div id="main-box" class="shop__main--box">
+	        	<div class="grid-container">
+		            <c:forEach var="productList" items="${productList}" varStatus="status">
+			            <div class="grid-item">
+				            <a href="/fashiondetail?seq_id=${productList.seq_id}">
+				                <img src="${productList.file_img}"/>
+				            </a>
+				            <p class="shop__code--content">
+				            	${productList.banner_title}
+				            </p>
+			        	</div>
+					</c:forEach>
+	         	</div>
+	         </div>
         </div>
-        <div id="main-box" class="shop__main--box">
-          <div class="grid-container">
-            <c:forEach var="productList" items="${productList}" varStatus="status">
-	            <div class="grid-item">
-		            <a href="/fashiondetail?seq_id=${productList.seq_id}">
-		                <img src="${productList.file_img}"/>
-		            </a>
-		            <p class="shop__code--content">
-		            	${productList.banner_title}
-		            </p>
-	        	</div>
-			</c:forEach>
-          </div>
-         </div>
-        </div>
-        </div>
+	</div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
 $(document).ready(function() {
+    // 페이지 로드 시 현재 URL에서 code 값 가져오기
+    var currentCode = getUrlParameter('code');
+
+    // 현재 code 값이 존재하면 해당 값과 일치하는 p에 selected 클래스 추가
+    if (currentCode) {
+        $('.top-box__total p').each(function() {
+            if ($(this).text().toLowerCase() === currentCode) {
+                $(this).addClass("selected");
+            }
+        });
+    } else {
+        // code 값이 없으면 '전체'에 selected 클래스 추가
+        $('#all').addClass("selected");
+    }
+
     // 각 항목 클릭 이벤트
     $('.top-box__total p').click(function() {
 
         // 선택한 값에 따라 code 설정
         var selectedValue = $(this).text().toLowerCase();
-        
+
+        // 현재 클릭된 p에 selected 클래스 추가
+        $(this).addClass("selected");
+
+        // 다른 p에서 selected 클래스 제거
+        $('.top-box__total p').not(this).removeClass("selected");
+
         // 이동할 페이지 URL 설정
         var pageURL = '/mypage';
         if (selectedValue !== '전체' && selectedValue !== '상품' && selectedValue !== '게시판') {
             pageURL += '?code=' + selectedValue;
         }
-        
+
         // 페이지 이동
         window.location.href = pageURL;
     });
+
+    // URL에서 매개변수 추출하는 함수
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
 });
+
 
 function getUserId() {
     // membervo.user_id 값을 얻어옴

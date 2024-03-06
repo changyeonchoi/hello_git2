@@ -105,6 +105,7 @@ public class ProductController {
 		    	code = "main";
 		    }
 		    
+		    
 		    // 해당 코드가 같으면 배너변수에 해당 값 지정
 		    if (code.equals("fashion")) {
 		    	banner_area2 = "fashion";
@@ -115,7 +116,10 @@ public class ProductController {
 		    } else {
 		    	banner_area2 = "Home";
 		    }
-		    
+		    // 여기서 URL을 변경하고 싶은 부분에 대해 처리합니다.
+//		    if (landUrl != null && landUrl.contains("localhost:")) {
+//		        landUrl = landUrl.replace("localhost:", "http://");
+//		    }
 		    
 		    Map<String, Object> keyword = new HashMap<String, Object>();
 	    	keyword.put("search", search);
@@ -124,9 +128,6 @@ public class ProductController {
 
 	    	// 총 갯수
 	    	int totalCount = productservice.selectTotalCount(keyword);
-	    	
-
-	    	
 	    	
 	    	Map<String, Object> map = new HashMap<String, Object>();
 	    	map.put("pageNo", pageNo);
@@ -249,6 +250,7 @@ public class ProductController {
 				
 				model.addAttribute("fashion", productvo);
 		    	model.addAttribute("heartCount" , heartCount);
+		    	System.out.println("heartCount" + heartCount);
 				model.addAttribute("banner", bannerList);
 				
 				returnUrl = "/fashiondetail";

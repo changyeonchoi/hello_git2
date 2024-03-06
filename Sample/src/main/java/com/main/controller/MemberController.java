@@ -90,47 +90,40 @@ public class MemberController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public @ResponseBody Map<String, String> login(@RequestParam("user_id") String user_id,
-			@RequestParam("user_pw") String user_pw, HttpServletRequest request) {
+	        @RequestParam("user_pw") String user_pw, HttpServletRequest request) {
 
-		Map<String, String> response = new HashMap<>();
-		String login;
+	    Map<String, String> response = new HashMap<>();
 
-		MemberVo membervo = new MemberVo();
+	    MemberVo membervo = new MemberVo();
+	    membervo.setUser_id(user_id);
+	    membervo.setUser_pw(user_pw);
 
-		membervo.setUser_id(user_id);
-		membervo.setUser_pw(user_pw);
+	    MemberVo result = memberservice.login(membervo);
 
-		MemberVo result = memberservice.login(membervo);
+	    if (result != null) {
+	        // 로그인 성공 시 세션에 사용자 정보 저장
+	        HttpSession session = request.getSession();
+	        session.setAttribute("membervo", result);
 
-		if (result != null) {
-			// 로그인 성공 시 세션에 사용자 정보 저장
-			HttpSession session = request.getSession();
-			session.setAttribute("memberVo", result);
+	        // "returnUrl" 파라미터 추출
+	        String referer = request.getHeader("Referer");
+	        int index = referer.indexOf("returnUrl=");
+	        if (index != -1) {
+	            String returnUrl = referer.substring(index + 10);
 
-			// 이전 페이지 URL 저장
-			String referer = request.getHeader("Referer");
-			session.setAttribute("referer", referer);
+	            // 추출한 returnUrl을 기반으로 새로운 URL 생성
+	            if (!returnUrl.isEmpty()) {
+	                // user_id와 함께 returnUrl로 리다이렉트
+	                response.put("redirect", returnUrl + "?user_id=" + user_id);
+	                return response;
+	            }
+	        }
 
-			// "returnUrl" 파라미터 추출
-			int index = referer.indexOf("returnUrl=");
-			if (index != -1) {
-				// "returnUrl=" 다음의 문자열을 추출
-				String returnUrl = referer.substring(index + 10);
+	        // "returnUrl"이 없으면 기본적으로 main으로 이동
+	        response.put("redirect", "/main");
+	    }
 
-				// 추출한 returnUrl을 기반으로 새로운 URL 생성
-				if (!returnUrl.isEmpty()) {
-					response.put("redirect", returnUrl);
-					return response;
-				}
-			}
-
-			// "returnUrl"이 없으면 기본적으로 main으로 이동
-			response.put("redirect", "/main");
-		} 
-		
-		request.getSession().setAttribute("membervo", result);
-		
-		return response;
+	    return response;
 	}
 
 	@RequestMapping(value = "/idCheck", method = RequestMethod.POST)

@@ -8,20 +8,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>accessory_qnadetail</title>
+    <title>fashion_qnainsert</title>
     <link rel="stylesheet" href="resources/css/main.css"/>
     <link rel="stylesheet" href="resources/css/detail.css" />
+  <style>
+  </style>
   </head>
   <body>
     <!-- 상단 바 -->
-	<header>
+    <header>
       <div class="logo">
-        <a href="main">BT</a>
+        <p>BT</p>
       </div>
       <nav class="shop-nav">
         <a href="fashionlist">Fashion</a>
         <a href="makeuplist">Make Up</a>
-        <a href="accessorylist" id="selected">Accessory</a>
+        <a href="accessorylist">Accessory</a>
         <a href="search">검색</a>
       </nav>
       <c:if test="${membervo.user_id == null}">
@@ -95,7 +97,7 @@
             </div>
           </div>
         </div>
-		<div class="cancel__box">
+        <div class="cancel__box">
           <button onclick="cancel()">취소</button>
         <c:if test="${membervo.user_id == qnavo.user_id}">
           <button onclick="update(${qnavo.seq_id})">수정</button>
@@ -104,16 +106,17 @@
         </c:if>
         </div>
       </div>
-      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
     function update(seq_id) {
-		window.location.href =  'accessoryupdateqna?seq_id=' + seq_id;
+		window.location.href =  'fashionupdateqna?seq_id=' + seq_id;
     }
     function cancel() {
-    	window.location.href = 'accessoryqnalist';
+    	window.location.href = 'mypageqna';
     }
     function openPopup() {
-    	var code = '${qnavo.code}';
+        var code = '${qnavo.code}';
         var seq_id = ${qnavo.seq_id};
         var user_id = '${membervo.user_id}';
         var url = 'commentpopup?code=' + code + '&seq_id=' + seq_id + '&user_id=' + user_id;

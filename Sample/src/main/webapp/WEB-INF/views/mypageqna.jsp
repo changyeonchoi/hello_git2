@@ -46,13 +46,13 @@
         <a href="accessorylist">Accessory</a>
         <a href="search">검색</a>
       </nav>
- 	<c:if test="${memberVo.user_id == null}">
+ 	<c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
         <a href="login"  id="selected">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
         <a href="#" id="selected">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
@@ -80,7 +80,7 @@
             <p id="selected">게시판</p>
           </div>
           <div class="top-box__total">
-            <p id="selected">전체</p>
+            <p id="all">전체</p>
             <p>Fashion</p>
             <p>Accessory</p>
           </div>
@@ -89,7 +89,7 @@
         <div class="container">
           <div class="search__box">
             <div class="search__box--cotainer">
-              <input type="text" placeholder="제목을 입력하세요" />
+              <input type="text" id="searchInput" placeholder="제목을 입력해주세요" class="input-field"/>
               <button onclick="goSearch()" class="search-button"></button>
             </div>
           </div>
@@ -113,7 +113,7 @@
 				            <fmt:formatDate value="${regdate}" pattern="yyyy.mm.dd"/>
 				            </td>
 				            <td>
-				            <a href="#" class="detail-link" data-seq-id="${qnaList.seq_id}" data-user-id="${memberVo.user_id}">
+				            <a href="#" class="detail-link" data-seq-id="${qnaList.seq_id}" data-user-id="${membervo.user_id}">
 				                ${qnaList.qna_title}
 				            </a>
 				            </td>
@@ -131,21 +131,50 @@
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script>
 	$(document).ready(function() {
+	    // 페이지 로드 시 현재 URL에서 code 값 가져오기
+	    var currentCode = getUrlParameter('code');
+
+	    // 현재 code 값이 존재하면 해당 값과 일치하는 p에 selected 클래스 추가
+	    if (currentCode) {
+	        $('.top-box__total p').each(function() {
+	            if ($(this).text().toLowerCase() === currentCode) {
+	                $(this).addClass("selected");
+	            }
+	        });
+	    } else {
+	        // code 값이 없으면 '전체'에 selected 클래스 추가
+	        $('#all').addClass("selected");
+	    }
+
 	    // 각 항목 클릭 이벤트
 	    $('.top-box__total p').click(function() {
 
 	        // 선택한 값에 따라 code 설정
 	        var selectedValue = $(this).text().toLowerCase();
-	        
+
+	        // 현재 클릭된 p에 selected 클래스 추가
+	        $(this).addClass("selected");
+
+	        // 다른 p에서 selected 클래스 제거
+	        $('.top-box__total p').not(this).removeClass("selected");
+
 	        // 이동할 페이지 URL 설정
 	        var pageURL = '/mypageqna';
 	        if (selectedValue !== '전체' && selectedValue !== '상품' && selectedValue !== '게시판') {
 	            pageURL += '?code=' + selectedValue;
 	        }
-	        
+
 	        // 페이지 이동
 	        window.location.href = pageURL;
 	    });
+
+	    // URL에서 매개변수 추출하는 함수
+	    function getUrlParameter(name) {
+	        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+	        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+	        var results = regex.exec(location.search);
+	        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+	    }
 	});
     function redirectToMypage() {
         window.location.href = "/mypage";
@@ -168,9 +197,14 @@
             }
 
             // seq_id 값을 사용하여 detail 페이지로 이동
-            window.location.href = '/fashionqnadetail?seq_id=' + seqId;
+            window.location.href = '/qnadetail?seq_id=' + seqId;
         });
     });
+    function goSearch(){
+    	let search = $("#searchInput").val();
+    	console.log("search" + search);
+    	$(location).attr('href',"<c:url value='/mypageqna?search="+search+"'/>");
+    }
     </script>
   </body>
 </html>

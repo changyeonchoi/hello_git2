@@ -23,17 +23,17 @@
         <a href="fashionlist">Fashion</a>
         <a href="makeuplist" id="selected">Make Up</a>
         <a href="accessorylist">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="login?returnUrl=mypage" id="loginLink">MY</a>
 		<a href="login?returnUrl=makeupdetail?seq_id=${makeup.seq_id}">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="mypage" onclick="getUserId()">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
@@ -57,13 +57,6 @@
             <div class="fashion__box--content">
               <div class="fashion__content">
                 <h1>${makeup.product_name}</h1>
-
-<!--                 <div class="fashion__box--pay"> -->
-<%--                   <p id="pay">정상가 ${makeup.product_amount}원</p> --%>
-<!--                 </div> -->
-<!--                 <div class="fashion__box--drive"> -->
-<%--                   <p>배송비 ${makeup.delivery_fee}원</p> --%>
-<!--                 </div> -->
                 <div class="fashion__box--sale">
                   <p>업체명 ${makeup.company_name}</p>
                 </div>
@@ -73,13 +66,13 @@
           </div>
           <div class="shopping--box">
           
-	        <c:if test="${not empty memberVo.user_id}">
+	        <c:if test="${not empty membervo.user_id}">
 				<button class="fashion__order--btn" id="toggleHeart">
 				<span id="heart">${heartCount eq 1 ? '찜하기❤️' : '찜하기♡'}</span>
 				</button>
 	        </c:if>
 	        <!-- 미로그인 상태일 경우 로그인 페이지로 이동하는 JavaScript 코드 추가 -->
-	        <c:if test="${empty memberVo.user_id}">
+	        <c:if test="${empty membervo.user_id}">
 	            <script>
 	                function redirectToLoginPage() {
 	                    window.location.href = 'login?returnUrl=makeupdetail?seq_id=${makeup.seq_id}';
@@ -129,7 +122,7 @@ $(document).ready(function() {
     $('#toggleHeart').click(function() {
         var heartElement = $('#heart');
         var heart = ${heartCount};
-        var user_id = '${memberVo.user_id}';
+        var user_id = '${membervo.user_id}';
         var seq_id = ${makeup.seq_id};
         var code = 'makeup';
         
@@ -164,6 +157,11 @@ $(document).ready(function() {
         });
     });
 });
+function getUserId() {
+    var userId = '${membervo.user_id}';
+    
+    window.location.href = 'mypage?user_id=' + userId;
+}
 </script>
   </body>
 </html>

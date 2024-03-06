@@ -25,13 +25,13 @@
         <a href="accessorylist" id="selected">Accessory</a>
         <a href="#">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
         <a href="#">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
@@ -65,7 +65,7 @@
           <div id="title__box--content" class="title__box">
             <p>내용*</p>
 			  <textarea id="qna_detail"
-	          placeholder="헤드셋 : 맥스 &#13;&#10;바람막이 : 무신사 &#13;&#10;평가좀요!!"
+	          placeholder="내용을 입력해주세요."
 	          oninput="checkMaxLength(this);"
 	          maxlength="200"></textarea>
           </div>

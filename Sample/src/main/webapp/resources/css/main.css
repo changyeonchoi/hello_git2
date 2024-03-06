@@ -243,3 +243,6 @@ footer span.brand {
   height: 300px;
   cursor: pointer;
 }
+.selected{
+	color: red;
+}

@@ -7,9 +7,12 @@
 <html>
   <head>
      <style>
-        /* 추가적인 스타일링은 여기에 작성하세요. */
+        
+        p span {
+    		margin-right: 27px; 
+		}
         .heart-filled {
-    	color: red; /* 빨간색으로 설정 */
+    		color: red; 
     	}
         .fashion__img--box {
             display: none;
@@ -60,17 +63,17 @@
         <a href="fashionlist">Fashion</a>
         <a href="makeuplist">Make Up</a>
         <a href="accessorylist" id="selected">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="login?returnUrl=mypage" id="loginLink">MY</a>
 		<a href="login?returnUrl=accessorydetail?seq_id=${accessory.seq_id}">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="mypage" onclick="getUserId()">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
@@ -97,11 +100,11 @@
                 <div class="fashion__box--pay">
   					<p>정상가<span class="price">${accessory.product_amount}원</span></p>
                 </div>
-                <c:if test="${not empty param.sale}">
-					<div class="fashion__box--pay">
-						<p><span style="color: red;">쿠폰적용가</span><span class="price">${param.sale}원</span></p>
-					</div>
-				</c:if>
+					<c:if test="${not empty param.sale}">
+					  <div class="fashion__box--pay">
+					    <p><span style="color: red;">쿠폰적용가</span><span class="sale">${param.sale}원</span></p>
+					  </div>
+					</c:if>
                 <div class="fashion__box--drive">
                   	<p>배송비 <span class="price"> ${accessory.delivery_fee}원</span></p>
                 </div>
@@ -113,13 +116,13 @@
             </div>
           </div>
           <div class="shopping--box">
-	        <c:if test="${not empty memberVo.user_id}">
+	        <c:if test="${not empty membervo.user_id}">
 				<button class="fashion__order--btn" id="toggleHeart">
 				<span id="heart">${heartCount eq 1 ? '찜하기❤️' : '찜하기♡'}</span>
 				</button>
 	        </c:if>
 	        <!-- 미로그인 상태일 경우 로그인 페이지로 이동하는 JavaScript 코드 추가 -->
-	        <c:if test="${empty memberVo.user_id}">
+	        <c:if test="${empty membervo.user_id}">
 	            <script>
 	                function redirectToLoginPage() {
 	                    window.location.href = 'login?returnUrl=accessorydetail?seq_id=${accessory.seq_id}';
@@ -185,7 +188,7 @@ $(document).ready(function() {
     $('#toggleHeart').click(function() {
         var heartElement = $('#heart');
         var heart = ${heartCount};
-        var user_id = '${memberVo.user_id}';
+        var user_id = '${membervo.user_id}';
         var seq_id = ${accessory.seq_id};
         var code = 'accessory';
         
@@ -222,7 +225,7 @@ $(document).ready(function() {
     $('#order').click(function() {
     	
     	var product_name = $("#product_name").text();
-    	var user_id = '${memberVo.user_id}';
+    	var user_id = '${membervo.user_id}';
     	
     	$.ajax({
             url: "mypageqnainsert", 
@@ -249,6 +252,12 @@ document.getElementById('loginLink').addEventListener('click', function() {
     // 아래는 예시로 location.href를 사용하여 페이지를 이동하는 부분입니다.
     location.href = 'accessorydetail'; // 이동할 페이지의 경로를 설정해주세요.
 });
+
+function getUserId() {
+    var userId = '${membervo.user_id}';
+    
+    window.location.href = 'mypage?user_id=' + userId;
+}
 </script>
   </body>
 </html>

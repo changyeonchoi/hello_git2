@@ -81,7 +81,6 @@
 	    <div class="cancel__box">
 	    <button onclick="closePopup()">닫기</button>
 	    </div>
-	    
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
     // 댓글 등록 처리
@@ -89,12 +88,15 @@
         var urlParams = new URLSearchParams(window.location.search);
         var codeValue = urlParams.get('code');
         var seq_id = urlParams.get('seq_id');
+        var user_id = urlParams.get('user_id');
+
     	var comment_content = document.getElementById('commentContent').value;
     	
     	 var formData = new FormData();
     	 formData.append('code', codeValue);
     	 formData.append('comment_content', comment_content);
     	 formData.append('seq_id', seq_id);
+    	 formData.append('user_id', user_id);
     
 		 $.ajax({
 	            url: '/commentinsert',

@@ -13,6 +13,69 @@
     <link rel="stylesheet" href="resources/css/detail.css" />
     <link rel="stylesheet" href="resources/css/mypage.css" />
 <style type="text/css">   
+.box {
+  top: 44%;
+  padding: 20px 50px 20px 20px;
+  height: 30vh;
+  left: 5%;
+}
+
+#main-box {
+  width: 75%;
+}
+
+.top-box {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 65%;
+  margin: 2px auto;
+}
+.top-box .top-box__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 10%;
+  margin-right: 5px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+.top-box .top-box__total p {
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+.top-box__total:last-child {
+  width: 47%;
+  margin-bottom: 10px;
+}
+.top-box__total:last-child p {
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-right: 5px;
+  border-right: 1px solid #333;
+  padding-right: 40px;
+}
+
+.selected {
+  font-size: 1.1em;
+  font-weight: 600;
+}
+.red-text {
+  color: #d1180b;
+}
+.ordered-product {
+  width: 70%;
+  margin: 91px auto 0;
+}
+.ordered-product .notice__detail--box {
+  padding: 0;
+  margin: 0;
+}
+
+.title__box {
+  border: unset;
+}
     .center-div {
     	width: 100%;
     	text-align: center;
@@ -46,13 +109,13 @@
         <a href="accessorylist">Accessory</a>
         <a href="search">검색</a>
       </nav>
-	<c:if test="${memberVo.user_id == null}">
+	<c:if test="${membervo.user_id == null}">
 	   <nav class="shop-nav__info">
 	     <a href="login"  id="selected">MY</a>
 	     <a href="login" id="loginLink">Login</a>
 	   </nav>
 	   </c:if>
-	   <c:if test="${memberVo.user_id != null}">
+	   <c:if test="${membervo.user_id != null}">
 	   <nav class="shop-nav__info">
 	     <a href="#" id="selected">MY</a>
 	     <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>

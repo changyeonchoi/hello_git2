@@ -8,7 +8,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fashion_qnalist</title>
+    <title>makeup_qnalist</title>
     <style>
     	.center-div {
     	width: 100%;
@@ -29,17 +29,17 @@
         <a href="fashionlist">Fashion</a>
         <a href="makeuplist" id="selected">Make Up</a>
         <a href="accessorylist">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
-        <a href="login" id="loginLink">Login</a>
+        <a href="login?returnUrl=mypage" id="loginLink">MY</a>
+        <a href="login?returnUrl=makeupqnalist" id="loginLink">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="mypage" onclick="getUserId()">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
@@ -60,18 +60,19 @@
             <button onclick="goSearch()" class="search-button"></button>
           </div>
 			<!-- 미로그인 상태일 경우 로그인 페이지로 이동하는 JavaScript 코드 추가 -->
-			<c:if test="${empty memberVo.user_id}">
+			<c:if test="${empty membervo.user_id}">
 			    <script>
-			        function redirectToLoginPage() {
-			        	alert("미로그인 상태이므로 로그인 페이지로 이동합니다.")
-			            window.location.href = 'login';
-			        }
+			    function redirectToLoginPage() {
+			        alert("미로그인 상태이므로 로그인 페이지로 이동합니다.");
+			        var returnUrl = 'makeupqnainsert'; 
+			        window.location.href = '${pageContext.request.contextPath}/login?returnUrl=' + returnUrl;
+			    }
 			    </script>
 			    <button id="notice__detail" class="search--button" onclick="redirectToLoginPage()">등록하기</button>
 			</c:if>
 			
 			<!-- 로그인 상태일 경우 직접 페이지로 이동하는 JavaScript 코드 추가 -->
-			<c:if test="${not empty memberVo.user_id}">
+			<c:if test="${not empty membervo.user_id}">
 			    <script>
 			        function redirectToInsertPage() {
 			            window.location.href = 'makeupqnainsert';
@@ -108,7 +109,7 @@
 			                </td>
 			
 			                <td>
-			                    <a href="#" class="detail-link" data-seq-id="${qnaList.seq_id},${qnaList.qna_pw}" data-user-id="${memberVo.user_id}">
+			                    <a href="#" class="detail-link" data-seq-id="${qnaList.seq_id},${qnaList.qna_pw}" data-user-id="${membervo.user_id}">
 			                        ${qnaList.qna_title}
 			                    </a>
 			                </td>
@@ -151,21 +152,24 @@ $(document).ready(function() {
         // user_id가 없으면 로그인 페이지로 이동
         if (!userId) {
             alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
-            window.location.href = '/login';
+	        var returnUrl = 'makeupqnalist';
+	        window.location.href = '${pageContext.request.contextPath}/login?returnUrl=' + returnUrl;
             return; // 중단하여 뒤의 코드를 실행하지 않도록 함
         }
 
-        // user_id가 있으면 사용자에게 비밀번호를 입력받음
-        var inputPassword = prompt("비밀번호를 입력하세요:");
-
-        // 비밀번호를 확인하고 일치하면 페이지 이동
-        if (inputPassword === password) {
-            window.location.href = '/makeupqnadetail?seq_id=' + seqId;
+        if (!password){
+        	 window.location.href = '/makeupqnadetail?seq_id=' + seqId;
         } else {
-            alert("비밀번호가 일치하지 않습니다.");
+    	    var inputPassword = prompt("비밀번호를 입력하세요:");
+        	if(inputPassword === password){
+	        	window.location.href = '/makeupqnadetail?seq_id=' + seqId;
+        	} else{
+        		alert("비밀번호가 일치하지 않습니다.");
+        	}
         }
     });
 });
+
     
     function goSearch(){
     	let search = $("#searchInput").val();
@@ -176,6 +180,12 @@ $(document).ready(function() {
 
     	// 생성한 URL로 페이지 리디렉션
     	$(location).attr('href', newUrl);
+    }
+    
+    function getUserId() {
+        var userId = '${membervo.user_id}';
+        
+        window.location.href = 'mypage?user_id=' + userId;
     }
     </script>
 

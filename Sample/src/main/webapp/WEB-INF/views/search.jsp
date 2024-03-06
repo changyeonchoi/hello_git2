@@ -26,13 +26,13 @@
         <a href="accessorylist">Accessory</a>
         <a href="search" id="selected">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
         <nav class="shop-nav__info">
           <a href="login" id="loginLink">MY</a>
           <a href="login" id="loginLink">Login</a>
         </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
         <nav class="shop-nav__info">
           <a href="mypage" onclick="getUserId()">MY</a>
           <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>

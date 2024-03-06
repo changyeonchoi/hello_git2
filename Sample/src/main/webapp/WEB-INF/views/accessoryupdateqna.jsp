@@ -92,17 +92,17 @@
         <a href="fashionlist">Fashion</a>
         <a href="makeuplist">Make Up</a>
         <a href="accessorylist" id="selected">Accessory</a>
-        <a href="#">검색</a>
+        <a href="search">검색</a>
       </nav>
-      <c:if test="${memberVo.user_id == null}">
+      <c:if test="${membervo.user_id == null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="login?returnUrl=mypage" id="loginLink">MY</a>
         <a href="login" id="loginLink">Login</a>
       </nav>
       </c:if>
-      <c:if test="${memberVo.user_id != null}">
+      <c:if test="${membervo.user_id != null}">
       <nav class="shop-nav__info">
-        <a href="#">MY</a>
+        <a href="mypage" onclick="getUserId()">MY</a>
         <a href="${pageContext.request.contextPath}/logout" id="logoutLink">Logout</a>
       </nav>
       </c:if>
@@ -139,15 +139,13 @@
           <div id="title__box--img" class="title__box">
             <p>이미지</p>
             <div class="title__box--img">
-				<div class="filebox">
-              <img
-				src="${qnavo.file_img}"
-              />
-				    <label for="file_img" class="file-label">이미지 찾기</label>
-					<input type="file" id="file_img" value="${qnavo.file_img}" accept=".png, .jpeg, .jpg" data-width="540" data-height="500">
-				    <span class="upload-status"></span>
-				</div>
-            </div>
+			    <div class="filebox">
+			        <img id="previewImage" src="${qnavo.file_img}" />
+			        <label for="file_img" class="file-label">이미지 찾기</label>
+			        <input type="file" id="file_img" accept=".png, .jpeg, .jpg" onchange="previewFile()" />
+			        <span class="upload-status"></span>
+			    </div>
+			</div>
           </div>
           <div id="title__box--content" class="title__box">
             <p>내용*</p>
@@ -181,6 +179,29 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script>
+    function previewFile() {
+        var fileInput = document.getElementById('file_img');
+        var previewImage = document.getElementById('previewImage');
+        var fileStatusLabel = document.querySelector('.upload-status');
+
+        var file = fileInput.files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                // 이미지를 미리보기 엘리먼트에 표시
+                previewImage.src = e.target.result;
+                fileStatusLabel.innerText = '업로드 완료';
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            // 파일이 선택되지 않았을 때의 처리
+            previewImage.src = "${qnavo.file_img}"; // 기존 이미지로 복원
+            fileStatusLabel.innerText = '이미지를 선택하세요.';
+        }
+    }
     $(document).ready(function () {
     	
     	var valueFromDatabase = "${qnavo.qna_like_yn}";
@@ -232,6 +253,11 @@
         var codeValue = "accessory"; // 여기에 실제 코드 값을 가져오는 로직을 추가하세요
         var url = 'commentpopup?code=' + encodeURIComponent(codeValue);
         window.open(url, '댓글 등록', 'width=400, height=300, left=500, top=200');
+    }
+    function getUserId() {
+        var userId = '${membervo.user_id}';
+        
+        window.location.href = 'mypage?user_id=' + userId;
     }
     </script>
 

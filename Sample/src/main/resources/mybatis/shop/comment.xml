@@ -22,7 +22,6 @@
 	<!-- 댓글 조회 쿼리문 -->
 	<select id="commentDao.selectComment" parameterType="java.util.HashMap" resultMap="commentvo">
  		SELECT 
-	        p.user_id,
             p.seq_id,
             c.seq_id,
 	        c.comment_content, 

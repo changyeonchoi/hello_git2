@@ -223,7 +223,7 @@
 	        user_id = #{user_id, jdbcType=VARCHAR}
 	</select>
 	
-		<select id="productDao.OrderList" parameterType="java.util.HashMap" resultMap="ordervo">
+	<select id="productDao.OrderList" parameterType="java.util.HashMap" resultMap="ordervo">
         <![CDATA[
         SELECT *
         FROM (
